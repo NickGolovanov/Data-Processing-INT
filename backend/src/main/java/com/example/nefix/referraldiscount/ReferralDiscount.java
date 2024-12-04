@@ -1,21 +1,17 @@
 package com.example.nefix.referraldiscount;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import com.example.nefix.account.Account;
+import jakarta.persistence.*;
 
 @Entity
 public class ReferralDiscount
 {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long referralDiscountId;
 
-    public void setReferralDiscountId(Long referralDiscountId)
-    {
-        this.referralDiscountId = referralDiscountId;
-    }
+    @OneToOne(mappedBy = "accountId")
+    private Account account;
 
-    public Long getReferralDiscountId()
-    {
-        return referralDiscountId;
-    }
+    private String link;
 }

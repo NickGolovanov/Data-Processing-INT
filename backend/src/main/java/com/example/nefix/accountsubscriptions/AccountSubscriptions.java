@@ -1,21 +1,35 @@
 package com.example.nefix.accountsubscriptions;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import com.example.nefix.account.Account;
+import com.example.nefix.subscription.Subscription;
+import jakarta.persistence.*;
+import lombok.Data;
 
+import java.time.LocalDate;
+
+@Data
 @Entity
+@IdClass(AccountSubscriptionId.class)
 public class AccountSubscriptions
 {
     @Id
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long accountId;
 
-    public void setId(Long id)
-    {
-        this.id = id;
-    }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long subscriptionId;
 
-    public Long getId()
-    {
-        return id;
-    }
+    @ManyToOne
+    @JoinColumn(name = "accountId", insertable = false, updatable = false)
+    private Account account;
+
+    @ManyToOne
+    @JoinColumn(name = "subscriptionId", insertable = false, updatable = false)
+    private Subscription subscription;
+
+    private LocalDate dateOfPurchase;
+
+    private LocalDate dateOfExpire;
+
 }
