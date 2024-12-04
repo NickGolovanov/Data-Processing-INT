@@ -5,8 +5,6 @@ import com.example.nefix.profile.Profile;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.Period;
-
 @Data
 @Entity
 public class LiveInfo
@@ -15,11 +13,11 @@ public class LiveInfo
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long liveInfoId;
 
-    @ManyToOne(cascade = CascadeType.ALL) // here put extra
+    @ManyToOne(cascade = CascadeType.ALL) 
     @JoinColumn(name = "profileId", updatable = false, insertable = false)
     private Profile profile;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "episodeId", insertable = false, updatable = false)
     private Episode episode;
 

@@ -1,5 +1,6 @@
 package com.example.nefix.infoseries;
 
-public interface InfoSeriesRepository
-{
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface InfoSeriesRepository extends JpaRepository<InfoSeries, Long> {
 }

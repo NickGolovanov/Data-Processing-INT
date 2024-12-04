@@ -1,15 +1,22 @@
 services:
   app:
     image: docker-spring-boot-postgres:latest
+    env_file:
+      - .env
     build:
       context: backend
     ports:
       - '8080:8080'
     depends_on:
       - db
+    environment:
+      POSTGRES_DATASOURCE: ${POSTGRES_DATASOURCE}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DATABASE: ${POSTGRES_DATABASE}
 
-  postgres:
-    image: postgres:latest
+  db:
+    image: postgres:17
     env_file:
       - .env
     volumes:
@@ -21,8 +28,26 @@ services:
       POSTGRES_DB: ${POSTGRES_DATABASE}
     ports:
       - '${POSTGRES_PORT}:5432'
+    healthcheck:
+      test: ['CMD', 'pg_isready', '-U', '${POSTGRES_USER}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
     labels:
-      org.springframework.boot.service-connection: postgres
+      org.springframework.boot.service-connection: db
+
+  # add this for simplicity and easy access to the database
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    ports:
+      - '8888:80'
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user-name@domain-name.com
+      PGADMIN_DEFAULT_PASSWORD: strong-password
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
 
 volumes:
   postgres-data:
+  pgadmin-data:

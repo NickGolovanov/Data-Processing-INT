@@ -1,5 +1,6 @@
 package com.example.nefix.info;
 
-public interface InfoRepository
-{
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface InfoRepository extends JpaRepository<Info, Long> {
 }

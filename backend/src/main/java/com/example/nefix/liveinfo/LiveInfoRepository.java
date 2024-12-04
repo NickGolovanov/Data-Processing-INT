@@ -1,5 +1,6 @@
 package com.example.nefix.liveinfo;
 
-public interface LiveInfoRepository
-{
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface LiveInfoRepository extends JpaRepository<LiveInfo, Long> {
 }

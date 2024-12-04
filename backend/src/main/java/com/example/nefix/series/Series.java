@@ -9,16 +9,15 @@ import java.util.Set;
 
 @Data
 @Entity
-public class Series
-{
+public class Series {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long seriesId;
 
-    @OneToMany(mappedBy = "seasonId")
+    @OneToMany(mappedBy = "series")
     private Set<Season> seasons;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "infoSeriesId")
+    @OneToMany(mappedBy = "series", cascade = CascadeType.ALL)
     private Set<InfoSeries> infoSeries;
 
     private String title;

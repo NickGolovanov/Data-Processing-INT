@@ -1,5 +1,6 @@
 package com.example.nefix.mediapreferences;
 
-public interface MediaPreferencesRepository
-{
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface MediaPreferencesRepository extends JpaRepository<MediaPreferences, Long> {
 }

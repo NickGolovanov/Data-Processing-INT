@@ -1,5 +1,6 @@
 package com.example.nefix.series;
 
-public interface SeriesRepository
-{
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface SeriesRepository extends JpaRepository<Series, Long> {
 }

@@ -9,17 +9,16 @@ import java.util.Set;
 
 @Data
 @Entity
-public class Episode
-{
+public class Episode {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long episodeId;
 
-    @ManyToOne()
-    @JoinColumn(name = "seasonId", updatable = false, insertable = false)
+    @ManyToOne
+    @JoinColumn(name = "season_id", referencedColumnName = "seasonId", nullable = false, updatable = false, insertable = false)
     private Season season;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = false, mappedBy = "subtitleId")
+    @OneToMany(mappedBy = "episode", cascade = CascadeType.ALL, orphanRemoval = false)
     private Set<Subtitle> subtitles;
 
     private String title;

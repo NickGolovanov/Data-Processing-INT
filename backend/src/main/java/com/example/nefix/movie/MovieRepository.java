@@ -1,5 +1,6 @@
 package com.example.nefix.movie;
 
-public interface MovieRepository
-{
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface MovieRepository extends JpaRepository<Movie, Long> {
 }

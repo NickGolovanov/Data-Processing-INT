@@ -1,0 +1,1 @@
+- [ ] implement hibernate naming strategy to convert java camelCase into snake_case to follow ERD

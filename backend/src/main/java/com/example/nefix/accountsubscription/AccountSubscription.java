@@ -1,4 +1,4 @@
-package com.example.nefix.accountsubscriptions;
+package com.example.nefix.accountsubscription;
 
 import com.example.nefix.account.Account;
 import com.example.nefix.subscription.Subscription;
@@ -10,8 +10,7 @@ import java.time.LocalDate;
 @Data
 @Entity
 @IdClass(AccountSubscriptionId.class)
-public class AccountSubscriptions
-{
+public class AccountSubscription {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long accountId;

@@ -9,17 +9,16 @@ import java.util.Set;
 
 @Data
 @Entity
-public class Movie
-{
+public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long movieId;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = false, mappedBy = "subtitleId")
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = false)
     private Set<Subtitle> subtitles;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = false, mappedBy = "movieId")
-    private Set<InfoMovie> movies;
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = false)
+    private Set<InfoMovie> infoMovies;
 
     private String title;
     private Integer duration;

@@ -1,5 +1,6 @@
 package com.example.nefix.subtitle;
 
-public interface SubtitleRepository
-{
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface SubtitleRepository extends JpaRepository<Subtitle, Long> {
 }
