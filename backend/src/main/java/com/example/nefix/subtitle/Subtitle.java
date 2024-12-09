@@ -2,6 +2,7 @@ package com.example.nefix.subtitle;
 
 import com.example.nefix.episode.Episode;
 import com.example.nefix.movie.Movie;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -11,16 +12,23 @@ public class Subtitle
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "subtitle_id")
     private Long subtitleId;
 
     @ManyToOne
-    @JoinColumn(name = "episodeId", insertable = false, updatable = false)
+    @JoinColumn(name = "episode_id", referencedColumnName = "episodeId", insertable = false, updatable = false)
+    @JsonProperty("episodeId")
     private Episode episode;
 
     @ManyToOne
-    @JoinColumn(name = "movieId", insertable = false, updatable = false)
+    @JoinColumn(name = "movie_id", referencedColumnName = "movieId", insertable = false, updatable = false)
+    @JsonProperty("movieId")
     private Movie movie;
 
+    @JsonProperty("language")
     private String language;
+
+    @JsonProperty("subtitleLocation")
+    @Column(name = "subtitle_location")
     private String subtitleLocation;
 }

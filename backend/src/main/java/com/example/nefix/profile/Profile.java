@@ -4,6 +4,7 @@ import com.example.nefix.account.Account;
 import com.example.nefix.liveinfo.LiveInfo;
 import com.example.nefix.preference.Preference;
 import com.example.nefix.watchlist.WatchList;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -11,33 +12,54 @@ import java.util.Set;
 
 @Data
 @Entity
-public class Profile {
+public class Profile
+{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "profile_id")
     private Long profileId;
 
     @ManyToOne
-    // name is the name of column in db, referencedColumnName is the name of column in hibernate
     @JoinColumn(name = "account_id", referencedColumnName = "accountId", nullable = false)
+    @JsonProperty("accountId")
     private Account account;
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<LiveInfo> liveInfos;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    // name is the name of column in db, referencedColumnName is the name of column in hibernate
     @JoinColumn(name = "preference_id", referencedColumnName = "preferenceId", nullable = false)
+    @JsonProperty("preferenceId")
     private Preference preference;
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<WatchList> watchList;
 
+    @JsonProperty("series")
     private Boolean series;
+
+    @JsonProperty("film")
     private Boolean film;
+
+    @JsonProperty("minimumAge")
+    @Column(name = "minimum_age")
     private Integer minimumAge;
+
+    @JsonProperty("profileImage")
+    @Column(name = "profile_image")
     private String profileImage;
+
+    @JsonProperty("profileChild")
+    @Column(name = "profile_child")
     private Boolean profileChild;
+
+    @JsonProperty("profileName")
+    @Column(name = "profile_name")
     private String profileName;
+
+    @JsonProperty("age")
     private Integer age;
+
+    @JsonProperty("language")
     private String language;
 }
