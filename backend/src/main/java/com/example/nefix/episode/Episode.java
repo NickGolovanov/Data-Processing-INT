@@ -29,7 +29,7 @@ public class Episode
     private String title;
 
     @JsonProperty("duration")
-    private Integer duration;
+    private Double duration;
 
     @JsonProperty("views")
     private Integer views;
