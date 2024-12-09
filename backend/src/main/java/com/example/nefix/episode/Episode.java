@@ -38,11 +38,14 @@ public class Episode
     private Integer views;
 
     @JsonProperty("SD")
+    @ColumnDefault("false")
     private Boolean SD;
 
     @JsonProperty("HD")
+    @ColumnDefault("false")
     private Boolean HD;
 
     @JsonProperty("UHD")
+    @ColumnDefault("false")
     private Boolean UHD;
 }
