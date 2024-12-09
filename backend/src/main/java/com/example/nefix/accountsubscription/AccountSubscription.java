@@ -11,7 +11,8 @@ import java.time.LocalDate;
 @Data
 @Entity
 @IdClass(AccountSubscriptionId.class)
-public class AccountSubscription {
+public class AccountSubscription
+{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "account_id")
@@ -23,11 +24,13 @@ public class AccountSubscription {
     private Long subscriptionId;
 
     @ManyToOne
-    @JoinColumn(name = "accountId", insertable = false, updatable = false)
+    @JoinColumn(name = "account_id", referencedColumnName = "accountId", insertable = false, updatable = false)
+    @JsonProperty("accountId")
     private Account account;
 
     @ManyToOne
-    @JoinColumn(name = "subscriptionId", insertable = false, updatable = false)
+    @JoinColumn(name = "subscription_id", referencedColumnName = "subscriptionId", insertable = false, updatable = false)
+    @JsonProperty("subscriptionId")
     private Subscription subscription;
 
     @JsonProperty("dateOfPurchase")

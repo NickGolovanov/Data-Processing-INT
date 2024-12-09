@@ -10,7 +10,8 @@ import java.util.Set;
 
 @Data
 @Entity
-public class Episode {
+public class Episode
+{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "episode_id")
@@ -18,11 +19,11 @@ public class Episode {
 
     @ManyToOne
     @JoinColumn(name = "season_id", referencedColumnName = "seasonId", nullable = false, updatable = false, insertable = false)
+    @JsonProperty("seasonId")
     private Season season;
 
     @OneToMany(mappedBy = "episode", cascade = CascadeType.ALL, orphanRemoval = false)
     private Set<Subtitle> subtitles;
-
 
     @JsonProperty("title")
     private String title;

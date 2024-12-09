@@ -2,6 +2,7 @@ package com.example.nefix.infoseries;
 
 import com.example.nefix.info.Info;
 import com.example.nefix.series.Series;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -21,10 +22,12 @@ public class InfoSeries
     private Long seriesId;
 
     @ManyToOne
-    @JoinColumn(name = "infoId", insertable = false, updatable = false)
+    @JoinColumn(name = "info_id", referencedColumnName = "infoId", insertable = false, updatable = false)
+    @JsonProperty("infoId")
     private Info info;
 
     @ManyToOne
-    @JoinColumn(name = "seriesId", insertable = false, updatable = false)
+    @JoinColumn(name = "series_id", referencedColumnName = "seriesId", insertable = false, updatable = false)
+    @JsonProperty("seriesId")
     private Series series;
 }

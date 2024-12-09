@@ -3,6 +3,7 @@ package com.example.nefix.mediapreferences;
 import com.example.nefix.movie.Movie;
 import com.example.nefix.preference.Preference;
 import com.example.nefix.series.Series;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -16,14 +17,17 @@ public class MediaPreferences
     private Long mediaPreferenceId;
 
     @ManyToOne
-    @JoinColumn(name = "preferenceId", updatable = false, insertable = false)
+    @JoinColumn(name = "preference_id", referencedColumnName = "preferenceId", updatable = false, insertable = false)
+    @JsonProperty("preferenceId")
     private Preference preference;
 
     @ManyToOne
-    @JoinColumn(name = "movieId", updatable = false, insertable = false)
+    @JoinColumn(name = "movie_id", referencedColumnName = "movieId", updatable = false, insertable = false)
+    @JsonProperty("movieId")
     private Movie movie;
 
     @ManyToOne
-    @JoinColumn(name = "seriesId", updatable = false, insertable = false)
+    @JoinColumn(name = "series_id", referencedColumnName = "series_id", updatable = false, insertable = false)
+    @JsonProperty("seriesId")
     private Series series;
 }
