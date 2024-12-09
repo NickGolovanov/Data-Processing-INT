@@ -12,6 +12,7 @@ public class MediaPreferences
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "media_preference_id")
     private Long mediaPreferenceId;
 
     @ManyToOne

@@ -11,10 +11,12 @@ import lombok.Data;
 public class InfoMovie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "movie_id")
     private Long movieId;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "info_id")
     private Long infoId;
 
     @ManyToOne

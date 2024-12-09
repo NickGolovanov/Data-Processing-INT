@@ -12,10 +12,12 @@ public class InfoSeries
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "info_id")
     private Long infoId;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "series_id")
     private Long seriesId;
 
     @ManyToOne
