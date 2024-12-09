@@ -5,6 +5,8 @@ import com.example.nefix.subtitle.Subtitle;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DialectOverride;
 
 import java.util.Set;
 
@@ -32,6 +34,7 @@ public class Episode
     private Double duration;
 
     @JsonProperty("views")
+    @ColumnDefault("0")
     private Integer views;
 
     @JsonProperty("SD")
