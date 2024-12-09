@@ -4,6 +4,7 @@ import com.example.nefix.accountsubscription.AccountSubscription;
 import com.example.nefix.blockedaccount.BlockedAccount;
 import com.example.nefix.profile.Profile;
 import com.example.nefix.referraldiscount.ReferralDiscount;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -27,12 +28,16 @@ public class Account {
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "referral_discount_id")
+    @JsonProperty("referralDiscount")
     private ReferralDiscount referralDiscount;
 
     @Enumerated(EnumType.STRING)
-    // Specify that the type of value of the enum to be stored in the database
+    @JsonProperty("paymentMethod")
+    @Column(name = "payment_method")
     private PaymentMethod paymentMethod;
 
+    @JsonProperty("email")
     private String email;
+    @JsonProperty("password")
     private String password;
 }
