@@ -29,6 +29,7 @@ public class AccountSubscription
     @MapsId("subscriptionId")
     @JoinColumn(name = "subscription_id", insertable = false, updatable = false)
     @JsonProperty("subscriptionId")
+    @JsonBackReference
     private Subscription subscription;
 
     @JsonProperty("dateOfPurchase")
