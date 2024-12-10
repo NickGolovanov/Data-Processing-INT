@@ -5,6 +5,7 @@ import com.example.nefix.authentification.user.Role;
 import com.example.nefix.authentification.user.User;
 import com.example.nefix.authentification.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,15 +22,15 @@ public class AuthenticationService
 
     public AuthenticationResponse register(RegisterRequest request)
     {
-        var user = User.builder()
+        User user = User.builder()
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
                 .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
+                .password(this.passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
                 .build();
-        repository.save(user);
-        var jwtToken = jwtService.generateToken(user);
+        this.repository.save(user);
+        String jwtToken = this.jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
@@ -37,12 +38,12 @@ public class AuthenticationService
 
     public AuthenticationResponse authenticate(AuthenticationRequest request)
     {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken
+        this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken
                 (request.getEmail(),
                  request.getPassword()
                 ));
-        var user = repository.findByEmail(request.getEmail()).orElseThrow();
-        var jwtToken = jwtService.generateToken(user);
+        User user = repository.findByEmail(request.getEmail()).orElseThrow();
+        String jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();

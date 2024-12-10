@@ -17,11 +17,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User implements UserDetails
 {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String firstname;
     private String lastname;
@@ -41,8 +41,6 @@ public class User implements UserDetails
     {
         return this.password;
     }
-
-
 
     @Override
     public String getUsername()
