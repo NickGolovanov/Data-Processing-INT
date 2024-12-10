@@ -1,4 +1,4 @@
-package user;
+package com.example.nefix.authentification.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

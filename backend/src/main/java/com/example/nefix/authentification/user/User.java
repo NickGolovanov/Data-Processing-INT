@@ -1,4 +1,4 @@
-package user;
+package com.example.nefix.authentification.user;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -17,14 +17,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "user")
+@Table(name = "com.example.nefix.authentification.user")
 public class User implements UserDetails
 {
     @Id
     @GeneratedValue
     private Long id;
-    private String firstName;
-    private String lastName;
+    private String firstname;
+    private String lastname;
     private String email;
     private String password;
     @Enumerated(EnumType.STRING)
