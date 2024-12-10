@@ -8,18 +8,11 @@ import lombok.Data;
 
 @Data
 @Entity
-@IdClass(InfoSeriesId.class)
 public class InfoSeries
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "info_id")
-    private Long infoId;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "series_id")
-    private Long seriesId;
+    @EmbeddedId
+    @JsonProperty("id")
+    private InfoSeriesId id;
 
     @ManyToOne
     @JoinColumn(name = "info_id", insertable = false, updatable = false)

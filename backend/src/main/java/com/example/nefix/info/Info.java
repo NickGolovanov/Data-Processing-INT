@@ -1,6 +1,5 @@
 package com.example.nefix.info;
 
-import com.example.nefix.infomovie.InfoType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
