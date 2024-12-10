@@ -22,9 +22,9 @@ public class Subscription
 
     @JsonProperty("subscriptionPrice")
     @Column(name = "subscription_price")
-    private double subscriptionPrice;
+    private Double subscriptionPrice;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference("subscription-account")
     private Set<AccountSubscription> accounts;
 }

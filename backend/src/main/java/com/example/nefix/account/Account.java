@@ -21,7 +21,7 @@ public class Account
     private Long accountId;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference("account-subscription")
     private Set<AccountSubscription> subscriptions;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)

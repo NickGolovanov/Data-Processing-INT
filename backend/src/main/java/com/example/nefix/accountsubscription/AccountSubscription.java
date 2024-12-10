@@ -12,6 +12,7 @@ import java.time.LocalDate;
 
 @Data
 @Entity
+@Table(name = "account_subscription")
 public class AccountSubscription
 {
     @EmbeddedId
@@ -22,14 +23,14 @@ public class AccountSubscription
     @MapsId("accountId")
     @JoinColumn(name = "account_id", insertable = false, updatable = false)
     @JsonProperty("accountId")
-    @JsonBackReference
+    @JsonBackReference("account-subscription")
     private Account account;
 
     @ManyToOne
     @MapsId("subscriptionId")
     @JoinColumn(name = "subscription_id", insertable = false, updatable = false)
     @JsonProperty("subscriptionId")
-    @JsonBackReference
+    @JsonBackReference("subscription-account")
     private Subscription subscription;
 
     @JsonProperty("dateOfPurchase")
