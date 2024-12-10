@@ -2,6 +2,7 @@ package com.example.nefix.accountsubscription;
 
 import com.example.nefix.account.Account;
 import com.example.nefix.subscription.Subscription;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -32,7 +33,7 @@ public class AccountSubscription
     @Column(name = "date_of_purchase")
     private LocalDate dateOfPurchase;
 
-    @JsonProperty("dateOfPurchase")
-    @Column(name = "date_of_xxpire")
+    @JsonProperty("dateOfExpire")
+    @Column(name = "date_of_expire")
     private LocalDate dateOfExpire;
 }
