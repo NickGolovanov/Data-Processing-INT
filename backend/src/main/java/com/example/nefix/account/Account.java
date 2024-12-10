@@ -4,6 +4,7 @@ import com.example.nefix.accountsubscription.AccountSubscription;
 import com.example.nefix.blockedaccount.BlockedAccount;
 import com.example.nefix.profile.Profile;
 import com.example.nefix.referraldiscount.ReferralDiscount;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -19,6 +20,7 @@ public class Account
     private Long accountId;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private Set<AccountSubscription> subscriptions;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)

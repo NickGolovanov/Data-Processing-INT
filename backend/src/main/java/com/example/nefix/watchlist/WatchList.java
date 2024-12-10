@@ -17,17 +17,17 @@ public class WatchList
     private Long watchListId;
 
     @ManyToOne
-    @JoinColumn(name = "profile_id", referencedColumnName = "profileId", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "profile_id", nullable = false, insertable = false, updatable = false)
     @JsonProperty("profileId")
     private Profile profile;
 
     @ManyToOne
-    @JoinColumn(name = "series_id", referencedColumnName = "seriesId")
+    @JoinColumn(name = "series_id")
     @JsonProperty("seriesId")
     private Series series;
 
     @ManyToOne
-    @JoinColumn(name = "movie_id", referencedColumnName = "movieId")
+    @JoinColumn(name = "movie_id")
     @JsonProperty("movieId")
     private Movie movie;
 }

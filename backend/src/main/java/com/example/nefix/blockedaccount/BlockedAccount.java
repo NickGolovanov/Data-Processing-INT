@@ -15,7 +15,7 @@ public class BlockedAccount
     private Long blockedAccountId;
 
     @ManyToOne
-    @JoinColumn(name = "account_id", referencedColumnName = "accountId", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "account_id", nullable = false, insertable = false, updatable = false)
     @JsonProperty("accountId")
     private Account account;
 

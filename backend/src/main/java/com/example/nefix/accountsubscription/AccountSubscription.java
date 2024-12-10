@@ -10,26 +10,21 @@ import java.time.LocalDate;
 
 @Data
 @Entity
-@IdClass(AccountSubscriptionId.class)
 public class AccountSubscription
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "account_id")
-    private Long accountId;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "subscription_id")
-    private Long subscriptionId;
+    @EmbeddedId
+    @JsonProperty("id")
+    private AccountSubscriptionId id;
 
     @ManyToOne
-    @JoinColumn(name = "account_id", referencedColumnName = "accountId", insertable = false, updatable = false)
+    @MapsId("accountId")
+    @JoinColumn(name = "account_id", insertable = false, updatable = false)
     @JsonProperty("accountId")
     private Account account;
 
     @ManyToOne
-    @JoinColumn(name = "subscription_id", referencedColumnName = "subscriptionId", insertable = false, updatable = false)
+    @MapsId("subscriptionId")
+    @JoinColumn(name = "subscription_id", insertable = false, updatable = false)
     @JsonProperty("subscriptionId")
     private Subscription subscription;
 

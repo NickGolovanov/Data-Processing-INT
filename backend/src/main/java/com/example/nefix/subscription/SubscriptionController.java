@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/subtitles")
+@RequestMapping("/subscription")
 public class SubscriptionController extends BaseController<Subscription, Long>{
     public SubscriptionController(SubscriptionService service) {
         super(service);

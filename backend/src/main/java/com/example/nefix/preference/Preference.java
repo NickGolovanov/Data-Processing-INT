@@ -15,7 +15,7 @@ public class Preference
     private Long preferenceId;
 
     @OneToOne
-    @JoinColumn(name = "profile_id", referencedColumnName = "profileId", insertable = false, updatable = false)
+    @JoinColumn(name = "profile_id", insertable = false, updatable = false)
     @JsonProperty("profileId")
     private Profile profile;
 }

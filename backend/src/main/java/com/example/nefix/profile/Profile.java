@@ -20,7 +20,7 @@ public class Profile
     private Long profileId;
 
     @ManyToOne
-    @JoinColumn(name = "account_id", referencedColumnName = "accountId", nullable = false)
+    @JoinColumn(name = "account_id", nullable = false)
     @JsonProperty("accountId")
     private Account account;
 
@@ -28,7 +28,7 @@ public class Profile
     private Set<LiveInfo> liveInfos;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "preference_id", referencedColumnName = "preferenceId", nullable = false)
+    @JoinColumn(name = "preference_id", nullable = false)
     @JsonProperty("preferenceId")
     private Preference preference;
 

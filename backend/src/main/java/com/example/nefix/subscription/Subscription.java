@@ -1,6 +1,7 @@
 package com.example.nefix.subscription;
 
 import com.example.nefix.accountsubscription.AccountSubscription;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -24,5 +25,6 @@ public class Subscription
     private double subscriptionPrice;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private Set<AccountSubscription> accounts;
 }

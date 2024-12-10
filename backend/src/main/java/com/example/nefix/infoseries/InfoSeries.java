@@ -22,12 +22,12 @@ public class InfoSeries
     private Long seriesId;
 
     @ManyToOne
-    @JoinColumn(name = "info_id", referencedColumnName = "infoId", insertable = false, updatable = false)
+    @JoinColumn(name = "info_id", insertable = false, updatable = false)
     @JsonProperty("infoId")
     private Info info;
 
     @ManyToOne
-    @JoinColumn(name = "series_id", referencedColumnName = "seriesId", insertable = false, updatable = false)
+    @JoinColumn(name = "series_id", insertable = false, updatable = false)
     @JsonProperty("seriesId")
     private Series series;
 }

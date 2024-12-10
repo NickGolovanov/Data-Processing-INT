@@ -18,7 +18,7 @@ public class Season
     private Long seasonId;
 
     @ManyToOne
-    @JoinColumn(name = "series_id", referencedColumnName = "seriesId", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "series_id", nullable = false, insertable = false, updatable = false)
     @JsonProperty("seriesId")
     private Series series;
 

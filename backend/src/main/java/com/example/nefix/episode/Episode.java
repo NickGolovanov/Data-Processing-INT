@@ -20,7 +20,7 @@ public class Episode
     private Long episodeId;
 
     @ManyToOne
-    @JoinColumn(name = "season_id", referencedColumnName = "seasonId", nullable = false, updatable = false, insertable = false)
+    @JoinColumn(name = "season_id", nullable = false, updatable = false, insertable = false)
     @JsonProperty("seasonId")
     private Season season;
 

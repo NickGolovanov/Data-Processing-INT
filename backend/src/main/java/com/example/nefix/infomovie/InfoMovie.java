@@ -22,12 +22,12 @@ public class InfoMovie
     private Long infoId;
 
     @ManyToOne
-    @JoinColumn(name = "movie_id", referencedColumnName = "movieId", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "movie_id", nullable = false, insertable = false, updatable = false)
     @JsonProperty("movieId")
     private Movie movie;
 
     @ManyToOne
-    @JoinColumn(name = "info_id", referencedColumnName = "infoId", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "info_id", nullable = false, insertable = false, updatable = false)
     @JsonProperty("infoId")
     private Info info;
 }

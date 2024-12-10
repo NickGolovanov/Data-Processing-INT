@@ -16,12 +16,12 @@ public class Subtitle
     private Long subtitleId;
 
     @ManyToOne
-    @JoinColumn(name = "episode_id", referencedColumnName = "episodeId", insertable = false, updatable = false)
+    @JoinColumn(name = "episode_id", insertable = false, updatable = false)
     @JsonProperty("episodeId")
     private Episode episode;
 
     @ManyToOne
-    @JoinColumn(name = "movie_id", referencedColumnName = "movieId", insertable = false, updatable = false)
+    @JoinColumn(name = "movie_id", insertable = false, updatable = false)
     @JsonProperty("movieId")
     private Movie movie;
 

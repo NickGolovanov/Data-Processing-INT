@@ -1,3 +1,1 @@
-- [ ] implement hibernate naming strategy to convert java camelCase into snake_case to follow ERD
-- [ ] add @Column annotation to all entities' fields to store right name
-- [ ] add @JsonProperty annotation to make controllers be able to parse json body
+- [ ] add @JsonManagedReference to prevent circular reference

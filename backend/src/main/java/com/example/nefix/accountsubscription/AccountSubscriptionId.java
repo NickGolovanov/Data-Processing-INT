@@ -1,11 +1,13 @@
 package com.example.nefix.accountsubscription;
 
+import jakarta.persistence.Embeddable;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 @Data
+@Embeddable
 public class AccountSubscriptionId implements Serializable {
     private Long accountId;
 

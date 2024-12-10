@@ -17,15 +17,15 @@ public class LiveInfo
     private Long liveInfoId;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "profile_id", referencedColumnName = "profileId", updatable = false, insertable = false)
+    @JoinColumn(name = "profile_id", updatable = false, insertable = false)
     private Profile profile;
 
     @ManyToOne
-    @JoinColumn(name = "episode_id", referencedColumnName = "episodeId", insertable = false, updatable = false)
+    @JoinColumn(name = "episode_id", insertable = false, updatable = false)
     private Episode episode;
 
     @ManyToOne(cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name = "movie_id", referencedColumnName = "movieId", insertable = false, updatable = false)
+    @JoinColumn(name = "movie_id", insertable = false, updatable = false)
     private Movie movie;
 
     @JsonProperty("watchedTime")
