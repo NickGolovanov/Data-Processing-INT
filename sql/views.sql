@@ -1,5 +1,5 @@
 
-CREATE VIEW view_account_subscriptions AS
+CREATE OR REPLACE VIEW view_account_subscriptions AS
 SELECT
     a.accountid,
     a.email,
@@ -14,7 +14,7 @@ FROM public.account a
          LEFT JOIN public.subscription s ON asub.subscriptionid = s.subscriptionid;
 
 
-CREATE VIEW view_profile_preferences AS
+CREATE OR REPLACE VIEW view_profile_preferences AS
 SELECT
     p.profileid,
     p.profilename,
@@ -24,7 +24,7 @@ SELECT
 FROM public.profile p
          LEFT JOIN public.mediapreferences mp ON p.profileid = mp.preferenceid;
 
-CREATE VIEW view_blocked_accounts AS
+CREATE OR REPLACE VIEW view_blocked_accounts AS
 SELECT
     b.blockedaccountid,
     b.account_id,
@@ -34,7 +34,7 @@ SELECT
 FROM public.blockedaccount b
          LEFT JOIN public.account a ON b.account_id = a.accountid;
 
-CREATE VIEW view_movie_info AS
+CREATE OR REPLACE VIEW view_movie_info AS
 SELECT
     m.movieid,
     m.title,
@@ -48,7 +48,7 @@ FROM public.movie m
          LEFT JOIN public.infomovie im ON m.movieid = im.movieid
          LEFT JOIN public.info i ON im.info_id = i.infoid;
 
-CREATE VIEW view_season_episodes AS
+CREATE OR REPLACE VIEW view_season_episodes AS
 SELECT
     sn.seasonid,
     sn.seasonnumber,
@@ -62,7 +62,7 @@ SELECT
 FROM public.season sn
          LEFT JOIN public.episode e ON sn.seasonid = e.season_id;
 
-CREATE VIEW view_watchlist_details AS
+CREATE OR REPLACE VIEW view_watchlist_details AS
 SELECT
     w.watchlistid,
     w.profile_id,
@@ -76,7 +76,7 @@ FROM public.watchlist w
          LEFT JOIN public.movie m ON w.movie_id = m.movieid
          LEFT JOIN public.series s ON w.series_id = s.seriesid;
 
-CREATE VIEW view_subtitles AS
+CREATE OR REPLACE VIEW view_subtitles AS
 SELECT
     sub.subtitleid,
     sub.language,
