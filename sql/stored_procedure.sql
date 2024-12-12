@@ -32,7 +32,7 @@ CREATE OR REPLACE PROCEDURE update_watch_time(
 LANGUAGE plpgsql
 AS $$
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM public.liveinfo WHERE liveinfoid = p_liveinfoid) THEN
+    IF NOT EXISTS (SELECT 1 FROM public.liveinfo WHERE liveinfo.liveinfo_id = p_liveinfoid) THEN
         RAISE EXCEPTION 'Live Info with id % does not exist', p_liveinfoid;
     END IF;
 
@@ -41,8 +41,35 @@ BEGIN
     END IF;
 
     UPDATE liveinfo
-    SET watchedtime = p_watchTime
-    WHERE liveinfoid = p_liveinfoid;
+    SET watched_time = p_watchTime
+    WHERE liveinfo_id = p_liveinfoid;
 
 END
-$$
+$$;
+
+-- Profile Controller
+
+-- patch
+
+CREATE PROCEDURE update_profile(profile_data JSONB)
+    LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF NOT profile_data ? 'profile_id' THEN
+        RAISE EXCEPTION 'profile_id is required';
+    END IF;
+    UPDATE profile
+    SET
+        age             = COALESCE((profile_data->>'age')::INTEGER, age),
+        film            = COALESCE(profile_data->>'film', film),
+        language        = COALESCE(profile_data->>'language', language),
+        minimum_age     = COALESCE((profile_data->>'minimum_age')::INTEGER, minimum_age),
+        profile_child   = COALESCE((profile_data->>'profile_child')::BOOLEAN, profile_child),
+        profile_image   = COALESCE(profile_data->>'profile_image', profile_image),
+        profile_name    = COALESCE(profile_data->>'profile_name', profile_name),
+        series          = COALESCE(profile_data->>'series', series),
+        account_id      = COALESCE((profile_data->>'account_id')::INTEGER, account_id),
+        preference_id   = COALESCE((profile_data->>'preference_id')::INTEGER, preference_id)
+    WHERE profile_id = (profile_data->>'profile_id')::INTEGER;
+END;
+$$;
