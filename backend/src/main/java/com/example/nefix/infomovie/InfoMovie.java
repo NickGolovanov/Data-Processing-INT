@@ -22,6 +22,6 @@ public class InfoMovie {
     private Movie movie;
 
     @ManyToOne
-    @JoinColumn(name = "info_id", referencedColumnName = "infoId", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "info_id", nullable = false, insertable = false, updatable = false)
     private Info info;
 }

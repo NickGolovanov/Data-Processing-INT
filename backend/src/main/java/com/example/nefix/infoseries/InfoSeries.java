@@ -19,7 +19,7 @@ public class InfoSeries
     private Long seriesId;
 
     @ManyToOne
-    @JoinColumn(name = "infoId", insertable = false, updatable = false)
+    @JoinColumn(name = "info_id", insertable = false, updatable = false)
     private Info info;
 
     @ManyToOne
