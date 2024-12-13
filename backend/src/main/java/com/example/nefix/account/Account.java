@@ -4,12 +4,11 @@ import com.example.nefix.accountsubscription.AccountSubscription;
 import com.example.nefix.blockedaccount.BlockedAccount;
 import com.example.nefix.profile.Profile;
 import com.example.nefix.referraldiscount.ReferralDiscount;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -18,17 +17,20 @@ public class Account
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty(value = "accountId", access = JsonProperty.Access.READ_ONLY)
     private Long accountId;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference("account-subscription")
-    private Set<AccountSubscription> subscriptions;
+    @JsonIgnoreProperties("account")
+    private Set<AccountSubscription> subscriptions = new HashSet<>();
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Profile> profiles;
+    @JsonIgnoreProperties({"account", "liveInfos", "preference", "watchList"})
+    private Set<Profile> profiles = new HashSet<>();
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<BlockedAccount> blockedAccounts;
+    @JsonIgnoreProperties("account")
+    private Set<BlockedAccount> blockedAccounts = new HashSet<>();
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "referral_discount_id")

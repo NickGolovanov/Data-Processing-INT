@@ -1,14 +1,21 @@
 package com.example.nefix.watchlist;
 
 import com.example.nefix.movie.Movie;
+import com.example.nefix.movie.MovieDeserializer;
 import com.example.nefix.profile.Profile;
+import com.example.nefix.profile.ProfileDeserializer;
 import com.example.nefix.series.Series;
+import com.example.nefix.series.SeriesDeserializer;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"profile_id", "series_id", "movie_id"}))
 public class WatchList
 {
     @Id
@@ -17,17 +24,23 @@ public class WatchList
     private Long watchListId;
 
     @ManyToOne
-    @JoinColumn(name = "profile_id", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "profile_id", nullable = false)
     @JsonProperty("profileId")
+    @JsonDeserialize(using = ProfileDeserializer.class)
+    @JsonIgnoreProperties({"watchList", "liveInfos", "preference"})
     private Profile profile;
 
     @ManyToOne
     @JoinColumn(name = "series_id")
     @JsonProperty("seriesId")
+    @JsonDeserialize(using = SeriesDeserializer.class)
+    @JsonIgnoreProperties({"season", "infoSeries"})
     private Series series;
 
     @ManyToOne
     @JoinColumn(name = "movie_id")
     @JsonProperty("movieId")
+    @JsonDeserialize(using = MovieDeserializer.class)
+    @JsonIgnoreProperties({"subtitles", "infoMovies"})
     private Movie movie;
 }

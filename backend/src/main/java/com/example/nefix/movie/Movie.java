@@ -2,10 +2,12 @@ package com.example.nefix.movie;
 
 import com.example.nefix.infomovie.InfoMovie;
 import com.example.nefix.subtitle.Subtitle;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -17,10 +19,12 @@ public class Movie {
     private Long movieId;
 
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = false)
-    private Set<Subtitle> subtitles;
+    @JsonIgnoreProperties({"movie", "episode"})
+    private Set<Subtitle> subtitles = new HashSet<>();
 
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = false)
-    private Set<InfoMovie> infoMovies;
+    @JsonIgnoreProperties({"info"})
+    private Set<InfoMovie> infoMovies = new HashSet<>();
 
     @JsonProperty("title")
     private String title;
