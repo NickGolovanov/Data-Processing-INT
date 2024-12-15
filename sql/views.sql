@@ -3,40 +3,40 @@ CREATE OR REPLACE VIEW view_account_subscriptions AS
 SELECT
     a.accountid,
     a.email,
-    a.paymentmethod,
-    s.subscriptionid,
+    a.payment_method,
+    s.subscription_id,
     s.description AS subscription_description,
-    s.subscriptionprice AS subscription_price,
-    asub.dateofpurchase,
-    asub.dateofexpire
+    s.subscription_price AS subscription_price,
+    asub.date_of_purchase,
+    asub.date_of_expire
 FROM public.account a
-         LEFT JOIN public.accountsubscription asub ON a.accountid = asub.accountid
-         LEFT JOIN public.subscription s ON asub.subscriptionid = s.subscriptionid;
+         LEFT JOIN public.account_subscription asub ON a.accountid = asub.account_id
+         LEFT JOIN public.subscription s ON asub.subscription_id = s.subscription_id;
 
 
 CREATE OR REPLACE VIEW view_profile_preferences AS
 SELECT
-    p.profileid,
-    p.profilename,
+    p.profile_id,
+    p.profile_name,
     p.language,
-    mp.movieid,
-    mp.seriesid
+    mp.movie_id,
+    mp.series_id
 FROM public.profile p
-         LEFT JOIN public.mediapreferences mp ON p.profileid = mp.preferenceid;
+         LEFT JOIN public.mediapreferences mp ON p.profile_id = mp.preference_id;
 
 CREATE OR REPLACE VIEW view_blocked_accounts AS
 SELECT
-    b.blockedaccountid,
+    b.blocked_accountid,
     b.account_id,
     a.email AS account_email,
-    b.ispermanent,
-    b.dateofexpire
+    b.is_permanent,
+    b.date_of_expire
 FROM public.blockedaccount b
          LEFT JOIN public.account a ON b.account_id = a.accountid;
 
 CREATE OR REPLACE VIEW view_movie_info AS
 SELECT
-    m.movieid,
+    m.movie_id,
     m.title,
     m.hd,
     m.sd,
@@ -45,14 +45,14 @@ SELECT
     m.views,
     i.description AS info_description
 FROM public.movie m
-         LEFT JOIN public.infomovie im ON m.movieid = im.movieid
-         LEFT JOIN public.info i ON im.info_id = i.infoid;
+         LEFT JOIN public.infomovie im ON m.movie_id = im.movieid
+         LEFT JOIN public.info i ON im.info_id = i.info_id;
 
 CREATE OR REPLACE VIEW view_season_episodes AS
 SELECT
-    sn.seasonid,
-    sn.seasonnumber,
-    e.episodeid,
+    sn.season_id,
+    sn.season_number,
+    e.episode_id,
     e.title AS episode_title,
     e.duration AS episode_duration,
     e.hd,
@@ -60,31 +60,31 @@ SELECT
     e.uhd,
     e.views
 FROM public.season sn
-         LEFT JOIN public.episode e ON sn.seasonid = e.season_id;
+         LEFT JOIN public.episode e ON sn.season_id = e.season_id;
 
 CREATE OR REPLACE VIEW view_watchlist_details AS
 SELECT
-    w.watchlistid,
+    w.watchlist_id,
     w.profile_id,
-    p.profilename,
+    p.profile_name,
     w.movie_id,
     m.title AS movie_title,
     w.series_id,
     s.title AS series_title
 FROM public.watchlist w
-         LEFT JOIN public.profile p ON w.profile_id = p.profileid
-         LEFT JOIN public.movie m ON w.movie_id = m.movieid
-         LEFT JOIN public.series s ON w.series_id = s.seriesid;
+         LEFT JOIN public.profile p ON w.profile_id = p.profile_id
+         LEFT JOIN public.movie m ON w.movie_id = m.movie_id
+         LEFT JOIN public.series s ON w.series_id = s.series_id;
 
 CREATE OR REPLACE VIEW view_subtitles AS
 SELECT
-    sub.subtitleid,
+    sub.subtitle_id,
     sub.language,
-    sub.subtitlelocation,
-    sub.episodeid,
+    sub.subtitle_location,
+    sub.episode_id,
     e.title AS episode_title,
-    sub.movieid,
+    sub.movie_id,
     m.title AS movie_title
 FROM public.subtitle sub
-         LEFT JOIN public.episode e ON sub.episodeid = e.episodeid
-         LEFT JOIN public.movie m ON sub.movieid = m.movieid;
+         LEFT JOIN public.episode e ON sub.episode_id = e.episode_id
+         LEFT JOIN public.movie m ON sub.movie_id = m.movie_id;

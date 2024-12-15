@@ -71,8 +71,8 @@ EXECUTE FUNCTION verify_account_email_used();
 CREATE OR REPLACE FUNCTION set_ispermanent()
     RETURNS TRIGGER AS $$
 BEGIN
-    IF NEW.dateofexpire IS NOT NULL THEN
-        NEW.ispermanent := FALSE;
+    IF NEW.date_of_expire IS NOT NULL THEN
+        NEW.is_permanent := FALSE;
     END IF;
 
     RETURN NEW;
@@ -105,3 +105,43 @@ CREATE OR REPLACE TRIGGER limit_t0_4_profiles
     FOR EACH ROW
 EXECUTE FUNCTION profiles_4_limit();
 
+
+--- Blocked account triggers
+--- This trigger can cause problems with testing uncoment in production
+
+-- CREATE OR REPLACE FUNCTION auto_expire_blocked_accounts()
+--     RETURNS TRIGGER AS $$
+-- BEGIN
+--     IF NEW.date_of_expire < CURRENT_DATE AND NOT NEW.is_permanent THEN
+--         DELETE FROM blockedaccount WHERE blocked_accountid = NEW.blocked_accountid;
+--     END IF;
+--     RETURN NEW;
+-- END;
+-- $$ LANGUAGE plpgsql;
+--
+-- CREATE OR REPLACE TRIGGER auto_expire_trigger
+--     AFTER INSERT OR UPDATE ON blockedaccount
+--     FOR EACH ROW
+-- EXECUTE FUNCTION auto_expire_blocked_accounts();
+
+
+--- Watchlist triggers
+CREATE OR REPLACE FUNCTION prevent_duplicate_watchlist()
+    RETURNS TRIGGER AS $$
+BEGIN
+    IF EXISTS (
+        SELECT 1
+        FROM watchlist
+        WHERE profile_id = NEW.profile_id
+          AND (movie_id = NEW.movie_id OR series_id = NEW.series_id)
+    ) THEN
+        RAISE EXCEPTION 'Duplicate entry in watchlist for profile_id %', NEW.profile_id;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER prevent_duplicates_trigger
+    BEFORE INSERT ON watchlist
+    FOR EACH ROW
+EXECUTE FUNCTION prevent_duplicate_watchlist();
