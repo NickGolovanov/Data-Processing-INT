@@ -105,6 +105,27 @@ CREATE OR REPLACE TRIGGER limit_t0_4_profiles
     FOR EACH ROW
 EXECUTE FUNCTION profiles_4_limit();
 
+--- function that will handle account, profile, and preference creation
+CREATE OR REPLACE FUNCTION create_account_profile_preference()
+    RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO preference (profile_id)
+    VALUES (DEFAULT)  -- This will generate a new preference record and the preference_id
+    RETURNING preference_id INTO NEW.preference_id;
+
+    INSERT INTO profile (account_id, preference_id)
+    VALUES (NEW.accountid, NEW.preference_id)
+    RETURNING profile_id INTO NEW.profile_id;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER after_account_insert
+    AFTER INSERT ON account
+    FOR EACH ROW
+EXECUTE FUNCTION create_account_profile_preference();
+
 
 --- Blocked account triggers
 --- This trigger can cause problems with testing uncoment in production
@@ -145,3 +166,63 @@ CREATE OR REPLACE TRIGGER prevent_duplicates_trigger
     BEFORE INSERT ON watchlist
     FOR EACH ROW
 EXECUTE FUNCTION prevent_duplicate_watchlist();
+
+
+-- function to handle the creation of the watchlist
+CREATE OR REPLACE FUNCTION create_watchlist_with_constraints()
+    RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.profile_id IS NULL THEN
+        RAISE EXCEPTION 'A valid profile_id is required';
+    END IF;
+
+    IF (NEW.series_id IS NOT NULL AND NEW.movie_id IS NOT NULL) THEN
+        RAISE EXCEPTION 'You cannot specify both series_id and movie_id in the watchlist';
+    END IF;
+
+    IF NEW.series_id IS NULL AND NEW.movie_id IS NULL THEN
+        RAISE EXCEPTION 'At least one of series_id or movie_id must be specified';
+    END IF;
+
+    INSERT INTO watchlist (profile_id, series_id, movie_id)
+    VALUES (NEW.profile_id, NEW.series_id, NEW.movie_id)
+    RETURNING watchlist_id INTO NEW.watchlist_id;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER after_watchlist_insert
+    AFTER INSERT ON watchlist
+    FOR EACH ROW
+EXECUTE FUNCTION create_watchlist_with_constraints();
+
+-- function to handle media preference creation
+CREATE OR REPLACE FUNCTION create_media_preference_with_constraints()
+    RETURNS TRIGGER AS $$
+BEGIN
+
+    IF NEW.preference_id IS NULL THEN
+        RAISE EXCEPTION 'A valid preference_id is required';
+    END IF;
+
+    IF (NEW.series_id IS NOT NULL AND NEW.movie_id IS NOT NULL) THEN
+        RAISE EXCEPTION 'You cannot specify both series_id and movie_id in media preference';
+    END IF;
+
+    IF NEW.series_id IS NULL AND NEW.movie_id IS NULL THEN
+        RAISE EXCEPTION 'At least one of series_id or movie_id must be specified';
+    END IF;
+
+    INSERT INTO mediapreferences (preference_id, movie_id, series_id)
+    VALUES (NEW.preference_id, NEW.movie_id, NEW.series_id)
+    RETURNING media_preference_id INTO NEW.media_preference_id;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER after_media_preference_insert
+    AFTER INSERT ON mediapreferences
+    FOR EACH ROW
+EXECUTE FUNCTION create_media_preference_with_constraints();
