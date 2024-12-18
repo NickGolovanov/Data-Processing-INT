@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public abstract class BaseService<T, ID> implements ServiceBase<T, ID> {
-    private final JpaRepository<T, ID> repository;
+    protected final JpaRepository<T, ID> repository;
 
     protected BaseService(JpaRepository<T, ID> repository) {
         this.repository = repository;

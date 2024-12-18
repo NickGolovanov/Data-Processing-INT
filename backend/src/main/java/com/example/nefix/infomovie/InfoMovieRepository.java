@@ -1,6 +1,9 @@
 package com.example.nefix.infomovie;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface InfoMovieRepository extends JpaRepository<InfoMovie, Long> {
+@Repository
+public interface InfoMovieRepository extends JpaRepository<InfoMovie, Long>
+{
 }

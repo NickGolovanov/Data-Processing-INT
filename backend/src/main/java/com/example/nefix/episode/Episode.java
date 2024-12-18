@@ -1,8 +1,12 @@
 package com.example.nefix.episode;
 
 import com.example.nefix.season.Season;
+import com.example.nefix.season.SeasonDeserializer;
+import com.example.nefix.series.SeriesDeserializer;
 import com.example.nefix.subtitle.Subtitle;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
@@ -20,11 +24,14 @@ public class Episode
     private Long episodeId;
 
     @ManyToOne
-    @JoinColumn(name = "season_id", nullable = false, updatable = false, insertable = false)
+    @JoinColumn(name = "season_id", nullable = false)
     @JsonProperty("seasonId")
+    @JsonDeserialize(using = SeasonDeserializer.class)
+    @JsonIgnoreProperties({"episodes", "series"})
     private Season season;
 
     @OneToMany(mappedBy = "episode", cascade = CascadeType.ALL, orphanRemoval = false)
+    @JsonIgnoreProperties({"movie", "episode"})
     private Set<Subtitle> subtitles;
 
     @JsonProperty("title")

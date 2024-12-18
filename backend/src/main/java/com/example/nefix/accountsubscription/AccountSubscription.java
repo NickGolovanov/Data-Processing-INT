@@ -23,14 +23,12 @@ public class AccountSubscription
     @MapsId("accountId")
     @JoinColumn(name = "account_id", insertable = false, updatable = false)
     @JsonProperty("accountId")
-    @JsonBackReference("account-subscription")
     private Account account;
 
     @ManyToOne
     @MapsId("subscriptionId")
     @JoinColumn(name = "subscription_id", insertable = false, updatable = false)
     @JsonProperty("subscriptionId")
-    @JsonBackReference("subscription-account")
     private Subscription subscription;
 
     @JsonProperty("dateOfPurchase")

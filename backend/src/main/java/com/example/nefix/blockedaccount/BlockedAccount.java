@@ -1,12 +1,17 @@
 package com.example.nefix.blockedaccount;
 
 import com.example.nefix.account.Account;
+import com.example.nefix.account.AccountDeserializer;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "blocked_account")
 public class BlockedAccount
 {
     @Id
@@ -15,8 +20,10 @@ public class BlockedAccount
     private Long blockedAccountId;
 
     @ManyToOne
-    @JoinColumn(name = "account_id", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "account_id", nullable = false)
     @JsonProperty("accountId")
+    @JsonDeserialize(using = AccountDeserializer.class)
+    @JsonIgnoreProperties({"blockedAccounts", "referralDiscount", "subscriptions", "profiles"})
     private Account account;
 
     @JsonProperty("dateOfExpire")

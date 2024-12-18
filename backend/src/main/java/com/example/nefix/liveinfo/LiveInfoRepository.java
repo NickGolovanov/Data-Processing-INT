@@ -1,6 +1,9 @@
 package com.example.nefix.liveinfo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface LiveInfoRepository extends JpaRepository<LiveInfo, Long> {
+@Repository
+public interface LiveInfoRepository extends JpaRepository<LiveInfo, Long>
+{
 }
