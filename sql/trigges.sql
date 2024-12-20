@@ -115,7 +115,7 @@ BEGIN
 
     INSERT INTO profile (account_id, preference_id)
     VALUES (NEW.accountid, NEW.preference_id)
-    RETURNING profile_id INTO NEW.profile_id;
+    RETURNING profile_id INTO NEW.preference_id;
 
     RETURN NEW;
 END;

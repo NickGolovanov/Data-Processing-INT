@@ -48,6 +48,7 @@ services:
       PGADMIN_DEFAULT_PASSWORD: strong-password
     volumes:
       - pgadmin-data:/var/lib/pgadmin
+      - ./backups:/backups
 
 volumes:
   postgres-data:
