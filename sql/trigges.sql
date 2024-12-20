@@ -105,17 +105,16 @@ CREATE OR REPLACE TRIGGER limit_t0_4_profiles
     FOR EACH ROW
 EXECUTE FUNCTION profiles_4_limit();
 
---- function that will handle account, profile, and preference creation
-CREATE OR REPLACE FUNCTION create_account_profile_preference()
+CREATE OR REPLACE FUNCTION create_profile_and_preference_for_account()
     RETURNS TRIGGER AS $$
 BEGIN
     INSERT INTO preference (profile_id)
-    VALUES (DEFAULT)  -- This will generate a new preference record and the preference_id
+    VALUES (DEFAULT)
     RETURNING preference_id INTO NEW.preference_id;
 
     INSERT INTO profile (account_id, preference_id)
     VALUES (NEW.accountid, NEW.preference_id)
-    RETURNING profile_id INTO NEW.preference_id;
+    RETURNING profile_id INTO NEW.profile_id;
 
     RETURN NEW;
 END;
@@ -124,8 +123,25 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER after_account_insert
     AFTER INSERT ON account
     FOR EACH ROW
-EXECUTE FUNCTION create_account_profile_preference();
+EXECUTE FUNCTION create_profile_and_preference_for_account();
 
+-----
+
+CREATE OR REPLACE FUNCTION create_preference_for_profile()
+    RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO preference (profile_id)
+    VALUES (NEW.profile_id)
+    RETURNING preference_id INTO NEW.preference_id;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER after_profile_insert
+    AFTER INSERT ON profile
+    FOR EACH ROW
+EXECUTE FUNCTION create_preference_for_profile();
 
 --- Blocked account triggers
 --- This trigger can cause problems with testing uncoment in production
