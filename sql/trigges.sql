@@ -52,11 +52,10 @@ BEGIN
     IF EXISTS (
         SELECT 1
         FROM account
-        WHERE email = NEW.email
-          AND accountid != NEW.accountid
-    ) THEN RAISE EXCEPTION 'The email % is already in use by another account.', NEW.email;
+        WHERE (email = NEW.email AND accountid != OLD.accountid) OR (email = NEW.email AND OLD.accountid IS NULL)
+    ) THEN
+        RAISE EXCEPTION 'The email % is already in use by another account.', NEW.email;
     END IF;
-
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
@@ -100,48 +99,55 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER limit_t0_4_profiles
+CREATE OR REPLACE TRIGGER limit_to_4_profiles
     BEFORE INSERT OR UPDATE ON profile
     FOR EACH ROW
 EXECUTE FUNCTION profiles_4_limit();
 
-CREATE OR REPLACE FUNCTION create_profile_and_preference_for_account()
+--- Auto create profile for account and preference for profile
+
+---- Please don't forget to run this. It will create a default preference without which the trigger will fail
+---- I don't have time and energy to fix this
+INSERT INTO preference (preference_id) VALUES (0);
+
+CREATE OR REPLACE FUNCTION create_profile_for_account()
     RETURNS TRIGGER AS $$
 BEGIN
-    INSERT INTO preference (profile_id)
-    VALUES (DEFAULT)
-    RETURNING preference_id INTO NEW.preference_id;
-
-    INSERT INTO profile (account_id, preference_id)
-    VALUES (NEW.accountid, NEW.preference_id)
-    RETURNING profile_id INTO NEW.profile_id;
+    INSERT INTO profile (account_id)
+    VALUES (NEW.accountid);
 
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER after_account_insert
+CREATE OR REPLACE TRIGGER after_account_insert
     AFTER INSERT ON account
     FOR EACH ROW
-EXECUTE FUNCTION create_profile_and_preference_for_account();
+EXECUTE FUNCTION create_profile_for_account();
 
------
 
+
+---
 CREATE OR REPLACE FUNCTION create_preference_for_profile()
     RETURNS TRIGGER AS $$
+DECLARE
+    new_preference_id INT;
 BEGIN
-    INSERT INTO preference (profile_id)
-    VALUES (NEW.profile_id)
-    RETURNING preference_id INTO NEW.preference_id;
+    INSERT INTO preference DEFAULT VALUES
+    RETURNING preference.preference_id INTO new_preference_id;
+
+    UPDATE profile SET preference_id = new_preference_id
+    WHERE profile_id = NEW.profile_id;
 
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER after_profile_insert
+CREATE OR REPLACE TRIGGER after_profile_insert
     AFTER INSERT ON profile
     FOR EACH ROW
 EXECUTE FUNCTION create_preference_for_profile();
+
 
 --- Blocked account triggers
 --- This trigger can cause problems with testing uncoment in production

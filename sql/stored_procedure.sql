@@ -51,7 +51,7 @@ $$;
 
 -- patch
 
-CREATE PROCEDURE update_profile(profile_data JSONB)
+CREATE OR REPLACE PROCEDURE update_profile(profile_data JSONB)
     LANGUAGE plpgsql
 AS $$
 BEGIN
