@@ -15,13 +15,16 @@ BEGIN
     ELSIF (TG_OP = 'DELETE') THEN
         INSERT INTO account_log (accountid, operation)
         VALUES (OLD.accountid, 'DELETE');
+    ELSIF (TG_OP = 'INSERT') THEN
+        INSERT INTO account_log (accountid, operation)
+        VALUES (NEW.accountid, 'INSERT');
 END IF;
 RETURN NULL;
 END;
 $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE TRIGGER account_change_logger
-    AFTER UPDATE OR DELETE ON public.account
+    AFTER INSERT OR UPDATE OR DELETE ON public.account
 FOR EACH ROW
 EXECUTE FUNCTION log_account_changes();
 
@@ -46,24 +49,26 @@ CREATE OR REPLACE TRIGGER check_email_format
     FOR EACH ROW
 EXECUTE FUNCTION verify_account_email_format();
 
-CREATE OR REPLACE FUNCTION verify_account_email_used()
-    RETURNS TRIGGER AS $$
-BEGIN
-    IF EXISTS (
-        SELECT 1
-        FROM account
-        WHERE (email = NEW.email AND accountid != OLD.accountid) OR (email = NEW.email AND OLD.accountid IS NULL)
-    ) THEN
-        RAISE EXCEPTION 'The email % is already in use by another account.', NEW.email;
-    END IF;
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER check_email_used
-    BEFORE INSERT OR UPDATE ON account
-    FOR EACH ROW
-EXECUTE FUNCTION verify_account_email_used();
+----Can be replaced by the "unique" property when set up an entity
+-- CREATE OR REPLACE FUNCTION verify_account_email_used()
+--     RETURNS TRIGGER AS $$
+-- BEGIN
+--     IF EXISTS (
+--         SELECT 1
+--         FROM account
+--         WHERE (email = NEW.email AND accountid != OLD.accountid) OR (email = NEW.email AND OLD.accountid IS NULL)
+--     ) THEN
+--         RAISE EXCEPTION 'The email % is already in use by another account.', NEW.email;
+--     END IF;
+--     RETURN NEW;
+-- END;
+-- $$ LANGUAGE plpgsql;
+--
+-- CREATE OR REPLACE TRIGGER check_email_used
+--     BEFORE INSERT OR UPDATE ON account
+--     FOR EACH ROW
+-- EXECUTE FUNCTION verify_account_email_used();
 
 --- Blocked account  triggers
 
@@ -92,7 +97,7 @@ BEGIN
         SELECT count(*)
         FROM profile
         WHERE  profile.account_id = NEW.account_id
-    ) >= 4 THEN RAISE EXCEPTION 'Cannot add more than 4 profiles to the account with ID: %', NEW.account_id;
+    ) > 4 THEN RAISE EXCEPTION 'Cannot add more than 4 profiles to the account with ID: %', NEW.account_id;
     END IF;
 
     RETURN NEW;
@@ -185,7 +190,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE TRIGGER prevent_duplicates_trigger
-    BEFORE INSERT ON watchlist
+    BEFORE INSERT OR UPDATE ON watchlist
     FOR EACH ROW
 EXECUTE FUNCTION prevent_duplicate_watchlist();
 
@@ -194,9 +199,6 @@ EXECUTE FUNCTION prevent_duplicate_watchlist();
 CREATE OR REPLACE FUNCTION create_watchlist_with_constraints()
     RETURNS TRIGGER AS $$
 BEGIN
-    IF NEW.profile_id IS NULL THEN
-        RAISE EXCEPTION 'A valid profile_id is required';
-    END IF;
 
     IF (NEW.series_id IS NOT NULL AND NEW.movie_id IS NOT NULL) THEN
         RAISE EXCEPTION 'You cannot specify both series_id and movie_id in the watchlist';
@@ -205,17 +207,12 @@ BEGIN
     IF NEW.series_id IS NULL AND NEW.movie_id IS NULL THEN
         RAISE EXCEPTION 'At least one of series_id or movie_id must be specified';
     END IF;
-
-    INSERT INTO watchlist (profile_id, series_id, movie_id)
-    VALUES (NEW.profile_id, NEW.series_id, NEW.movie_id)
-    RETURNING watchlist_id INTO NEW.watchlist_id;
-
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER after_watchlist_insert
-    AFTER INSERT ON watchlist
+CREATE OR REPLACE TRIGGER after_watchlist_insert
+    BEFORE INSERT OR UPDATE ON watchlist
     FOR EACH ROW
 EXECUTE FUNCTION create_watchlist_with_constraints();
 
@@ -223,11 +220,6 @@ EXECUTE FUNCTION create_watchlist_with_constraints();
 CREATE OR REPLACE FUNCTION create_media_preference_with_constraints()
     RETURNS TRIGGER AS $$
 BEGIN
-
-    IF NEW.preference_id IS NULL THEN
-        RAISE EXCEPTION 'A valid preference_id is required';
-    END IF;
-
     IF (NEW.series_id IS NOT NULL AND NEW.movie_id IS NOT NULL) THEN
         RAISE EXCEPTION 'You cannot specify both series_id and movie_id in media preference';
     END IF;
@@ -236,15 +228,11 @@ BEGIN
         RAISE EXCEPTION 'At least one of series_id or movie_id must be specified';
     END IF;
 
-    INSERT INTO mediapreferences (preference_id, movie_id, series_id)
-    VALUES (NEW.preference_id, NEW.movie_id, NEW.series_id)
-    RETURNING media_preference_id INTO NEW.media_preference_id;
-
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER after_media_preference_insert
-    AFTER INSERT ON mediapreferences
+CREATE OR REPLACE TRIGGER after_media_preference_insert
+    BEFORE INSERT OR UPDATE ON mediapreferences
     FOR EACH ROW
 EXECUTE FUNCTION create_media_preference_with_constraints();
