@@ -31,7 +31,7 @@ SELECT
     a.email AS account_email,
     b.is_permanent,
     b.date_of_expire
-FROM public.blockedaccount b
+FROM public.blocked_account b
          LEFT JOIN public.account a ON b.account_id = a.accountid;
 
 CREATE OR REPLACE VIEW view_movie_info AS

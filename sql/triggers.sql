@@ -84,7 +84,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE TRIGGER enforce_ispermanent
-    BEFORE INSERT OR UPDATE ON blockedaccount
+    BEFORE INSERT OR UPDATE ON blocked_account
     FOR EACH ROW
 EXECUTE FUNCTION set_ispermanent();
 
@@ -110,11 +110,6 @@ CREATE OR REPLACE TRIGGER limit_to_4_profiles
 EXECUTE FUNCTION profiles_4_limit();
 
 --- Auto create profile for account and preference for profile
-
----- Please don't forget to run this. It will create a default preference without which the trigger will fail
----- I don't have time and energy to fix this
-INSERT INTO preference (preference_id) VALUES (0);
-
 CREATE OR REPLACE FUNCTION create_profile_for_account()
     RETURNS TRIGGER AS $$
 BEGIN
@@ -138,11 +133,9 @@ CREATE OR REPLACE FUNCTION create_preference_for_profile()
 DECLARE
     new_preference_id INT;
 BEGIN
-    INSERT INTO preference DEFAULT VALUES
+    INSERT INTO preference (profile_id)
+    VALUES (NEW.profile_id)
     RETURNING preference.preference_id INTO new_preference_id;
-
-    UPDATE profile SET preference_id = new_preference_id
-    WHERE profile_id = NEW.profile_id;
 
     RETURN NEW;
 END;
