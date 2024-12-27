@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -33,17 +34,27 @@ public class DatabaseBackupService
         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
         String fullPath = backupDir + backupFileName + "_" + timestamp + ".sql";
 
-        String command = String.format(
-                "%s pg_dump -h %s -p %s -U %s -d %s -F c -b -v -f %s",
-                dbPassword, dbHost, dbPort, dbUser, dbName, fullPath
+        ProcessBuilder processBuilder = new ProcessBuilder(
+                "pg_dump",
+                "-h", dbHost,
+                "-p", dbPort,
+                "-U", dbPassword,
+                "-d", dbName,
+                "-f", fullPath
         );
 
-        try {
-            // Ensure backup directory exists
-            Files.createDirectories(Paths.get(backupDir));
+        processBuilder.environment().put("PGPASSWORD", dbPassword);
 
-            // Run the backup command
-            Process process = Runtime.getRuntime().exec(new String[]{"bash", "-c", command});
+        try {
+
+            Path backupFodlder = Paths.get(backupDir);
+
+            if (!Files.exists(backupFodlder))
+            {
+                Files.createDirectories(Paths.get(backupDir));
+            }
+
+            Process process = processBuilder.start();
             int exitCode = process.waitFor();
 
             if (exitCode == 0) {

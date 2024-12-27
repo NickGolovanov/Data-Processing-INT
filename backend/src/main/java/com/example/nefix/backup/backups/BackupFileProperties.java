@@ -17,13 +17,13 @@ public class BackupFileProperties
     @Value("${backup.file.name}")
     private String backupFileName;
 
-    @Value("${spring.datasource.url}")
+    @Value("{backup.file.db-host}")
     private String dbHost;
 
     @Value("${spring.datasource.port}")
     private String dbPort;
 
-    @Value("${spring.application.name}")
+    @Value("${backup.file.db-name}")
     private String dbName;
 
     @Value("${spring.datasource.username}")
