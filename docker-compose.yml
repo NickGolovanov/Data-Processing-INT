@@ -22,9 +22,9 @@ services:
     volumes:
 #      - postgres-data:/var/lib/postgresql/data
       - ./sql/db_tables.sql:/docker-entrypoint-initdb.d/db_tables.sql
-#      - ./sql/test.sql:/docker-entrypoint-initdb.d/test.sql
       - ./sql/views.sql:/docker-entrypoint-initdb.d/init.sql
       - ./sql/triggers.sql:/docker-entrypoint-initdb.d/triggers.sql
+      - ./sql/stored_procedure.sql:/docker-entrypoint-initdb.d/stored_procedure.sql
     restart: unless-stopped
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
