@@ -1,0 +1,35 @@
+### Subtitle ###
+
+### Get all movies
+GET localhost:8080/movie
+
+### Get movie subtitles
+GET localhost:8080/movie/1/subtitle
+
+### Get movie subtitles by id
+GET localhost:8080/movie/1/subtitle/1
+
+### Add movie subtitles
+POST localhost:8080/movie/1/subtitle
+Content-Type: application/json
+
+{
+    "language": "English",
+    "subtitleLocation": "http://example.com/subtitle.srt",
+    "movieId": 1
+}
+
+### Delete movie subtitles by id
+DELETE localhost:8080/movie/1/subtitle/1
+
+### Update movie subtitles
+PATCH localhost:8080/movie/1/subtitle/1
+Content-Type: application/json
+
+{
+    "language": "Spe",
+    "subtitleLocation": "http://example.com/subtitle-updated.srt",
+    "movieId": 1
+}
+
+
