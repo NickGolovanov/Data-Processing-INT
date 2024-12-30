@@ -3,6 +3,7 @@ package com.example.nefix.movie;
 import com.example.nefix.genrealization.service.BaseService;
 import com.example.nefix.subtitle.Subtitle;
 import com.example.nefix.subtitle.SubtitleRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,13 +40,18 @@ public class MovieService extends BaseService<Movie, Long> {
                 .orElseThrow(() -> new RuntimeException("Subtitle not found for Movie ID: " + movieId));
     }
 
+    //Example of using update with stored procedures
+    @Transactional
     public Subtitle updateSubtitle(Long movieId, Long subtitleId, Subtitle updatedSubtitle) {
-        Subtitle existingSubtitle = getSubtitle(movieId, subtitleId);
+        System.out.println("movieId = " + movieId);
+        subtitleRepository.callUpdateSubtitle(
+                subtitleId,
+                movieId,
+                updatedSubtitle.getLanguage(),
+                updatedSubtitle.getSubtitleLocation()
+        );
 
-        existingSubtitle.setLanguage(updatedSubtitle.getLanguage());
-        existingSubtitle.setSubtitleLocation(updatedSubtitle.getSubtitleLocation());
-
-        return subtitleRepository.save(existingSubtitle);
+        return getSubtitle(movieId, subtitleId);
     }
 
     public void deleteSubtitle(Long movieId, Long subtitleId) {

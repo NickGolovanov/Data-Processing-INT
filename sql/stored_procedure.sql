@@ -73,3 +73,32 @@ BEGIN
     WHERE profile_id = (profile_data->>'profile_id')::INTEGER;
 END;
 $$;
+
+
+CREATE OR REPLACE PROCEDURE update_subtitle(
+    p_subtitle_id BIGINT,
+    p_movie_id BIGINT,
+    p_subtitle_langauge VARCHAR(255),
+    p_subtitle_location VARCHAR(255)
+)
+    LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM public.subtitle WHERE subtitle_id = p_subtitle_id) THEN
+        RAISE EXCEPTION 'Subtitle with id % does not exist', p_subtitle_id;
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM public.movie WHERE movie_id = p_movie_id) THEN
+        RAISE EXCEPTION 'Movie with id % does not exist', p_movie_id;
+    END IF;
+
+    UPDATE public.subtitle
+    SET
+        movie_id = p_movie_id,
+        language = p_subtitle_langauge,
+        subtitle_location = p_subtitle_location
+    WHERE subtitle_id = p_subtitle_id;
+
+    RAISE NOTICE 'Subtitle successfully updated for id %', p_subtitle_id;
+END;
+$$;
