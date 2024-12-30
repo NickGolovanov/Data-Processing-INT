@@ -32,4 +32,7 @@ Content-Type: application/json
     "movieId": 1
 }
 
+### Get movie subtitles
+GET localhost:8080/movie/with-subtitle
+
 

@@ -17,4 +17,6 @@ public interface SubtitleRepository extends JpaRepository<Subtitle, Long>
             @Param("movie_id") Long movieId,
             @Param("subtitle_language") String subtitleLanguage,
             @Param("subtitle_location") String subtitleLocation
-    );}
+    );
+
+}

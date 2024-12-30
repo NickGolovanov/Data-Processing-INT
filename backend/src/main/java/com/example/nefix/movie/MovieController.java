@@ -1,8 +1,8 @@
 package com.example.nefix.movie;
 
 import com.example.nefix.genrealization.controller.BaseController;
-import com.example.nefix.infomovie.InfoMovie;
 import com.example.nefix.subtitle.Subtitle;
+import com.example.nefix.subtitle.SubtitleViewDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +20,12 @@ public class MovieController extends BaseController<Movie, Long> {
     public ResponseEntity<Subtitle> addSubtitle(@PathVariable Long movieId, @RequestBody Subtitle subtitle) {
         Subtitle createdSubtitle = ((MovieService) service).addSubtitle(movieId, subtitle);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdSubtitle);
+    }
+
+
+    @GetMapping("/with-subtitle")
+    public ResponseEntity<List<SubtitleViewDTO>> getAllSubtitles() {
+        return ResponseEntity.ok( ((MovieService) service).getMovieWithSubtitles());
     }
 
     @GetMapping("/{movieId}/subtitle")

@@ -3,6 +3,7 @@ package com.example.nefix.movie;
 import com.example.nefix.genrealization.service.BaseService;
 import com.example.nefix.subtitle.Subtitle;
 import com.example.nefix.subtitle.SubtitleRepository;
+import com.example.nefix.subtitle.SubtitleViewDTO;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,5 +60,28 @@ public class MovieService extends BaseService<Movie, Long> {
         subtitleRepository.delete(subtitle);
     }
 
+    public List<SubtitleViewDTO> getMovieWithSubtitles() {
+        try {
+            List<Object[]> results = ((MovieRepository) repository).findMovieWithSubtitles();
+            return viewResultToListSubtitleViewDto(results);
+        } catch (Exception e) {
+            throw new RuntimeException("Error while fetching movie with subtitles", e);
+        }
+    }
+
+
+    public List<SubtitleViewDTO> viewResultToListSubtitleViewDto(List<Object[]> results) {
+        return results.stream()
+                .map(result -> new SubtitleViewDTO(
+                        ((Number) result[0]).longValue(),   // subtitleId
+                        (String) result[1],                // language
+                        (String) result[2],                // subtitleLocation
+                        result[3] != null ? ((Number) result[3]).longValue() : null,  // episodeId
+                        (String) result[4],                // episodeTitle
+                        ((Number) result[5]).longValue(),  // movieId
+                        (String) result[6]                 // movieTitle
+                ))
+                .toList();
+    }
 }
 
