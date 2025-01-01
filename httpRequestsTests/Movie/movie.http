@@ -1,7 +1,21 @@
-### Subtitle ###
-
 ### Get all movies
 GET localhost:8080/movie
+
+### Subtitle ###
+
+
+
+
+
+### Create movie
+POST localhost:8080/movie
+Content-Type: application/json
+
+{
+    "title": "The Shawshank Redemption",
+    "views": 0
+}
+
 
 ### Get movie subtitles
 GET localhost:8080/movie/1/subtitle
@@ -36,3 +50,27 @@ Content-Type: application/json
 GET localhost:8080/movie/with-subtitle
 
 
+### Get movie infomovie by id
+GET localhost:8080/movie/1/infomovie
+
+### Get all infomovies
+GET localhost:8080/movie/infomovies
+
+### Create infomovie
+POST localhost:8080/movie/1/infomovie
+Content-Type: application/json
+
+{
+    "description": "I am not updated"
+}
+
+### Delete infomovie
+DELETE localhost:8080/movie/1/infomovie/1
+
+### Update infomovie
+PATCH localhost:8080/movie/1/infomovie/1
+Content-Type: application/json
+
+{
+    "description": "I am updated"
+}

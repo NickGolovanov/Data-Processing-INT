@@ -6,6 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class SubtitleViewDTO {
 
     private Long subtitleId;
@@ -15,14 +16,4 @@ public class SubtitleViewDTO {
     private String episodeTitle;
     private Long movieId;
     private String movieTitle;
-
-    public SubtitleViewDTO(Long subtitleId, String language, String subtitleLocation, Long episodeId, String episodeTitle, Long movieId, String movieTitle) {
-        this.subtitleId = subtitleId;
-        this.language = language;
-        this.subtitleLocation = subtitleLocation;
-        this.episodeId = episodeId;
-        this.episodeTitle = episodeTitle;
-        this.movieId = movieId;
-        this.movieTitle = movieTitle;
-    }
 }

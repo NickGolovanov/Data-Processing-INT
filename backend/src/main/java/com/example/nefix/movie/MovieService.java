@@ -1,6 +1,11 @@
 package com.example.nefix.movie;
 
 import com.example.nefix.genrealization.service.BaseService;
+import com.example.nefix.info.Info;
+import com.example.nefix.info.InfoRepository;
+import com.example.nefix.infomovie.InfoMovie;
+import com.example.nefix.infomovie.InfoMovieId;
+import com.example.nefix.infomovie.InfoMovieRepository;
 import com.example.nefix.subtitle.Subtitle;
 import com.example.nefix.subtitle.SubtitleRepository;
 import com.example.nefix.subtitle.SubtitleViewDTO;
@@ -14,6 +19,10 @@ import java.util.List;
 public class MovieService extends BaseService<Movie, Long> {
     @Autowired
     private SubtitleRepository subtitleRepository;
+    @Autowired
+    private InfoMovieRepository infoMovieRepository;
+    @Autowired
+    private InfoRepository infoRepository;
 
 
     public MovieService(MovieRepository repository) {
@@ -83,5 +92,41 @@ public class MovieService extends BaseService<Movie, Long> {
                 ))
                 .toList();
     }
-}
 
+    public List<InfoMovie> getAllMovieInfo() {
+        return infoMovieRepository.findAll();
+    }
+
+    public List<InfoMovie> getMovieInfoByMovieId(Long movieId) {
+        return infoMovieRepository.getInfoMoviesByMovieId(movieId);
+    }
+
+    public InfoMovie addInfoMovie(Long movieId, Info info) {
+        Movie movie = repository.findById(movieId)
+                .orElseThrow(() -> new RuntimeException("Movie not found with ID: " + movieId));
+
+        Info savedInfo = infoRepository.save(info);
+        InfoMovie infoMovie = new InfoMovie();
+        infoMovie.setId(new InfoMovieId(savedInfo.getInfoId(), movieId));
+        infoMovie.setMovie(movie);
+        infoMovie.setInfo(savedInfo);
+        return infoMovieRepository.save(infoMovie);
+    }
+
+    public void deleteInfoMovie(Long movieId, Long infoId){
+        InfoMovie infoMovie = infoMovieRepository.getInfoMovieByInfoIdAndMovieId(infoId, movieId);
+        infoMovieRepository.delete(infoMovie);
+    }
+
+    @Transactional
+    public InfoMovie updateInfoMovie(Long movieId, Long infoId, Info updatedInfo) {
+        InfoMovie infoMovie = infoMovieRepository.getInfoMovieByInfoIdAndMovieId(infoId, movieId);
+
+        Info existingInfo = infoMovie.getInfo();
+
+        existingInfo.setDescription(updatedInfo.getDescription());
+        existingInfo.setType(updatedInfo.getType());
+        infoRepository.save(existingInfo);
+        return infoMovie;
+    }
+}

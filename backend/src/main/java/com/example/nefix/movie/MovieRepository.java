@@ -16,4 +16,5 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
             "FROM view_subtitles WHERE movie_id IS NOT NULL", nativeQuery = true)
     List<Object[]> findMovieWithSubtitles();
 
+
 }

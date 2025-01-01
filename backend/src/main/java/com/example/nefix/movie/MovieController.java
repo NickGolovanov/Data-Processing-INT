@@ -1,6 +1,9 @@
 package com.example.nefix.movie;
 
 import com.example.nefix.genrealization.controller.BaseController;
+import com.example.nefix.info.Info;
+import com.example.nefix.infomovie.InfoMovie;
+import com.example.nefix.infomovie.InfoMovieId;
 import com.example.nefix.subtitle.Subtitle;
 import com.example.nefix.subtitle.SubtitleViewDTO;
 import org.springframework.http.HttpStatus;
@@ -55,4 +58,29 @@ public class MovieController extends BaseController<Movie, Long> {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/infomovies")
+    public ResponseEntity<List<InfoMovie>> getInfoMovies(){
+        return ResponseEntity.ok(((MovieService) service).getAllMovieInfo());
+    }
+
+    @GetMapping("/{movieId}/infomovie")
+    public ResponseEntity<List<InfoMovie>> getInfoMovieById(@PathVariable Long movieId){
+        return ResponseEntity.ok(((MovieService) service).getMovieInfoByMovieId(movieId));
+    }
+
+    @PostMapping("/{movieId}/infomovie")
+    public ResponseEntity<InfoMovie> addInfoMovie(@PathVariable Long movieId, @RequestBody Info info){
+        return ResponseEntity.ok(((MovieService) service).addInfoMovie(movieId, info));
+    }
+
+    @DeleteMapping("/{movieId}/infomovie/{infoId}")
+    public ResponseEntity<Void> deleteInfoMovie(@PathVariable Long movieId, @PathVariable Long infoId){
+        ((MovieService) service).deleteInfoMovie(movieId, infoId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{movieId}/infomovie/{infoId}")
+    public ResponseEntity<InfoMovie> updateInfoMovie(@PathVariable Long movieId, @PathVariable Long infoId, @RequestBody Info updatedInfo){
+        return ResponseEntity.ok(((MovieService) service).updateInfoMovie(movieId, infoId, updatedInfo));
+    }
 }

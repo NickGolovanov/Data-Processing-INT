@@ -9,19 +9,16 @@ import lombok.Data;
 
 @Data
 @Entity
-public class InfoMovie
-{
+public class InfoMovie {
     @EmbeddedId
-    @JsonProperty("id")
     private InfoMovieId id;
 
     @ManyToOne
-    @JoinColumn(name = "movie_id", nullable = false, insertable = false, updatable = false)
-    @JsonProperty("movieId")
+    @JoinColumn(name = "movie_id", insertable = false, updatable = false)
     private Movie movie;
 
     @ManyToOne
-    @JoinColumn(name = "info_id", nullable = false, insertable = false, updatable = false)
-    @JsonProperty("infoId")
+    @JoinColumn(name = "info_id", insertable = false, updatable = false)
     private Info info;
+
 }

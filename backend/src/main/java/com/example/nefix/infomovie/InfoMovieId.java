@@ -1,11 +1,17 @@
 package com.example.nefix.infomovie;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+
 import java.io.Serializable;
 import java.util.Objects;
 
+@Embeddable
 public class InfoMovieId implements Serializable {
+    @Column(name = "movie_id")
     private Long movieId;
 
+    @Column(name = "info_id")
     private Long infoId;
 
     public InfoMovieId() {
