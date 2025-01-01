@@ -1,0 +1,5 @@
+### Get profile watchList movies
+GET http://localhost:8080/profile/1/watch-list/movies
+
+### Get profile watchList all
+GET http://localhost:8080/profile/1/watch-list
