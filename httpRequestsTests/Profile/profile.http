@@ -3,3 +3,14 @@ GET http://localhost:8080/profile/1/watch-list/movies
 
 ### Get profile watchList all
 GET http://localhost:8080/profile/1/watch-list
+
+### Delete profile watchList movie
+DELETE http://localhost:8080/profile/1/watch-list/movie/1
+
+### Add profile watchList movie
+POST http://localhost:8080/profile/2/watch-list
+Content-Type: application/json
+
+{
+    "movieId": 1
+}

@@ -2,10 +2,8 @@ package com.example.nefix.profile;
 
 import com.example.nefix.genrealization.controller.BaseController;
 import com.example.nefix.watchlist.WatchList;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,15 +16,30 @@ public class ProfileController extends BaseController<Profile, Long>
         super(service);
     }
 
-    @GetMapping("/{profileId}/watch-list")
-    public List<WatchList> getWatchListByProfileId(@PathVariable Long profileId)
+
+    @PostMapping("/{profileId}/watch-list")
+    public ResponseEntity<WatchList> addToWatchList(@PathVariable Long profileId, @RequestBody WatchList watchList)
     {
-        return ((ProfileService) service).getWatchListByProfileId(profileId);
+        Profile profile = ((ProfileService) service).getProfileByUserId(profileId);
+        watchList.setProfile(profile);
+        return ResponseEntity.ok(((ProfileService) service).addToWatchList(watchList));
+    }
+
+    @GetMapping("/{profileId}/watch-list")
+    public ResponseEntity<List<WatchList>> getWatchListByProfileId(@PathVariable Long profileId)
+    {
+        return ResponseEntity.ok(((ProfileService) service).getWatchListByProfileId(profileId));
     }
 
     @GetMapping("/{profileId}/watch-list/movies")
-    public List<WatchList> getWatchListProfileMovies(@PathVariable Long profileId)
-    {
-        return ((ProfileService) service).getWatchListProfileMovies(profileId);
+    public ResponseEntity<List<WatchList>> getWatchListProfileMovies(@PathVariable Long profileId) {
+        return ResponseEntity.ok(((ProfileService) service).getWatchListProfileMovies(profileId));
+    }
+
+    @DeleteMapping("/{profileId}/watch-list/movie/{movieId}")
+    public ResponseEntity<Void> deleteFromWatchList(@PathVariable Long profileId, @PathVariable Long movieId) {
+        ((ProfileService) service).deleteFromWatchList(profileId, movieId);
+
+        return ResponseEntity.noContent().build();
     }
 }
