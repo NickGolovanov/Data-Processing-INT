@@ -6,14 +6,18 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface WatchListRepository extends JpaRepository<WatchList, Long> {
+public interface WatchListRepository extends JpaRepository<WatchList, Long>
+{
 
-    List<WatchList> getWatchListByProfileProfileId(Long id);
+    List<WatchList> findAllByProfile_ProfileId(Long profileId);
 
-    @Query(value = "SELECT * FROM watchlist WHERE profile_id = :profileId AND movie_id is not null", nativeQuery = true)
-    List<WatchList> getWatchListsProfileMovies(Long profileId);
+    List<WatchList> findAllByProfile_ProfileIdAndMovieIsNotNull(Long profileId);
+
+    List<WatchList> findAllByProfile_ProfileIdAndSeriesIsNotNull(Long profileId);
 
     @Modifying
-    @Query(value = "DELETE FROM watchlist WHERE profile_id = :profileId AND movie_id = :movieId", nativeQuery = true)
-    int deleteFromWatchList(Long profileId, Long movieId);
+    void deleteByProfile_ProfileIdAndMovie_MovieId(Long profileId, Long movieId);
+
+    @Modifying
+    void deleteByProfile_ProfileIdAndSeries_SeriesId(Long profileId, Long seriesId);
 }

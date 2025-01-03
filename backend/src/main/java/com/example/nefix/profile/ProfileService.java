@@ -14,33 +14,42 @@ public class ProfileService extends BaseService<Profile, Long>
 {
     @Autowired
     private WatchListRepository watchListRepository;
+
     public ProfileService(ProfileRepository repository)
     {
         super(repository);
     }
 
-    public Profile getProfileByUserId(Long profileId)
+    public WatchList addToWatchList(WatchList watchList)
     {
-        return ((ProfileRepository) repository).getProfileByProfileId(profileId);
-    }
-
-    public WatchList addToWatchList(WatchList watchList) {
         return watchListRepository.save(watchList);
     }
 
-    public List<WatchList> getWatchListByProfileId(Long profileId) {
-        return watchListRepository.getWatchListByProfileProfileId(profileId);
+    public List<WatchList> getWatchListByProfileId(Long profileId)
+    {
+        return watchListRepository.findAllByProfile_ProfileId(profileId);
     }
 
-    public List<WatchList> getWatchListProfileMovies(Long profileId) {
-        return watchListRepository.getWatchListsProfileMovies(profileId);
+    public List<WatchList> getWatchListProfileMovies(Long profileId)
+    {
+        return watchListRepository.findAllByProfile_ProfileIdAndMovieIsNotNull(profileId);
+    }
+
+    public List<WatchList> getWatchListProfileSeries(Long profileId)
+    {
+        return watchListRepository.findAllByProfile_ProfileIdAndSeriesIsNotNull(profileId);
     }
 
     @Transactional
-    public void deleteFromWatchList(Long profileId, Long movieId) {
-         watchListRepository.deleteFromWatchList(profileId, movieId);
+    public void deleteMovieFromWatchList(Long profileId, Long movieId)
+    {
+        watchListRepository.deleteByProfile_ProfileIdAndMovie_MovieId(profileId, movieId);
     }
 
-
+    @Transactional
+    public void deleteSeriesFromWatchList(Long profileId, Long seriesId)
+    {
+        watchListRepository.deleteByProfile_ProfileIdAndSeries_SeriesId(profileId, seriesId);
+    }
 
 }

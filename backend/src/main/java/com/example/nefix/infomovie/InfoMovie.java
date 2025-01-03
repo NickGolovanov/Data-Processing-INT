@@ -5,11 +5,16 @@ import com.example.nefix.info.Info;
 import com.example.nefix.movie.Movie;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
-public class InfoMovie {
+public class InfoMovie
+{
     @EmbeddedId
     private InfoMovieId id;
 

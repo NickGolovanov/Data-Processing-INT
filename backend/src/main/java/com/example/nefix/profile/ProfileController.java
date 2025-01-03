@@ -16,29 +16,30 @@ public class ProfileController extends BaseController<Profile, Long>
         super(service);
     }
 
-
-    @PostMapping("/{profileId}/watch-list")
-    public ResponseEntity<WatchList> addToWatchList(@PathVariable Long profileId, @RequestBody WatchList watchList)
-    {
-        Profile profile = ((ProfileService) service).getProfileByUserId(profileId);
-        watchList.setProfile(profile);
-        return ResponseEntity.ok(((ProfileService) service).addToWatchList(watchList));
-    }
-
     @GetMapping("/{profileId}/watch-list")
     public ResponseEntity<List<WatchList>> getWatchListByProfileId(@PathVariable Long profileId)
     {
         return ResponseEntity.ok(((ProfileService) service).getWatchListByProfileId(profileId));
     }
 
+    @PostMapping("/{profileId}/watch-list")
+    public ResponseEntity<WatchList> addToWatchList(@PathVariable Long profileId, @RequestBody WatchList watchList)
+    {
+        Profile profile = ((ProfileService) service).findById(profileId).orElseThrow(() -> new RuntimeException("Profile with ID " + profileId + " not found"));
+        watchList.setProfile(profile);
+        return ResponseEntity.ok(((ProfileService) service).addToWatchList(watchList));
+    }
+
     @GetMapping("/{profileId}/watch-list/movies")
-    public ResponseEntity<List<WatchList>> getWatchListProfileMovies(@PathVariable Long profileId) {
+    public ResponseEntity<List<WatchList>> getWatchListProfileMovies(@PathVariable Long profileId)
+    {
         return ResponseEntity.ok(((ProfileService) service).getWatchListProfileMovies(profileId));
     }
 
     @DeleteMapping("/{profileId}/watch-list/movie/{movieId}")
-    public ResponseEntity<Void> deleteFromWatchList(@PathVariable Long profileId, @PathVariable Long movieId) {
-        ((ProfileService) service).deleteFromWatchList(profileId, movieId);
+    public ResponseEntity<Void> deleteFromWatchList(@PathVariable Long profileId, @PathVariable Long movieId)
+    {
+        ((ProfileService) service).deleteMovieFromWatchList(profileId, movieId);
 
         return ResponseEntity.noContent().build();
     }
