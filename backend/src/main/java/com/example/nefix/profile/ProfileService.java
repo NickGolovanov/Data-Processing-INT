@@ -18,6 +18,7 @@ public class ProfileService extends BaseService<Profile, Long>
     {
         super(repository);
     }
+
     public Profile getProfileByUserId(Long profileId)
     {
         return ((ProfileRepository) repository).getProfileByProfileId(profileId);

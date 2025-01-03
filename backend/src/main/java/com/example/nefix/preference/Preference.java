@@ -1,6 +1,7 @@
 package com.example.nefix.preference;
 
 import com.example.nefix.account.AccountDeserializer;
+import com.example.nefix.mediapreferences.MediaPreferences;
 import com.example.nefix.profile.Profile;
 import com.example.nefix.profile.ProfileDeserializer;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -9,6 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Entity

@@ -1,0 +1,5 @@
+### Preference
+POST localhost:8080/preference/1/movie/1
+
+### Delete preference
+DELETE localhost:8080/preference/1/movie/1

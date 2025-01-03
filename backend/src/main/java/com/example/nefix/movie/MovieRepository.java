@@ -17,4 +17,5 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     List<Object[]> findMovieWithSubtitles();
 
 
+    Movie getMovieByMovieId(Long movieId);
 }

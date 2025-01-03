@@ -17,12 +17,12 @@ public class MediaPreferences
     private Long mediaPreferenceId;
 
     @ManyToOne
-    @JoinColumn(name = "preference_id", updatable = false, insertable = false)
+    @JoinColumn(name = "preference_id")
     @JsonProperty("preferenceId")
     private Preference preference;
 
     @ManyToOne
-    @JoinColumn(name = "movie_id", updatable = false, insertable = false)
+    @JoinColumn(name = "movie_id")
     @JsonProperty("movieId")
     private Movie movie;
 
