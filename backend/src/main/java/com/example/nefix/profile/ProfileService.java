@@ -1,6 +1,8 @@
 package com.example.nefix.profile;
 
 import com.example.nefix.genrealization.service.BaseService;
+import com.example.nefix.preference.Preference;
+import com.example.nefix.preference.PreferenceRepository;
 import com.example.nefix.watchlist.WatchList;
 import com.example.nefix.watchlist.WatchListRepository;
 import jakarta.transaction.Transactional;
@@ -14,6 +16,12 @@ public class ProfileService extends BaseService<Profile, Long>
 {
     @Autowired
     private WatchListRepository watchListRepository;
+
+    @Autowired
+    private ProfileRepository profileRepository;
+
+    @Autowired
+    private PreferenceRepository preferenceRepository;
 
     public ProfileService(ProfileRepository repository)
     {
@@ -52,4 +60,32 @@ public class ProfileService extends BaseService<Profile, Long>
         watchListRepository.deleteByProfile_ProfileIdAndSeries_SeriesId(profileId, seriesId);
     }
 
+    public Profile createOrUpdatePreferences(ProfilePreferencesDto requestDto) {
+        // Fetch the profile
+        Profile profile = profileRepository.findById(requestDto.getProfileId())
+                .orElseThrow(() -> new RuntimeException("Profile not found with ID: " + requestDto.getProfileId()));
+
+        // Fetch the preference
+        Preference preference = preferenceRepository.findById(requestDto.getPreferenceId())
+                .orElseThrow(() -> new RuntimeException("Preference not found with ID: " + requestDto.getPreferenceId()));
+
+        // Update the profile's preference
+        profile.setPreference(preference);
+
+        // Save and return the updated profile
+        return profileRepository.save(profile);
+    }
+
+    public Preference getPreferences(Long profileId) {
+        // Fetch the profile
+        Profile profile = profileRepository.findById(profileId)
+                .orElseThrow(() -> new RuntimeException("Profile not found with ID: " + profileId));
+
+        // Retrieve and return the associated preference
+        Preference preference = profile.getPreference();
+        if (preference == null) {
+            throw new RuntimeException("No preference set for profile with ID: " + profileId);
+        }
+        return preference;
+    }
 }

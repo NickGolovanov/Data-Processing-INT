@@ -1,6 +1,7 @@
 package com.example.nefix.profile;
 
 import com.example.nefix.genrealization.controller.BaseController;
+import com.example.nefix.preference.Preference;
 import com.example.nefix.watchlist.WatchList;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,7 @@ import java.util.List;
 @RequestMapping("/profile")
 public class ProfileController extends BaseController<Profile, Long>
 {
+    private ProfileService profileService;
     public ProfileController(ProfileService service)
     {
         super(service);
@@ -42,5 +44,17 @@ public class ProfileController extends BaseController<Profile, Long>
         ((ProfileService) service).deleteMovieFromWatchList(profileId, movieId);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{profileId}/preferences")
+    public ResponseEntity<Profile> createOrUpdatePreferences(@RequestBody ProfilePreferencesDto requestDto) {
+        Profile updatedProfile = profileService.createOrUpdatePreferences(requestDto);
+        return ResponseEntity.ok(updatedProfile);
+    }
+
+    @GetMapping("/{profileId}/preferences")
+    public ResponseEntity<Preference> getPreferences(@PathVariable Long profileId) {
+        Preference preference = profileService.getPreferences(profileId);
+        return ResponseEntity.ok(preference);
     }
 }
