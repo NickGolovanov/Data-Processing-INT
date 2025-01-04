@@ -7,16 +7,22 @@ import com.example.nefix.movie.Movie;
 import com.example.nefix.movie.MovieRepository;
 import com.example.nefix.profile.Profile;
 import com.example.nefix.profile.ProfileRepository;
+import com.example.nefix.series.Series;
+import com.example.nefix.series.SeriesRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class PreferenceService extends BaseService<Preference, Long>
 {
     @Autowired
     private ProfileRepository profileRepository;
+    @Autowired
+    private SeriesRepository seriesRepository;
     @Autowired
     private MovieRepository movieRepository;
     @Autowired
@@ -46,11 +52,38 @@ public class PreferenceService extends BaseService<Preference, Long>
         return preference;
     }
 
+    public Preference addPreferenceSeries(Long preferenceId, Long seriesId) {
+        Preference preference = repository.findById(preferenceId)
+                .orElseThrow(() -> new RuntimeException("Preference not found with ID: " + preferenceId));
+
+        Series series = seriesRepository.findById(seriesId)
+                .orElseThrow(() -> new RuntimeException("Series not found with ID: " + seriesId));
+
+        MediaPreferences mediaPreferences = new MediaPreferences();
+        mediaPreferences.setPreference(preference);
+        mediaPreferences.setSeries(series);
+
+        mediaPreferencesRepository.save(mediaPreferences);
+        return preference;
+    }
+
     @Transactional
     public void deletePreferenceMovie(Long preferenceId, Long movieId)
     {
         mediaPreferencesRepository.deleteByMovieIdAndPreferenceId(movieId, preferenceId);
         repository.deleteById(preferenceId);
+    }
 
+    @Transactional
+    public void deletePreferenceSeries(Long preferenceId, Long seriesId) {
+        mediaPreferencesRepository.deleteBySeriesIdAndPreferenceId(seriesId, preferenceId);
+        repository.deleteById(preferenceId);
+    }
+
+    public List<MediaPreferences> getMediaPreferences(Long preferenceId) {
+        Preference preference = repository.findById(preferenceId)
+                .orElseThrow(() -> new RuntimeException("Preference not found with ID: " + preferenceId));
+
+        return mediaPreferencesRepository.findAllByPreference(preference);
     }
 }

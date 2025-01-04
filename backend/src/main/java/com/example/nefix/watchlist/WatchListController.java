@@ -1,9 +1,8 @@
 package com.example.nefix.watchlist;
 
 import com.example.nefix.genrealization.controller.BaseController;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/watch-list")
@@ -12,5 +11,21 @@ public class WatchListController extends BaseController<WatchList, Long> {
         super(service);
     }
 
+    @PostMapping("/{watchlistId}/series/{seriesId}")
+    public ResponseEntity<WatchList> addSeriesToWatchList(@PathVariable Long watchlistId, @PathVariable Long seriesId) {
+        WatchList watchList = ((WatchListService) service).addSeriesToWatchList(watchlistId, seriesId);
+        return ResponseEntity.ok(watchList);
+    }
 
+    @GetMapping("/{watchlistId}/series/{seriesId}")
+    public ResponseEntity<WatchList> getSeriesFromWatchList(@PathVariable Long watchlistId, @PathVariable Long seriesId) {
+        WatchList watchList = ((WatchListService) service).getSeriesFromWatchList(watchlistId, seriesId);
+        return ResponseEntity.ok(watchList);
+    }
+
+    @DeleteMapping("/{watchlistId}/series/{seriesId}")
+    public ResponseEntity<Void> removeSeriesFromWatchList(@PathVariable Long watchlistId, @PathVariable Long seriesId) {
+        ((WatchListService) service).removeSeriesFromWatchList(watchlistId, seriesId);
+        return ResponseEntity.noContent().build();
+    }
 }
