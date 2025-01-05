@@ -1,6 +1,6 @@
 package com.example.nefix.authentification.auth;
 
-import com.example.nefix.authentification.user.Role;
+import com.example.nefix.account.PaymentMethod;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,8 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RegisterRequest
 {
-    private String firstname;
-    private String lastname;
     private String email;
     private String password;
 }
