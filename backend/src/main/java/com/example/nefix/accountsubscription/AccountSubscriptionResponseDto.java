@@ -1,6 +1,5 @@
-package com.example.nefix.account;
+package com.example.nefix.accountsubscription;
 
-import com.example.nefix.accountsubscription.AccountSubscription;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -8,7 +7,8 @@ import java.time.LocalDate;
 
 @Getter
 @AllArgsConstructor
-public class AccountSubscriptionResponseDto {
+public class AccountSubscriptionResponseDto
+{
     private Long accountId;
     private Long subscriptionId;
     private LocalDate dateOfPurchase;

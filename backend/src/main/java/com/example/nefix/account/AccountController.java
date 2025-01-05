@@ -1,9 +1,13 @@
 package com.example.nefix.account;
 
 import com.example.nefix.accountsubscription.AccountSubscription;
+import com.example.nefix.accountsubscription.AccountSubscriptionRequestDto;
 import com.example.nefix.blockedaccount.BlockedAccount;
+import com.example.nefix.blockedaccount.BlockedAccountRequestDto;
 import com.example.nefix.genrealization.controller.BaseController;
 import com.example.nefix.referraldiscount.ReferralDiscount;
+import com.example.nefix.referraldiscount.ReferralDiscountRequestDto;
+import com.example.nefix.referraldiscount.ReferralDiscountResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,11 +31,14 @@ public class AccountController extends BaseController<Account, Long>
     public ResponseEntity<AccountSubscription> addSubscription(
             @PathVariable Long accountId,
             @PathVariable Long subscriptionId,
-            @RequestBody AccountSubscriptionRequestDto requestDto) {
-        try {
+            @RequestBody AccountSubscriptionRequestDto requestDto)
+    {
+        try
+        {
             AccountSubscription accountSubscription = accountService.addSubscription(accountId, subscriptionId, requestDto);
             return ResponseEntity.status(HttpStatus.CREATED).body(accountSubscription);
-        } catch (RuntimeException e) {
+        } catch (RuntimeException e)
+        {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
@@ -41,13 +48,16 @@ public class AccountController extends BaseController<Account, Long>
     public ResponseEntity<AccountSubscription> updateSubscription(
             @PathVariable Long accountId,
             @PathVariable Long subscriptionId,
-            @RequestBody AccountSubscriptionRequestDto requestDto) {
-        try {
+            @RequestBody AccountSubscriptionRequestDto requestDto)
+    {
+        try
+        {
             // Call service to update the subscription
             AccountSubscription updatedAccountSubscription = accountService.updateSubscription(accountId, subscriptionId, requestDto);
             // Return the updated subscription details in the response DTO
             return ResponseEntity.status(HttpStatus.OK).body(updatedAccountSubscription);
-        } catch (RuntimeException e) {
+        } catch (RuntimeException e)
+        {
             // If account or subscription is not found, return 404
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
@@ -56,12 +66,15 @@ public class AccountController extends BaseController<Account, Long>
     @DeleteMapping("/{accountId}/subscription/{subscriptionId}")
     public ResponseEntity<Void> deleteSubscription(
             @PathVariable Long accountId,
-            @PathVariable Long subscriptionId) {
-        try {
+            @PathVariable Long subscriptionId)
+    {
+        try
+        {
             // Call the service to delete the subscription
             accountService.deleteSubscription(accountId, subscriptionId);
             return ResponseEntity.noContent().build();
-        } catch (RuntimeException e) {
+        } catch (RuntimeException e)
+        {
             // Handle case when Account or Subscription is not found
             return ResponseEntity.notFound().build();
         }
@@ -70,13 +83,15 @@ public class AccountController extends BaseController<Account, Long>
     @PostMapping("/{accountId}/block")
     public ResponseEntity<BlockedAccount> blockAccount(
             @PathVariable Long accountId,
-            @RequestBody BlockedAccountRequestDto requestDto) {
+            @RequestBody BlockedAccountRequestDto requestDto)
+    {
         BlockedAccount blockedAccount = accountService.blockAccount(accountId, requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(blockedAccount);
     }
 
     @DeleteMapping("/{accountId}/block")
-    public ResponseEntity<Void> unblockAccount(@PathVariable Long accountId) {
+    public ResponseEntity<Void> unblockAccount(@PathVariable Long accountId)
+    {
         accountService.unblockAccount(accountId);
         return ResponseEntity.noContent().build();
     }
@@ -84,22 +99,28 @@ public class AccountController extends BaseController<Account, Long>
     @PostMapping("/{accountId}/referralDiscount")
     public ResponseEntity<ReferralDiscount> addReferralDiscount(
             @PathVariable Long accountId,
-            @RequestBody ReferralDiscountRequestDto requestDto) {
-        try {
+            @RequestBody ReferralDiscountRequestDto requestDto)
+    {
+        try
+        {
             ReferralDiscount referralDiscount = accountService.addReferralDiscount(accountId, requestDto);
             return ResponseEntity.status(HttpStatus.CREATED).body(referralDiscount);
-        } catch (RuntimeException e) {
+        } catch (RuntimeException e)
+        {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 
     @GetMapping("/{accountId}/referralDiscount")
     public ResponseEntity<List<ReferralDiscountResponseDto>> getAllReferralDiscounts(
-            @PathVariable Long accountId) {
-        try {
+            @PathVariable Long accountId)
+    {
+        try
+        {
             List<ReferralDiscountResponseDto> referralDiscounts = accountService.getReferralDiscounts(accountId);
             return ResponseEntity.status(HttpStatus.OK).body(referralDiscounts);
-        } catch (RuntimeException e) {
+        } catch (RuntimeException e)
+        {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }

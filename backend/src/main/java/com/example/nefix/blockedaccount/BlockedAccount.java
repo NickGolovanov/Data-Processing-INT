@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -26,13 +28,17 @@ public class BlockedAccount
     @JsonProperty("accountId")
     @JsonDeserialize(using = AccountDeserializer.class)
     @JsonIgnoreProperties({"blockedAccounts", "referralDiscount", "subscriptions", "profiles"})
+    @NotNull(message = "Account must not be null.")
     private Account account;
 
     @JsonProperty("dateOfExpire")
     @Column(name = "date_of_expire")
+    @FutureOrPresent(message = "Date of expire must be in the future or present.")
+    @NotNull(message = "Date of expire must not be null.")
     private LocalDate dateOfExpire;
 
     @JsonProperty("isPermanent")
     @Column(name = "is_permanent")
+    @NotNull(message = "Permanent status must not be null.")
     private Boolean isPermanent;
 }

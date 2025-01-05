@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.util.Set;
@@ -26,6 +28,7 @@ public class Season
     @JsonProperty("seriesId")
     @JsonDeserialize(using = SeriesDeserializer.class)
     @JsonIgnoreProperties({"seasons", "infoSeries"})
+    @NotNull(message = "Series must not be null.")
     private Series series;
 
     @OneToMany(mappedBy = "season", cascade = CascadeType.ALL, orphanRemoval = false)
@@ -34,5 +37,7 @@ public class Season
 
     @JsonProperty("seasonNumber")
     @Column(name = "season_number")
+    @NotNull(message = "Season number must not be null.")
+    @Min(value = 1, message = "Season number must be greater than 0.")
     private Integer seasonNumber;
 }

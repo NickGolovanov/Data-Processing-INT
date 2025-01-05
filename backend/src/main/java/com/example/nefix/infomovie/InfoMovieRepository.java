@@ -1,5 +1,6 @@
 package com.example.nefix.infomovie;
 
+import com.example.nefix.movie.Movie;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

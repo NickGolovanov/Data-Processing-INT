@@ -5,6 +5,9 @@ import com.example.nefix.season.Season;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -13,6 +16,7 @@ import java.util.Set;
 
 @Data
 @Entity
+@Table(name = "series", uniqueConstraints = @UniqueConstraint(columnNames = {"title"}))
 public class Series
 {
     @Id
@@ -29,6 +33,8 @@ public class Series
     private Set<InfoSeries> infoSeries = new HashSet<>();
 
     @JsonProperty("title")
+    @NotBlank(message = "Title must not be blank.")
+    @NotNull(message = "Title must not be null.")
     private String title;
 
     @ColumnDefault("0")
@@ -36,5 +42,6 @@ public class Series
 
     @JsonProperty("minimumAge")
     @Column(name = "minimum_age")
+    @Min(value = 0, message = "Minimum age must not be negative.")
     private Integer minimumAge;
 }

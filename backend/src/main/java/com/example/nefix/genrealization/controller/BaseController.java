@@ -2,6 +2,7 @@ package com.example.nefix.genrealization.controller;
 
 import com.example.nefix.genrealization.service.BaseService;
 import com.example.nefix.genrealization.service.ServiceBase;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,14 +39,14 @@ public abstract class BaseController<T, ID> implements ControllerBase<T, ID>
     }
 
     @PostMapping
-    public ResponseEntity<T> create(@RequestBody T entity)
+    public ResponseEntity<T> create(@Valid @RequestBody T entity)
     {
         T savedEntity = service.save(entity);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedEntity);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<T> update(@PathVariable ID id, @RequestBody T entity)
+    public ResponseEntity<T> update(@PathVariable ID id, @Valid @RequestBody T entity)
     {
         try
         {

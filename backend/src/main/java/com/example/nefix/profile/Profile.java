@@ -8,7 +8,12 @@ import com.example.nefix.watchlist.WatchList;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -27,6 +32,7 @@ public class Profile
     @JsonProperty("accountId")
     @JsonDeserialize(using = AccountDeserializer.class)
     @JsonIgnoreProperties({"profiles", "blockedAccounts", "referralDiscount", "subscriptions"})
+    @NotNull(message = "Account must not be null.")
     private Account account;
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -44,17 +50,21 @@ public class Profile
     private Set<WatchList> watchList = new HashSet<>();
 
     @JsonProperty("series")
+    @ColumnDefault("true")
     private Boolean series;
 
     @JsonProperty("film")
+    @ColumnDefault("true")
     private Boolean film;
 
     @JsonProperty("minimumAge")
     @Column(name = "minimum_age")
+    @Min(value = 0, message = "Min age must not be negative.")
     private Integer minimumAge;
 
     @JsonProperty("profileImage")
     @Column(name = "profile_image")
+    @NotBlank(message = "Profile image must not be blank.")
     private String profileImage;
 
     @JsonProperty("profileChild")
@@ -63,11 +73,14 @@ public class Profile
 
     @JsonProperty("profileName")
     @Column(name = "profile_name")
+    @NotBlank(message = "Profile name must not be blank.")
     private String profileName;
 
     @JsonProperty("age")
+    @Min(value = 0, message = "Age must not be negative.")
     private Integer age;
 
     @JsonProperty("language")
+    @NotBlank(message = "Language must not be blank.")
     private String language;
 }

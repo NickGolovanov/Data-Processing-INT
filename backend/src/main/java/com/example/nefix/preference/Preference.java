@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.util.HashSet;
@@ -28,5 +29,6 @@ public class Preference
     @JsonProperty("profileId")
     @JsonDeserialize(using = ProfileDeserializer.class)
     @JsonIgnoreProperties({"preference", "liveInfos", "watchList"})
+    @NotNull(message = "Profile must not be null.")
     private Profile profile;
 }

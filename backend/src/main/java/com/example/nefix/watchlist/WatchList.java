@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.util.HashSet;
@@ -31,13 +32,15 @@ public class WatchList
     @JsonProperty("profileId")
     @JsonDeserialize(using = ProfileDeserializer.class)
     @JsonIgnoreProperties({"watchList", "liveInfos", "preference"})
+    @NotNull(message = "Profile must not be null.")
     private Profile profile;
 
-    @OneToMany(mappedBy = "watchList", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "watchlist_id")
-    @JsonProperty("series")
+    @ManyToOne
+    @JoinColumn(name = "series_id")
+    @JsonProperty("seriesId")
+    @JsonDeserialize(using = SeriesDeserializer.class)
     @JsonIgnoreProperties({"season", "infoSeries"})
-    private Set<Series> series = new HashSet<>();
+    private Series series;
 
     @ManyToOne
     @JoinColumn(name = "movie_id")

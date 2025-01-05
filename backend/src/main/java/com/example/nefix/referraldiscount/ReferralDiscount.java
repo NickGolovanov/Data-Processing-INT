@@ -3,6 +3,7 @@ package com.example.nefix.referraldiscount;
 import com.example.nefix.account.Account;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Entity
@@ -18,5 +19,6 @@ public class ReferralDiscount
     private Account account;
 
     @JsonProperty("link")
+    @Pattern(regexp = "^(https?://)?([\\w.-]+)+(:\\d+)?(/\\S*)?$", message = "Invalid link format.")
     private String link;
 }

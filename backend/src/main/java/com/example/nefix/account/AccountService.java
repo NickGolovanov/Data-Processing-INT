@@ -3,11 +3,15 @@ package com.example.nefix.account;
 import com.example.nefix.accountsubscription.AccountSubscription;
 import com.example.nefix.accountsubscription.AccountSubscriptionId;
 import com.example.nefix.accountsubscription.AccountSubscriptionRepository;
+import com.example.nefix.accountsubscription.AccountSubscriptionRequestDto;
 import com.example.nefix.blockedaccount.BlockedAccount;
+import com.example.nefix.blockedaccount.BlockedAccountRequestDto;
 import com.example.nefix.blockedaccount.BlockedAccountsRepository;
 import com.example.nefix.genrealization.service.BaseService;
 import com.example.nefix.referraldiscount.ReferralDiscount;
 import com.example.nefix.referraldiscount.ReferralDiscountRepository;
+import com.example.nefix.referraldiscount.ReferralDiscountRequestDto;
+import com.example.nefix.referraldiscount.ReferralDiscountResponseDto;
 import com.example.nefix.subscription.Subscription;
 import com.example.nefix.subscription.SubscriptionRepository;
 import jakarta.transaction.Transactional;
@@ -18,7 +22,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class AccountService extends BaseService<Account, Long> {
+public class AccountService extends BaseService<Account, Long>
+{
     @Autowired
     private AccountRepository accountRepository;
 
@@ -34,12 +39,14 @@ public class AccountService extends BaseService<Account, Long> {
     @Autowired
     private ReferralDiscountRepository referralDiscountRepository;
 
-    public AccountService(AccountRepository repository) {
+    public AccountService(AccountRepository repository)
+    {
         super(repository);
     }
 
     @Transactional
-    public AccountSubscription addSubscription(Long accountId, Long subscriptionId, AccountSubscriptionRequestDto requestDto) {
+    public AccountSubscription addSubscription(Long accountId, Long subscriptionId, AccountSubscriptionRequestDto requestDto)
+    {
         // Fetch Account
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new RuntimeException("Account not found with ID: " + accountId));
@@ -66,7 +73,8 @@ public class AccountService extends BaseService<Account, Long> {
 
     // Method to update an existing subscription for the account
     @Transactional
-    public AccountSubscription updateSubscription(Long accountId, Long subscriptionId, AccountSubscriptionRequestDto requestDto) {
+    public AccountSubscription updateSubscription(Long accountId, Long subscriptionId, AccountSubscriptionRequestDto requestDto)
+    {
         // Fetch Account
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new RuntimeException("Account not found with ID: " + accountId));
@@ -81,15 +89,17 @@ public class AccountService extends BaseService<Account, Long> {
                 .orElseThrow(() -> new RuntimeException("AccountSubscription not found with the given account and subscription IDs"));
 
         // Update fields from the request DTO
-        if (requestDto.getDateOfPurchase() != null) {
+        if (requestDto.getDateOfPurchase() != null)
+        {
             existingAccountSubscription.setDateOfPurchase(requestDto.getDateOfPurchase());
         }
-        if (requestDto.getDateOfExpire() != null) {
+        if (requestDto.getDateOfExpire() != null)
+        {
             existingAccountSubscription.setDateOfExpire(requestDto.getDateOfExpire());
         }
         // Additional updates can be added here, like renewal preferences or subscription type
         // For example:
-//         existingAccountSubscription.setRenewalPreference(requestDto.getRenewalPreference());
+        //         existingAccountSubscription.setRenewalPreference(requestDto.getRenewalPreference());
 
         // Save updated AccountSubscription entity
         return accountSubscriptionRepository.save(existingAccountSubscription);
@@ -97,7 +107,8 @@ public class AccountService extends BaseService<Account, Long> {
 
 
     @Transactional
-    public void deleteSubscription(Long accountId, Long subscriptionId) {
+    public void deleteSubscription(Long accountId, Long subscriptionId)
+    {
         // Fetch Account
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new RuntimeException("Account not found with ID: " + accountId));
@@ -118,7 +129,8 @@ public class AccountService extends BaseService<Account, Long> {
         accountSubscriptionRepository.delete(accountSubscription);
     }
 
-    public BlockedAccount blockAccount(Long accountId, BlockedAccountRequestDto requestDto) {
+    public BlockedAccount blockAccount(Long accountId, BlockedAccountRequestDto requestDto)
+    {
         // Fetch the account to be blocked
         Account account = repository.findById(accountId)
                 .orElseThrow(() -> new RuntimeException("Account not found with ID: " + accountId));
@@ -133,7 +145,8 @@ public class AccountService extends BaseService<Account, Long> {
         return blockedAccountsRepository.save(blockedAccount);
     }
 
-    public void unblockAccount(Long accountId) {
+    public void unblockAccount(Long accountId)
+    {
         // Fetch the account to unblock
         Account account = repository.findById(accountId)
                 .orElseThrow(() -> new RuntimeException("Account not found with ID: " + accountId));
@@ -147,7 +160,8 @@ public class AccountService extends BaseService<Account, Long> {
     }
 
     @Transactional
-    public ReferralDiscount addReferralDiscount(Long accountId, ReferralDiscountRequestDto requestDto) {
+    public ReferralDiscount addReferralDiscount(Long accountId, ReferralDiscountRequestDto requestDto)
+    {
         // Fetch Account
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new RuntimeException("Account not found with ID: " + accountId));
@@ -161,7 +175,8 @@ public class AccountService extends BaseService<Account, Long> {
         return referralDiscountRepository.save(referralDiscount);
     }
 
-    public List<ReferralDiscountResponseDto> getReferralDiscounts(Long accountId) {
+    public List<ReferralDiscountResponseDto> getReferralDiscounts(Long accountId)
+    {
         // Fetch the Account
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new RuntimeException("Account not found with ID: " + accountId));

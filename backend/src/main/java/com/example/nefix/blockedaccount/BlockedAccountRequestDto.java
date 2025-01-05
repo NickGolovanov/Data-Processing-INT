@@ -1,7 +1,6 @@
-package com.example.nefix.account;
+package com.example.nefix.blockedaccount;
 
 import lombok.Data;
-import lombok.Getter;
 
 import java.time.LocalDate;
 
