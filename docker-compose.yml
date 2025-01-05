@@ -44,7 +44,7 @@ services:
     ports:
       - '8888:80'
     environment:
-      PGADMIN_DEFAULT_EMAIL: user-name@domain-name.com
+      PGADMIN_DEFAULT_EMAIL: com.example.nefix.authentification.user-name@domain-name.com
       PGADMIN_DEFAULT_PASSWORD: strong-password
     volumes:
       - pgadmin-data:/var/lib/pgadmin
