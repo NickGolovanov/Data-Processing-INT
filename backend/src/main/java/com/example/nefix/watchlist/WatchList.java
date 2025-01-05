@@ -13,9 +13,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @Data
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"profile_id", "series_id", "movie_id"}))
@@ -33,11 +30,12 @@ public class WatchList
     @JsonIgnoreProperties({"watchList", "liveInfos", "preference"})
     private Profile profile;
 
-    @OneToMany(mappedBy = "watchList", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "watchlist_id")
-    @JsonProperty("series")
+    @ManyToOne
+    @JoinColumn(name = "series_id")
+    @JsonProperty("seriesId")
+    @JsonDeserialize(using = SeriesDeserializer.class)
     @JsonIgnoreProperties({"season", "infoSeries"})
-    private Set<Series> series = new HashSet<>();
+    private Series series;
 
     @ManyToOne
     @JoinColumn(name = "movie_id")

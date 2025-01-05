@@ -1,47 +1,62 @@
 package com.example.nefix.watchlist;
 
 import com.example.nefix.genrealization.service.BaseService;
+import com.example.nefix.movie.Movie;
+import com.example.nefix.profile.Profile;
+import com.example.nefix.profile.ProfileRepository;
 import com.example.nefix.series.Series;
 import com.example.nefix.series.SeriesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class WatchListService extends BaseService<WatchList, Long> {
+
     @Autowired
     private SeriesRepository seriesRepository;
+
+    @Autowired
+    private ProfileRepository profileRepository;
+
+    @Autowired
+    private WatchListRepository watchListRepository;
 
     public WatchListService(WatchListRepository repository) {
         super(repository);
     }
 
-    public WatchList addSeriesToWatchList(Long watchlistId, Long seriesId) {
-        WatchList watchList = repository.findById(watchlistId)
-                .orElseThrow(() -> new RuntimeException("WatchList not found with ID: " + watchlistId));
+    /**
+     * Adds a series to a profile's watchlist.
+     */
+    public WatchList addSeriesToWatchList(Long profileId, Long seriesId) {
+        Profile profile = profileRepository.findById(profileId)
+                .orElseThrow(() -> new RuntimeException("Profile not found with ID: " + profileId));
         Series series = seriesRepository.findById(seriesId)
                 .orElseThrow(() -> new RuntimeException("Series not found with ID: " + seriesId));
 
-        watchList.getSeries().add(series);
-        return repository.save(watchList);
+        WatchList watchList = new WatchList();
+        watchList.setProfile(profile);
+        watchList.setSeries(series);
+
+        return watchListRepository.save(watchList);
     }
 
-    public WatchList getSeriesFromWatchList(Long watchlistId, Long seriesId) {
-        WatchList watchList = repository.findById(watchlistId)
-                .orElseThrow(() -> new RuntimeException("WatchList not found with ID: " + watchlistId));
-        return watchList.getSeries().stream()
-                .filter(series -> series.getSeriesId().equals(seriesId))
-                .findFirst()
-                .map(series -> watchList)
-                .orElseThrow(() -> new RuntimeException("Series not found in WatchList"));
+    public List<Series> getSeriesFromWatchList(Long profileId) {
+        return watchListRepository.findAllByProfile_ProfileIdAndSeriesIsNotNull(profileId)
+                .stream()
+                .map(WatchList::getSeries)
+                .collect(Collectors.toList());
     }
 
-    public void removeSeriesFromWatchList(Long watchlistId, Long seriesId) {
-        WatchList watchList = repository.findById(watchlistId)
-                .orElseThrow(() -> new RuntimeException("WatchList not found with ID: " + watchlistId));
-        Series series = seriesRepository.findById(seriesId)
-                .orElseThrow(() -> new RuntimeException("Series not found with ID: " + seriesId));
-
-        watchList.getSeries().remove(series);
-        repository.save(watchList);
+    /**
+     * Removes a series from a profile's watchlist.
+     */
+    @Transactional
+    public void removeSeriesFromWatchList(Long profileId, Long seriesId) {
+        watchListRepository.deleteByProfile_ProfileIdAndSeries_SeriesId(profileId, seriesId);
     }
 }
