@@ -46,12 +46,13 @@ services:
       FLYWAY_URL: jdbc:postgresql://db:5432/${POSTGRES_DATABASE}
       FLYWAY_USER: ${POSTGRES_USER}
       FLYWAY_PASSWORD: ${POSTGRES_PASSWORD}
-    command: migrate
+    entrypoint: ["/bin/sh", "-c", "sleep 10 && flyway migrate"]
+#    command: migrate
   # add this for simplicity and easy access to the database
 #  pgadmin:
 #    image: dpage/pgadmin4
 #    restart: always
-#    ports:
+#    ports:`
 #      - '8888:80'
 #    environment:
 #      PGADMIN_DEFAULT_EMAIL: user-name@domain-name.com

@@ -47,7 +47,8 @@ FROM public.blocked_account b
 -- FROM public.movie m
 --          LEFT JOIN public.infomovie im ON m.movie_id = im.movieid
 --          LEFT JOIN public.info i ON im.info_id = i.info_id;
---
+
+
 CREATE OR REPLACE VIEW view_season_episodes AS
 SELECT
     sn.season_id,
