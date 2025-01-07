@@ -29,9 +29,6 @@ public class WatchListService extends BaseService<WatchList, Long> {
         super(repository);
     }
 
-    /**
-     * Adds a series to a profile's watchlist.
-     */
     public WatchList addSeriesToWatchList(Long profileId, Long seriesId) {
         Profile profile = profileRepository.findById(profileId)
                 .orElseThrow(() -> new RuntimeException("Profile not found with ID: " + profileId));
@@ -52,9 +49,6 @@ public class WatchListService extends BaseService<WatchList, Long> {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Removes a series from a profile's watchlist.
-     */
     @Transactional
     public void removeSeriesFromWatchList(Long profileId, Long seriesId) {
         watchListRepository.deleteByProfile_ProfileIdAndSeries_SeriesId(profileId, seriesId);

@@ -2,6 +2,7 @@ package com.example.nefix.watchlist;
 
 import com.example.nefix.genrealization.controller.BaseController;
 import com.example.nefix.series.Series;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,20 +16,32 @@ public class WatchListController extends BaseController<WatchList, Long> {
     }
 
     @PostMapping("/profile/{profileId}/series/{seriesId}")
-    public ResponseEntity<WatchList> addSeriesToWatchList(@PathVariable Long profileId, @PathVariable Long seriesId) {
-        WatchList watchList = ((WatchListService) service).addSeriesToWatchList(profileId, seriesId);
-        return ResponseEntity.ok(watchList);
+    public ResponseEntity<?> addSeriesToWatchList(@PathVariable Long profileId, @PathVariable Long seriesId) {
+        try {
+            WatchList watchList = ((WatchListService) service).addSeriesToWatchList(profileId, seriesId);
+            return ResponseEntity.ok(watchList);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
     }
 
     @GetMapping("/profile/{profileId}")
-    public ResponseEntity<List<Series>> getSeriesFromWatchList(@PathVariable Long profileId) {
-        List<Series> seriesList = ((WatchListService) service).getSeriesFromWatchList(profileId);
-        return ResponseEntity.ok(seriesList);
+    public ResponseEntity<?> getSeriesFromWatchList(@PathVariable Long profileId) {
+        try {
+            List<Series> seriesList = ((WatchListService) service).getSeriesFromWatchList(profileId);
+            return ResponseEntity.ok(seriesList);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{watchlistId}/series/{seriesId}")
-    public ResponseEntity<Void> removeSeriesFromWatchList(@PathVariable Long watchlistId, @PathVariable Long seriesId) {
-        ((WatchListService) service).removeSeriesFromWatchList(watchlistId, seriesId);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> removeSeriesFromWatchList(@PathVariable Long watchlistId, @PathVariable Long seriesId) {
+        try {
+            ((WatchListService) service).removeSeriesFromWatchList(watchlistId, seriesId);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
     }
 }
