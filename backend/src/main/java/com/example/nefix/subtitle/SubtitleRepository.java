@@ -24,4 +24,15 @@ public interface SubtitleRepository extends JpaRepository<Subtitle, Long>
             @Param("subtitle_language") String subtitleLanguage,
             @Param("subtitle_location") String subtitleLocation
     );
+
+
+    @Modifying
+    @Query(value = "CALL add_subtitle(:movie_id, :subtitle_language, :subtitle_location)", nativeQuery = true)
+    void callAddSubtitle(
+            @Param("movie_id") Long movieId,
+            @Param("subtitle_language") String subtitleLanguage,
+            @Param("subtitle_location") String subtitleLocation
+    );
+
+    Subtitle findByMovie_MovieIdAndLanguage(Long movieMovieId, String language);
 }

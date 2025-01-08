@@ -4,7 +4,8 @@ GET localhost:8080/movie
 ### Subtitle ###
 
 
-
+### Get movie
+GET localhost:8080/
 
 
 ### Create movie
@@ -37,7 +38,7 @@ Content-Type: application/json
 DELETE localhost:8080/movie/1/subtitle/1
 
 ### Update movie subtitles
-PATCH localhost:8080/movie/1/subtitle/1
+PUT localhost:8080/movie/1/subtitle/35
 Content-Type: application/json
 
 {
@@ -47,28 +48,29 @@ Content-Type: application/json
 }
 
 ### Get movie subtitles
-GET localhost:8080/movie/with-subtitle
+#GET localhost:8080/movie/with-subtitle
 
 
 ### Get movie infomovie by id
-GET localhost:8080/movie/1/infomovie
+GET localhost:8080/movie/1/info-movie
 
 ### Get all infomovies
-GET localhost:8080/movie/infomovies
+#GET localhost:8080/movie/info-movies
 
 ### Create infomovie
-POST localhost:8080/movie/1/infomovie
+POST localhost:8080/movie/1/info-movie
 Content-Type: application/json
 
 {
-    "description": "I am not updated"
+    "description": "I am not updated",
+    "type": "CLASSIFICATION"
 }
 
 ### Delete infomovie
-DELETE localhost:8080/movie/1/infomovie/1
+DELETE localhost:8080/movie/1/info-movie/1
 
 ### Update infomovie
-PATCH localhost:8080/movie/1/infomovie/1
+PATCH localhost:8080/movie/1/info-movie/1
 Content-Type: application/json
 
 {

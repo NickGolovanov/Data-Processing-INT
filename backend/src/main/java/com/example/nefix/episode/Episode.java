@@ -11,6 +11,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DialectOverride;
+import org.springframework.context.annotation.Lazy;
 
 import java.util.Set;
 

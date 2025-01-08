@@ -16,6 +16,7 @@ public class Info
     @JsonProperty("description")
     private String description;
 
+    @Enumerated(EnumType.STRING)
     @JsonProperty("type")
     private InfoType type;
 }
