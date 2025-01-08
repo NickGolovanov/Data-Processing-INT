@@ -6,7 +6,6 @@ import com.example.nefix.season.Season;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
 @RestController
 @RequestMapping("/series")
 public class SeriesController extends BaseController<Series, Long> {
@@ -15,26 +14,42 @@ public class SeriesController extends BaseController<Series, Long> {
     }
 
     @PostMapping("/{seriesId}/seasons/{seasonId}")
-    public ResponseEntity<Season> addSeason(@PathVariable Long seriesId, @PathVariable Long seasonId) {
-        Season season = ((SeriesService) service).addSeason(seriesId, seasonId);
-        return ResponseEntity.ok(season);
+    public ResponseEntity<?> addSeason(@PathVariable Long seriesId, @PathVariable Long seasonId) {
+        try {
+            Season season = ((SeriesService) service).addSeason(seriesId, seasonId);
+            return ResponseEntity.ok(season);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{seriesId}/seasons/{seasonId}")
-    public ResponseEntity<Void> removeSeason(@PathVariable Long seriesId, @PathVariable Long seasonId) {
-        ((SeriesService) service).removeSeason(seriesId, seasonId);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> removeSeason(@PathVariable Long seriesId, @PathVariable Long seasonId) {
+        try {
+            ((SeriesService) service).removeSeason(seriesId, seasonId);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
     }
 
     @PostMapping("/{seriesId}/infoseries/{infoSeriesId}")
-    public ResponseEntity<InfoSeries> addInfoSeries(@PathVariable Long seriesId, @PathVariable Long infoSeriesId) {
-        InfoSeries infoSeries = ((SeriesService) service).addInfoSeries(seriesId, infoSeriesId);
-        return ResponseEntity.ok(infoSeries);
+    public ResponseEntity<?> addInfoSeries(@PathVariable Long seriesId, @PathVariable Long infoSeriesId) {
+        try {
+            InfoSeries infoSeries = ((SeriesService) service).addInfoSeries(seriesId, infoSeriesId);
+            return ResponseEntity.ok(infoSeries);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{seriesId}/infoseries/{infoSeriesId}")
-    public ResponseEntity<Void> removeInfoSeries(@PathVariable Long seriesId, @PathVariable Long infoSeriesId) {
-        ((SeriesService) service).removeInfoSeries(seriesId, infoSeriesId);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> removeInfoSeries(@PathVariable Long seriesId, @PathVariable Long infoSeriesId) {
+        try {
+            ((SeriesService) service).removeInfoSeries(seriesId, infoSeriesId);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
     }
 }
