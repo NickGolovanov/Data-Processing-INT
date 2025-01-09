@@ -38,11 +38,11 @@ Content-Type: application/json
 DELETE localhost:8080/movie/1/subtitle/1
 
 ### Update movie subtitles
-PUT localhost:8080/movie/1/subtitle/35
+PUT localhost:8080/movie/1/subtitle/10
 Content-Type: application/json
 
 {
-    "language": "Spetesttestging",
+    "language": "English or Spanish",
     "subtitleLocation": "http://example.com/subtitle-updated.srt",
     "movieId": 1
 }

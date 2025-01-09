@@ -29,25 +29,16 @@ public class MovieService extends BaseService<Movie, Long> {
     }
 
 
-//    public Subtitle addSubtitle(Long movieId, Subtitle subtitle) {
-//        Movie movie = repository.findById(movieId)
-//                .orElseThrow(() -> new RuntimeException("Movie not found with ID: " + movieId));
-//        subtitle.setMovie(movie);
-//        return subtitleRepository.save(subtitle);
-//    }
 
-    @Transactional
     public Subtitle addSubtitle(Long movieId, Subtitle subtitle) {
-//        Movie movie = repository.findById(movieId)
-//                .orElseThrow(() -> new RuntimeException("Movie not found with ID: " + movieId));
-//        subtitle.setMovie(movie);
-         subtitleRepository.callAddSubtitle(
+        long subtitleId = subtitleRepository.callAddSubtitle(
                 movieId,
                 subtitle.getLanguage(),
                 subtitle.getSubtitleLocation()
         );
-        return subtitleRepository.findByMovie_MovieIdAndLanguage(movieId, subtitle.getLanguage());
+        return subtitleRepository.findById(subtitleId).orElseThrow(() -> new RuntimeException("Subtitle not found"));
     }
+
     public List<SubtitleResponseDTO> getSubtitles(Long movieId) {
         return subtitleRepository.findAllByMovie_MovieId(movieId).stream()
                 .map(SubtitleResponseDTO::new)
@@ -60,7 +51,6 @@ public class MovieService extends BaseService<Movie, Long> {
                 .orElseThrow(() -> new RuntimeException("Subtitle not found for Movie ID: " + movieId));
     }
 
-    //Example of using update with stored procedures
     @Transactional
     public Subtitle updateSubtitle(Long movieId, Long subtitleId, Subtitle updatedSubtitle) {
         subtitleRepository.callUpdateSubtitle(
@@ -70,7 +60,7 @@ public class MovieService extends BaseService<Movie, Long> {
                 updatedSubtitle.getSubtitleLocation()
         );
 
-        return getSubtitle(movieId, subtitleId);
+        return subtitleRepository.findById(subtitleId).orElseThrow(() -> new RuntimeException("Subtitle not found"));
     }
 
     public void deleteSubtitle(Long movieId, Long subtitleId) {
@@ -92,12 +82,12 @@ public class MovieService extends BaseService<Movie, Long> {
 
     @Transactional
     public Info addInfoMovie(Long movieId, Info info) {
-        infoMovieRepository.callAddInfoMovie(
+        long infoId = infoMovieRepository.callAddInfoMovie(
                 movieId,
                 info.getDescription(),
                 info.getType().toString()
         );
-        return info;
+        return infoRepository.findById(infoId).orElseThrow(() -> new RuntimeException("Info not found"));
     }
 
     public void deleteInfoMovie(Long movieId, Long infoId) {
