@@ -102,32 +102,6 @@ BEGIN
     RAISE NOTICE 'Subtitle successfully updated for id %', p_subtitle_id;
 END;
 $$;
---
--- CREATE OR REPLACE PROCEDURE add_info_movie(
---     p_movie_id BIGINT,
---     p_info_description varchar(255),
---     p_info_type varchar(255)
--- )
---     LANGUAGE plpgsql
--- AS $$
--- DECLARE
---     v_info_id BIGINT;
--- BEGIN
---     IF NOT EXISTS (SELECT 1 FROM public.movie WHERE movie_id = p_movie_id) THEN
---         RAISE EXCEPTION 'Movie with id % does not exist', p_movie_id;
---     END IF;
---
---     INSERT INTO public.info (description, type)
---     VALUES (p_info_description, p_info_type)
---     RETURNING info_id INTO v_info_id;
---
---     INSERT INTO public.infomovie (info_id, movie_id)
---     VALUES (v_info_id, p_movie_id);
---
---     RAISE NOTICE 'InfoMovie successfully added for movie id % with info id %', p_movie_id, v_info_id;
--- END;
--- $$;
-
 
 CREATE OR REPLACE PROCEDURE add_info_movie(
     p_movie_id BIGINT,
@@ -156,24 +130,6 @@ BEGIN
 END;
 $$;
 
--- CREATE OR REPLACE PROCEDURE add_subtitle(
---     p_movie_id BIGINT,
---     p_language VARCHAR(255),
---     p_subtitle_location VARCHAR(255)
--- )
---     LANGUAGE plpgsql
--- AS $$
--- BEGIN
---     IF NOT EXISTS (SELECT 1 FROM public.movie WHERE movie_id = p_movie_id) THEN
---         RAISE EXCEPTION 'Movie not found with ID: %', p_movie_id;
---     END IF;
---
---     INSERT INTO public.subtitle (language, subtitle_location, movie_id)
---     VALUES (p_language, p_subtitle_location, p_movie_id);
---
---     RAISE NOTICE 'Subtitle added successfully  movie ID: %', p_movie_id;
--- END;
--- $$;
 
 CREATE OR REPLACE PROCEDURE add_subtitle(
     p_movie_id BIGINT,
@@ -196,3 +152,59 @@ BEGIN
 END;
 $$;
 
+CREATE OR REPLACE PROCEDURE delete_info_movie(
+    p_movie_id BIGINT,
+    p_info_id BIGINT
+)
+    LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1
+        FROM public.infomovie
+        WHERE movie_id = p_movie_id AND info_id = p_info_id
+    ) THEN
+        RAISE EXCEPTION 'InfoMovie not found for movie_id: %, info_id: %', p_movie_id, p_info_id;
+    END IF;
+
+    DELETE FROM public.infomovie
+    WHERE movie_id = p_movie_id AND info_id = p_info_id;
+
+    IF NOT EXISTS (
+        SELECT 1
+        FROM public.info
+        WHERE info_id = p_info_id
+    ) THEN
+        RAISE EXCEPTION 'Info not found for info_id: %', p_info_id;
+    END IF;
+
+    DELETE FROM public.info
+    WHERE info_id = p_info_id;
+END;
+$$;
+
+CREATE OR REPLACE PROCEDURE update_info_movie(
+    p_movie_id BIGINT,
+    p_info_id BIGINT,
+    p_description VARCHAR(255),
+    p_type VARCHAR(255)
+)
+    LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1
+        FROM public.infomovie
+        WHERE movie_id = p_movie_id AND info_id = p_info_id
+    ) THEN
+        RAISE EXCEPTION 'InfoMovie not found for movie_id: %, info_id: %', p_movie_id, p_info_id;
+    END IF;
+
+    UPDATE public.info
+    SET description = p_description,
+        type = p_type
+    WHERE info_id = p_info_id;
+
+    RAISE NOTICE 'InfoMovie updated successfully for movie_id: %, info_id: %', p_movie_id, p_info_id;
+END;
+$$;

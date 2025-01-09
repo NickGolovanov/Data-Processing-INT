@@ -23,4 +23,20 @@ public interface InfoMovieRepository extends JpaRepository<InfoMovie, Long>
             @Param("p_info_description") String infoDescription,
             @Param("p_info_type") String infoType
     );
+
+    @Modifying
+    @Query(value = "CALL delete_info_movie(:p_movie_id, :p_info_id)", nativeQuery = true)
+    void callDeleteInfoMovie(
+            @Param("p_movie_id") Long movieId,
+            @Param("p_info_id") Long infoId
+    );
+
+    @Modifying
+    @Query(value = "CALL update_info_movie(:p_info_movie_id, :p_movie_id, :p_info_description, :p_info_type)", nativeQuery = true)
+    void callUpdateInfoMovie(
+            @Param("p_info_movie_id") Long infoMovieId,
+            @Param("p_movie_id") Long movieId,
+            @Param("p_info_description") String infoDescription,
+            @Param("p_info_type") String infoType
+    );
 }

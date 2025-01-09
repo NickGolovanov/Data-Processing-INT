@@ -47,9 +47,6 @@ public class MovieService extends BaseService<Movie, Long> {
 
     public Subtitle getSubtitle(Long movieId, Long subtitleId) {
         return subtitleRepository.findBySubtitleId_MovieId(movieId, subtitleId);
-//        return subtitleRepository.findById(subtitleId)
-//                .filter(subtitle -> subtitle.getMovie().getMovieId().equals(movieId))
-//                .orElseThrow(() -> new RuntimeException("Subtitle not found for Movie ID: " + movieId));
     }
 
     @Transactional
@@ -92,25 +89,23 @@ public class MovieService extends BaseService<Movie, Long> {
     }
 
     public void deleteInfoMovie(Long movieId, Long infoId) {
-        InfoMovie infoMovie = infoMovieRepository.findByMovie_MovieIdAndInfo_InfoId(movieId, infoId)
-                .orElseThrow(() -> new RuntimeException("InfoMovie not found"));
-        infoMovieRepository.delete(infoMovie);
-        Info info = infoRepository.findById(infoId).orElseThrow(() -> new RuntimeException("Info wast not found in database"));
-        infoRepository.delete(info);
+//        InfoMovie infoMovie = infoMovieRepository.findByMovie_MovieIdAndInfo_InfoId(movieId, infoId)
+//                .orElseThrow(() -> new RuntimeException("InfoMovie not found"));
+//        infoMovieRepository.delete(infoMovie);
+//        Info info = infoRepository.findById(infoId).orElseThrow(() -> new RuntimeException("Info wast not found in database"));
+//        infoRepository.delete(info);
+        infoMovieRepository.callDeleteInfoMovie(movieId, infoId);
     }
 
     @Transactional
-    public InfoMovie updateInfoMovie(Long movieId, Long infoId, Info updatedInfo) {
-        InfoMovie infoMovie = infoMovieRepository.findByMovie_MovieIdAndInfo_InfoId(movieId, infoId)
-                .orElseThrow(() -> new RuntimeException("InfoMovie not found"));
+    public Info updateInfoMovie(Long movieId, Long infoId, Info updatedInfo) {
+        infoMovieRepository.callUpdateInfoMovie(
+                infoId,
+                movieId,
+                updatedInfo.getDescription(),
+                updatedInfo.getType().toString()
+        );
 
-        Info info = infoMovie.getInfo();
-
-        info.setDescription(updatedInfo.getDescription());
-        info.setType(updatedInfo.getType());
-
-        infoRepository.save(info);
-
-        return infoMovie;
+        return infoRepository.findById(infoId).orElseThrow(() -> new RuntimeException("InfoMovie not found"));
     }
 }

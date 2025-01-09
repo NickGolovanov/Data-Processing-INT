@@ -74,5 +74,6 @@ PATCH localhost:8080/movie/1/info-movie/1
 Content-Type: application/json
 
 {
-    "description": "I am updated"
+  "description": "I am updated",
+  "type": "CLASSIFICATION"
 }
