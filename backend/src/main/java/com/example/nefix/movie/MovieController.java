@@ -93,7 +93,6 @@ public class MovieController extends BaseController<Movie, Long> {
     public ResponseEntity<?> deleteInfoMovie(@PathVariable Long movieId, @PathVariable Long infoId) {
 
         try {
-
             ((MovieService) service).deleteInfoMovie(movieId, infoId);
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
@@ -105,7 +104,6 @@ public class MovieController extends BaseController<Movie, Long> {
     public ResponseEntity<?> updateInfoMovie(@PathVariable Long movieId, @PathVariable Long infoId, @RequestBody Info updatedInfo) {
 
         try {
-
             return ResponseEntity.ok(((MovieService) service).updateInfoMovie(movieId, infoId, updatedInfo));
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body(e.getMessage());

@@ -10,51 +10,70 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/profile")
-public class ProfileController extends BaseController<Profile, Long>
-{
+public class ProfileController extends BaseController<Profile, Long> {
     private ProfileService profileService;
-    public ProfileController(ProfileService service)
-    {
+
+    public ProfileController(ProfileService service) {
         super(service);
     }
 
     @GetMapping("/{profileId}/watch-list")
-    public ResponseEntity<List<WatchList>> getWatchListByProfileId(@PathVariable Long profileId)
-    {
-        return ResponseEntity.ok(((ProfileService) service).getWatchListByProfileId(profileId));
+    public ResponseEntity<?> getWatchListByProfileId(@PathVariable Long profileId) {
+        try {
+            return ResponseEntity.ok(((ProfileService) service).getWatchListByProfileId(profileId));
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
     }
 
     @PostMapping("/{profileId}/watch-list")
-    public ResponseEntity<WatchList> addToWatchList(@PathVariable Long profileId, @RequestBody WatchList watchList)
-    {
-        Profile profile = ((ProfileService) service).findById(profileId).orElseThrow(() -> new RuntimeException("Profile with ID " + profileId + " not found"));
-        watchList.setProfile(profile);
-        return ResponseEntity.ok(((ProfileService) service).addToWatchList(watchList));
+    public ResponseEntity<?> addToWatchList(@PathVariable Long profileId, @RequestBody WatchList watchList) {
+        try {
+            Profile profile = ((ProfileService) service).findById(profileId).orElseThrow(() -> new RuntimeException("Profile with ID " + profileId + " not found"));
+            watchList.setProfile(profile);
+            return ResponseEntity.ok(((ProfileService) service).addToWatchList(watchList));
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
     }
 
     @GetMapping("/{profileId}/watch-list/movies")
-    public ResponseEntity<List<WatchList>> getWatchListProfileMovies(@PathVariable Long profileId)
-    {
-        return ResponseEntity.ok(((ProfileService) service).getWatchListProfileMovies(profileId));
+    public ResponseEntity<?> getWatchListProfileMovies(@PathVariable Long profileId) {
+        try {
+            return ResponseEntity.ok(((ProfileService) service).getWatchListProfileMovies(profileId));
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{profileId}/watch-list/movie/{movieId}")
-    public ResponseEntity<Void> deleteFromWatchList(@PathVariable Long profileId, @PathVariable Long movieId)
-    {
-        ((ProfileService) service).deleteMovieFromWatchList(profileId, movieId);
+    public ResponseEntity<?> deleteFromWatchList(@PathVariable Long profileId, @PathVariable Long movieId) {
+        try {
+            ((ProfileService) service).deleteMovieFromWatchList(profileId, movieId);
 
-        return ResponseEntity.noContent().build();
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
     }
 
     @PostMapping("/{profileId}/preferences")
-    public ResponseEntity<Profile> createOrUpdatePreferences(@RequestBody ProfilePreferencesDto requestDto) {
-        Profile updatedProfile = profileService.createOrUpdatePreferences(requestDto);
-        return ResponseEntity.ok(updatedProfile);
+    public ResponseEntity<?> createOrUpdatePreferences(@RequestBody ProfilePreferencesDto requestDto) {
+        try {
+            Profile updatedProfile = profileService.createOrUpdatePreferences(requestDto);
+            return ResponseEntity.ok(updatedProfile);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
     }
 
     @GetMapping("/{profileId}/preferences")
-    public ResponseEntity<Preference> getPreferences(@PathVariable Long profileId) {
-        Preference preference = profileService.getPreferences(profileId);
-        return ResponseEntity.ok(preference);
+    public ResponseEntity<?> getPreferences(@PathVariable Long profileId) {
+        try {
+            Preference preference = profileService.getPreferences(profileId);
+            return ResponseEntity.ok(preference);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
     }
 }

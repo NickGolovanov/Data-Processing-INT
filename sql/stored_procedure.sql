@@ -208,3 +208,58 @@ BEGIN
     RAISE NOTICE 'InfoMovie updated successfully for movie_id: %, info_id: %', p_movie_id, p_info_id;
 END;
 $$;
+
+
+CREATE OR REPLACE PROCEDURE create_or_update_preferences(
+    p_profile_id BIGINT,
+    p_preference_id BIGINT
+)
+    LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM public.profile WHERE profile_id = p_profile_id
+    ) THEN
+        RAISE EXCEPTION 'Profile not found with ID: %', p_profile_id;
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1 FROM public.preference WHERE preference_id = p_preference_id
+    ) THEN
+        RAISE EXCEPTION 'Preference not found with ID: %', p_preference_id;
+    END IF;
+
+    UPDATE public.profile
+    SET preference_id = p_preference_id
+    WHERE profile_id = p_profile_id;
+
+    RAISE NOTICE 'Profile ID % updated with Preference ID %', p_profile_id, p_preference_id;
+END;
+$$;
+
+CREATE OR REPLACE PROCEDURE get_preferences(
+    p_profile_id BIGINT,
+    p_profile_name VARCHAR,
+    OUT p_preference_id BIGINT
+)
+    LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM public.profile WHERE profile_id = p_profile_id
+    ) THEN
+        RAISE EXCEPTION 'Profile not found with ID: %', p_profile_id;
+    END IF;
+
+    SELECT preference_id, profile_name
+    INTO p_preference_id, p_profile_name
+    FROM public.profile
+    WHERE profile_id = p_profile_id;
+
+    IF p_preference_id IS NULL THEN
+        RAISE EXCEPTION 'No preference set for profile with ID: %', p_profile_id;
+    END IF;
+
+    RAISE NOTICE 'Retrieved Preference ID % for Profile ID %', p_preference_id, p_profile_id;
+END;
+$$;
