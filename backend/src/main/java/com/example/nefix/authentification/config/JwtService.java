@@ -18,13 +18,16 @@ import java.util.function.Function;
 @Service
 public class JwtService
 {
-    private static final String SECRET_KEY;
+    private final String SECRET_KEY;
 
-    static {
-        SECRET_KEY = System.getenv("SECRET_KEY");
-        if (SECRET_KEY == null || SECRET_KEY.isEmpty()) {
-            throw new IllegalStateException("SECRET_KEY environment variable is not set or empty");
+    public JwtService(@Value("${secret.key}") String secretKey)
+    {
+        if (secretKey == null || secretKey.isEmpty())
+        {
+            throw new IllegalStateException("SECRET_KEY property is not set or empty in .env");
         }
+        System.out.println("Secret key: " + secretKey);
+        this.SECRET_KEY = secretKey;
     }
 
     public String extractUsername(String token)

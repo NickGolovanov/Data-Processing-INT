@@ -21,14 +21,6 @@ public class AuthenticationService
 
     public AuthenticationResponse register(RegisterRequest request)
     {
-//        User user = User.builder()
-//                .firstname(request.getFirstname())
-//                .lastname(request.getLastname())
-//                .email(request.getEmail())
-//                .password(this.passwordEncoder.encode(request.getPassword()))
-//                .role(Role.USER)
-//                .build();
-
         Account account = new Account();
         account.setEmail(request.getEmail());
         account.setPassword(this.passwordEncoder.encode(request.getPassword()));
@@ -45,7 +37,7 @@ public class AuthenticationService
     {
         this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken
                 (request.getEmail(),
-                 request.getPassword()
+                        request.getPassword()
                 ));
         Account account = repository.findByEmail(request.getEmail()).orElseThrow(() -> new RuntimeException("Account not found"));
         String jwtToken = jwtService.generateToken(account);
