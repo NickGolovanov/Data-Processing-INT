@@ -37,6 +37,18 @@ services:
     labels:
       org.springframework.boot.service-connection: db
 
+  flyway:
+    image: flyway/flyway:latest
+    depends_on:
+      - app
+    volumes:
+      - ./db/migration:/flyway/sql
+    environment:
+      FLYWAY_URL: jdbc:postgresql://db:5432/${POSTGRES_DATABASE}
+      FLYWAY_USER: ${POSTGRES_USER}
+      FLYWAY_PASSWORD: ${POSTGRES_PASSWORD}
+    entrypoint: ["/bin/sh", "-c", "sleep 10 && flyway migrate"]
+#    command: migrate
   # add this for simplicity and easy access to the database
   pgadmin:
     image: dpage/pgadmin4
@@ -44,7 +56,7 @@ services:
     ports:
       - '8888:80'
     environment:
-      PGADMIN_DEFAULT_EMAIL: com.example.nefix.authentification.user-name@domain-name.com
+      PGADMIN_DEFAULT_EMAIL: user-name@domain-name.com
       PGADMIN_DEFAULT_PASSWORD: strong-password
     volumes:
       - pgadmin-data:/var/lib/pgadmin

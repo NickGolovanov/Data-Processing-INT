@@ -33,21 +33,21 @@ SELECT
     b.date_of_expire
 FROM public.blocked_account b
          LEFT JOIN public.account a ON b.account_id = a.accountid;
-
-CREATE OR REPLACE VIEW view_movie_info AS
-SELECT
-    m.movie_id,
-    m.title,
-    m.hd,
-    m.sd,
-    m.uhd,
-    m.duration,
-    m.views,
-    i.description AS info_description
-FROM public.movie m
-         LEFT JOIN public.infomovie im ON m.movie_id = im.movieid
-         LEFT JOIN public.info i ON im.info_id = i.info_id;
-
+--
+-- CREATE OR REPLACE VIEW view_movie_info AS
+-- SELECT
+--     m.movie_id,
+--     m.title,
+--     m.hd,
+--     m.sd,
+--     m.uhd,
+--     m.duration,
+--     m.views,
+--     i.description AS info_description
+-- FROM public.movie m
+--          LEFT JOIN public.infomovie im ON m.movie_id = im.movieid
+--          LEFT JOIN public.info i ON im.info_id = i.info_id;
+--
 CREATE OR REPLACE VIEW view_season_episodes AS
 SELECT
     sn.season_id,

@@ -33,11 +33,11 @@ public class Profile
     @JsonIgnoreProperties({"profile", "episode", "movie"})
     private Set<LiveInfo> liveInfos = new HashSet<>();
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "preference_id", nullable = true)
-    @JsonProperty("preferenceId")
-    @JsonIgnoreProperties({"profile"})
-    private Preference preference;
+//    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+//    @JoinColumn(name = "preference_id", nullable = true)
+//    @JsonProperty("preferenceId")
+//    @JsonIgnoreProperties({"profile"})
+//    private Preference preference;
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties({"profile", "series", "movie"})
