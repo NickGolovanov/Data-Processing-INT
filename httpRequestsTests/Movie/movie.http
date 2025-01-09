@@ -38,7 +38,7 @@ Content-Type: application/json
 DELETE localhost:8080/movie/1/subtitle/1
 
 ### Update movie subtitles
-PUT localhost:8080/movie/1/subtitle/10
+PUT localhost:8080/movie/1/subtitle/1
 Content-Type: application/json
 
 {

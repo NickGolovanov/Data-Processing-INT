@@ -16,6 +16,11 @@ public interface SubtitleRepository extends JpaRepository<Subtitle, Long>
 
     List<Subtitle> findAllByEpisode_EpisodeId(Long episodeId);
 
+    Subtitle findByMovie_MovieIdAndLanguage(Long movieMovieId, String language);
+
+    @Query(value = "SELECT 1 FROM subtitle WHERE movie_id = :movieId and subtitle_id = :subtitleId", nativeQuery = true)
+    Subtitle findBySubtitleId_MovieId(@Param("movieId") Long movieId, @Param("subtitleId") Long subtitleId);
+
     @Modifying
     @Query(value = "CALL update_subtitle(:subtitle_id, :movie_id, :subtitle_language, :subtitle_location)", nativeQuery = true)
     void callUpdateSubtitle(
@@ -30,5 +35,5 @@ public interface SubtitleRepository extends JpaRepository<Subtitle, Long>
     long callAddSubtitle(@Param("movieId") Long movieId,
                          @Param("subtitleLanguage") String subtitleLanguage,
                          @Param("subtitleLocation") String subtitleLocation);
-    Subtitle findByMovie_MovieIdAndLanguage(Long movieMovieId, String language);
+
 }

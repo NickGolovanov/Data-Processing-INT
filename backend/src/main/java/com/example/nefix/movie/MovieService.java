@@ -46,9 +46,10 @@ public class MovieService extends BaseService<Movie, Long> {
     }
 
     public Subtitle getSubtitle(Long movieId, Long subtitleId) {
-        return subtitleRepository.findById(subtitleId)
-                .filter(subtitle -> subtitle.getMovie().getMovieId().equals(movieId))
-                .orElseThrow(() -> new RuntimeException("Subtitle not found for Movie ID: " + movieId));
+        return subtitleRepository.findBySubtitleId_MovieId(movieId, subtitleId);
+//        return subtitleRepository.findById(subtitleId)
+//                .filter(subtitle -> subtitle.getMovie().getMovieId().equals(movieId))
+//                .orElseThrow(() -> new RuntimeException("Subtitle not found for Movie ID: " + movieId));
     }
 
     @Transactional
