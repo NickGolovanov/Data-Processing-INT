@@ -3,6 +3,7 @@ package com.example.nefix.profile;
 import com.example.nefix.genrealization.controller.BaseController;
 import com.example.nefix.preference.Preference;
 import com.example.nefix.watchlist.WatchList;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,7 +59,7 @@ public class ProfileController extends BaseController<Profile, Long> {
     }
 
     @PostMapping("/{profileId}/preferences")
-    public ResponseEntity<?> createOrUpdatePreferences(@RequestBody ProfilePreferencesDto requestDto) {
+    public ResponseEntity<?> createOrUpdatePreferences(@Valid @RequestBody ProfilePreferencesDto requestDto) {
         try {
             Profile updatedProfile = profileService.createOrUpdatePreferences(requestDto);
             return ResponseEntity.ok(updatedProfile);

@@ -5,6 +5,7 @@ import com.example.nefix.blockedaccount.BlockedAccount;
 import com.example.nefix.genrealization.controller.BaseController;
 import com.example.nefix.referraldiscount.ReferralDiscount;
 import com.example.nefix.subscription.Subscription;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ public class AccountController extends BaseController<Account, Long>
     public ResponseEntity<?> addSubscription(
             @PathVariable Long accountId,
             @PathVariable Long subscriptionId,
-            @RequestBody AccountSubscriptionRequestDto requestDto) {
+            @Valid @RequestBody AccountSubscriptionRequestDto requestDto) {
         try {
              AccountSubscription accountSubscription = accountService.addSubscription(accountId, subscriptionId, requestDto);
             return ResponseEntity.status(HttpStatus.CREATED).body(accountSubscription);
@@ -42,7 +43,7 @@ public class AccountController extends BaseController<Account, Long>
     public ResponseEntity<?> updateSubscription(
             @PathVariable Long accountId,
             @PathVariable Long subscriptionId,
-            @RequestBody AccountSubscriptionRequestDto requestDto) {
+            @Valid @RequestBody AccountSubscriptionRequestDto requestDto) {
         try {
             // Call service to update the subscription
             AccountSubscription updatedAccountSubscription = accountService.updateSubscription(accountId, subscriptionId, requestDto);
@@ -71,7 +72,7 @@ public class AccountController extends BaseController<Account, Long>
     @PostMapping("/{accountId}/block")
     public ResponseEntity<BlockedAccount> blockAccount(
             @PathVariable Long accountId,
-            @RequestBody BlockedAccountRequestDto requestDto) {
+            @Valid @RequestBody BlockedAccountRequestDto requestDto) {
         BlockedAccount blockedAccount = accountService.blockAccount(accountId, requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(blockedAccount);
     }
@@ -85,7 +86,7 @@ public class AccountController extends BaseController<Account, Long>
     @PostMapping("/{accountId}/referralDiscount")
     public ResponseEntity<ReferralDiscount> addReferralDiscount(
             @PathVariable Long accountId,
-            @RequestBody ReferralDiscountRequestDto requestDto) {
+            @Valid @RequestBody ReferralDiscountRequestDto requestDto) {
         try {
             ReferralDiscount referralDiscount = accountService.addReferralDiscount(accountId, requestDto);
             return ResponseEntity.status(HttpStatus.CREATED).body(referralDiscount);

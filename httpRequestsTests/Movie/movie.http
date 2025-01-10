@@ -29,7 +29,6 @@ POST localhost:8080/movie/1/subtitle
 Content-Type: application/json
 
 {
-    "language": "English",
     "subtitleLocation": "http://example.com/subtitle.srt",
     "movieId": 1
 }
