@@ -3,6 +3,7 @@ package com.example.nefix.accountsubscription;
 import com.example.nefix.account.Account;
 import com.example.nefix.subscription.Subscription;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -28,12 +29,14 @@ public class AccountSubscription
     @MapsId("accountId")
     @JoinColumn(name = "account_id", insertable = false, updatable = false)
     @JsonProperty("accountId")
+    @JsonIgnoreProperties("subscriptions")
     private Account account;
 
     @ManyToOne
     @MapsId("subscriptionId")
     @JoinColumn(name = "subscription_id", insertable = false, updatable = false)
     @JsonProperty("subscriptionId")
+    @JsonIgnoreProperties("accounts")
     private Subscription subscription;
 
     @JsonProperty("dateOfPurchase")

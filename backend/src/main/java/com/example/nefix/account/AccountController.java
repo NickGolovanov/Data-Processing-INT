@@ -33,13 +33,13 @@ public class AccountController extends BaseController<Account, Long>
              AccountSubscription accountSubscription = accountService.addSubscription(accountId, subscriptionId, requestDto);
             return ResponseEntity.status(HttpStatus.CREATED).body(accountSubscription);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
     // PATCH endpoint to update the subscription
     @PatchMapping("/{accountId}/subscription/{subscriptionId}")
-    public ResponseEntity<AccountSubscription> updateSubscription(
+    public ResponseEntity<?> updateSubscription(
             @PathVariable Long accountId,
             @PathVariable Long subscriptionId,
             @RequestBody AccountSubscriptionRequestDto requestDto) {
@@ -50,12 +50,12 @@ public class AccountController extends BaseController<Account, Long>
             return ResponseEntity.status(HttpStatus.OK).body(updatedAccountSubscription);
         } catch (RuntimeException e) {
             // If account or subscription is not found, return 404
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
     @DeleteMapping("/{accountId}/subscription/{subscriptionId}")
-    public ResponseEntity<Void> deleteSubscription(
+    public ResponseEntity<?> deleteSubscription(
             @PathVariable Long accountId,
             @PathVariable Long subscriptionId) {
         try {
@@ -64,7 +64,7 @@ public class AccountController extends BaseController<Account, Long>
             return ResponseEntity.noContent().build();
         } catch (RuntimeException e) {
             // Handle case when Account or Subscription is not found
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 

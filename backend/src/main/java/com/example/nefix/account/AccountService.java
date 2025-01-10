@@ -66,82 +66,87 @@ public class AccountService extends BaseService<Account, Long> {
 
     @Transactional
     public AccountSubscription addSubscription(Long accountId, Long subscriptionId, AccountSubscriptionRequestDto requestDto) {
-        // Fetch Account
-        Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new RuntimeException("Account not found with ID: " + accountId));
-
-        // Fetch Subscription
-        Subscription subscription = subscriptionRepository.findById(subscriptionId)
-                .orElseThrow(() -> new RuntimeException("Subscription not found with ID: " + subscriptionId));
-
-        // Create AccountSubscriptionId
-        AccountSubscriptionId accountSubscriptionId = new AccountSubscriptionId(accountId, subscriptionId);
-
-        // Create and Populate AccountSubscription
-        AccountSubscription accountSubscription = new AccountSubscription(
-                accountSubscriptionId,
-                account,
-                subscription,
-                requestDto.getDateOfPurchase(),
-                requestDto.getDateOfExpire()
-        );
-
-        // Save and Return
-        return accountSubscriptionRepository.save(accountSubscription);
+//        // Fetch Account
+//        Account account = accountRepository.findById(accountId)
+//                .orElseThrow(() -> new RuntimeException("Account not found with ID: " + accountId));
+//
+//        // Fetch Subscription
+//        Subscription subscription = subscriptionRepository.findById(subscriptionId)
+//                .orElseThrow(() -> new RuntimeException("Subscription not found with ID: " + subscriptionId));
+//
+//        // Create AccountSubscriptionId
+//        AccountSubscriptionId accountSubscriptionId = new AccountSubscriptionId(accountId, subscriptionId);
+//
+//        // Create and Populate AccountSubscription
+//        AccountSubscription accountSubscription = new AccountSubscription(
+//                accountSubscriptionId,
+//                account,
+//                subscription,
+//                requestDto.getDateOfPurchase(),
+//                requestDto.getDateOfExpire()
+//        );
+//        accountSubscriptionRepository.save(accountSubscription);
+//        // Save and ReturnV
+//        return accountSubscription.getSubscription();
+        accountSubscriptionRepository.callAddSubscription(accountId, subscriptionId, requestDto.getDateOfPurchase(), requestDto.getDateOfExpire());
+        return  accountSubscriptionRepository.getByAccount_AccountIdAndSubscription_SubscriptionId(accountId,subscriptionId);
     }
 
     // Method to update an existing subscription for the account
     @Transactional
     public AccountSubscription updateSubscription(Long accountId, Long subscriptionId, AccountSubscriptionRequestDto requestDto) {
-        // Fetch Account
-        Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new RuntimeException("Account not found with ID: " + accountId));
-
-        // Fetch Subscription
-        Subscription subscription = subscriptionRepository.findById(subscriptionId)
-                .orElseThrow(() -> new RuntimeException("Subscription not found with ID: " + subscriptionId));
-
-        // Fetch existing AccountSubscription
-        AccountSubscriptionId accountSubscriptionId = new AccountSubscriptionId(accountId, subscriptionId);
-        AccountSubscription existingAccountSubscription = accountSubscriptionRepository.findById(accountSubscriptionId)
-                .orElseThrow(() -> new RuntimeException("AccountSubscription not found with the given account and subscription IDs"));
-
-        // Update fields from the request DTO
-        if (requestDto.getDateOfPurchase() != null) {
-            existingAccountSubscription.setDateOfPurchase(requestDto.getDateOfPurchase());
-        }
-        if (requestDto.getDateOfExpire() != null) {
-            existingAccountSubscription.setDateOfExpire(requestDto.getDateOfExpire());
-        }
-        // Additional updates can be added here, like renewal preferences or subscription type
-        // For example:
-//         existingAccountSubscription.setRenewalPreference(requestDto.getRenewalPreference());
-
-        // Save updated AccountSubscription entity
-        return accountSubscriptionRepository.save(existingAccountSubscription);
+//        // Fetch Account
+//        Account account = accountRepository.findById(accountId)
+//                .orElseThrow(() -> new RuntimeException("Account not found with ID: " + accountId));
+//
+//        // Fetch Subscription
+//        Subscription subscription = subscriptionRepository.findById(subscriptionId)
+//                .orElseThrow(() -> new RuntimeException("Subscription not found with ID: " + subscriptionId));
+//
+//        // Fetch existing AccountSubscription
+//        AccountSubscriptionId accountSubscriptionId = new AccountSubscriptionId(accountId, subscriptionId);
+//        AccountSubscription existingAccountSubscription = accountSubscriptionRepository.findById(accountSubscriptionId)
+//                .orElseThrow(() -> new RuntimeException("AccountSubscription not found with the given account and subscription IDs"));
+//
+//        // Update fields from the request DTO
+//        if (requestDto.getDateOfPurchase() != null) {
+//            existingAccountSubscription.setDateOfPurchase(requestDto.getDateOfPurchase());
+//        }
+//        if (requestDto.getDateOfExpire() != null) {
+//            existingAccountSubscription.setDateOfExpire(requestDto.getDateOfExpire());
+//        }
+//        // Additional updates can be added here, like renewal preferences or subscription type
+//        // For example:
+////         existingAccountSubscription.setRenewalPreference(requestDto.getRenewalPreference());
+//
+//        // Save updated AccountSubscription entity
+//        return accountSubscriptionRepository.save(existingAccountSubscription);
+        accountSubscriptionRepository.callUpdateSubscription(accountId, subscriptionId, requestDto.getDateOfPurchase(), requestDto.getDateOfExpire());
+        return accountSubscriptionRepository.getByAccount_AccountIdAndSubscription_SubscriptionId(accountId, subscriptionId);
     }
 
 
     @Transactional
     public void deleteSubscription(Long accountId, Long subscriptionId) {
         // Fetch Account
-        Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new RuntimeException("Account not found with ID: " + accountId));
-
-        // Fetch Subscription
-        Subscription subscription = subscriptionRepository.findById(subscriptionId)
-                .orElseThrow(() -> new RuntimeException("Subscription not found with ID: " + subscriptionId));
-
-        // Fetch existing AccountSubscription using composite key
-        AccountSubscriptionId accountSubscriptionId = new AccountSubscriptionId(accountId, subscriptionId);
-        AccountSubscription accountSubscription = accountSubscriptionRepository.findById(accountSubscriptionId)
-                .orElseThrow(() -> new RuntimeException("AccountSubscription not found for the given account and subscription IDs"));
-
-        // Cleanup (if necessary)
-        // Example: Validate or check if there are any dependencies before deletion
-
-        // Delete the AccountSubscription
-        accountSubscriptionRepository.delete(accountSubscription);
+//        Account account = accountRepository.findById(accountId)
+//                .orElseThrow(() -> new RuntimeException("Account not found with ID: " + accountId));
+//
+//        // Fetch Subscription
+//        Subscription subscription = subscriptionRepository.findById(subscriptionId)
+//                .orElseThrow(() -> new RuntimeException("Subscription not found with ID: " + subscriptionId));
+//
+//        // Fetch existing AccountSubscription using composite key
+//        AccountSubscriptionId accountSubscriptionId = new AccountSubscriptionId(accountId, subscriptionId);
+//        AccountSubscription accountSubscription = accountSubscriptionRepository.findById(accountSubscriptionId)
+//                .orElseThrow(() -> new RuntimeException("AccountSubscription not found for the given account and subscription IDs"));
+//
+//        // Cleanup (if necessary)
+//        // Example: Validate or check if there are any dependencies before deletion
+//
+//        // Delete the AccountSubscription
+//        accountSubscriptionRepository.delete(accountSubscription);
+        accountSubscriptionRepository.callDeleteSubscription(accountId, subscriptionId);
     }
 
     public BlockedAccount blockAccount(Long accountId, BlockedAccountRequestDto requestDto) {

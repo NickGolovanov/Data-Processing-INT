@@ -333,3 +333,110 @@ BEGIN
         p_account_id, p_subscription_id;
 END;
 $$;
+
+
+CREATE OR REPLACE PROCEDURE add_subscription(
+    IN p_account_id BIGINT,
+    IN p_subscription_id BIGINT,
+    IN p_date_of_purchase DATE,
+    IN p_date_of_expire DATE,
+    OUT p_returned_subscription_id BIGINT
+)
+    LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM public.account WHERE accountid = p_account_id) THEN
+        RAISE EXCEPTION 'Account not found with ID: %', p_account_id;
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM public.subscription WHERE subscription_id = p_subscription_id) THEN
+        RAISE EXCEPTION 'Subscription not found with ID: %', p_subscription_id;
+    END IF;
+
+    INSERT INTO public.account_subscription (
+        account_id,
+        subscription_id,
+        date_of_purchase,
+        date_of_expire
+    )
+    VALUES (
+               p_account_id,
+               p_subscription_id,
+               p_date_of_purchase,
+               p_date_of_expire
+           )
+    RETURNING subscription_id INTO p_returned_subscription_id;
+
+    RAISE NOTICE 'Subscription added successfully for account ID: %, subscription ID: %', p_account_id, p_subscription_id;
+END;
+$$;
+
+CREATE OR REPLACE PROCEDURE delete_subscription(
+    IN p_account_id BIGINT,
+    IN p_subscription_id BIGINT
+)
+    LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM public.account WHERE accountid = p_account_id) THEN
+        RAISE EXCEPTION 'Account not found with ID: %', p_account_id;
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM public.subscription WHERE subscription_id = p_subscription_id) THEN
+        RAISE EXCEPTION 'Subscription not found with ID: %', p_subscription_id;
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1
+        FROM public.account_subscription
+        WHERE account_id = p_account_id AND subscription_id = p_subscription_id
+    ) THEN
+        RAISE EXCEPTION 'AccountSubscription not found for account ID: % and subscription ID: %', p_account_id, p_subscription_id;
+    END IF;
+
+    DELETE FROM public.account_subscription
+    WHERE account_id = p_account_id AND subscription_id = p_subscription_id;
+
+    RAISE NOTICE 'AccountSubscription deleted successfully for account ID: % and subscription ID: %', p_account_id, p_subscription_id;
+END;
+$$;
+
+CREATE OR REPLACE PROCEDURE update_subscription(
+    IN p_account_id BIGINT,
+    IN p_subscription_id BIGINT,
+    IN p_date_of_purchase DATE,
+    IN p_date_of_expire DATE
+)
+    LANGUAGE plpgsql
+AS $$
+BEGIN
+    -- Check if the account exists
+    IF NOT EXISTS (SELECT 1 FROM public.account WHERE accountid = p_account_id) THEN
+        RAISE EXCEPTION 'Account not found with ID: %', p_account_id;
+    END IF;
+
+    -- Check if the subscription exists
+    IF NOT EXISTS (SELECT 1 FROM public.subscription WHERE subscription_id = p_subscription_id) THEN
+        RAISE EXCEPTION 'Subscription not found with ID: %', p_subscription_id;
+    END IF;
+
+    -- Check if the AccountSubscription exists
+    IF NOT EXISTS (
+        SELECT 1
+        FROM public.account_subscription
+        WHERE account_id = p_account_id AND subscription_id = p_subscription_id
+    ) THEN
+        RAISE EXCEPTION 'AccountSubscription not found for account ID: % and subscription ID: %', p_account_id, p_subscription_id;
+    END IF;
+
+    -- Update the fields in account_subscription
+    UPDATE public.account_subscription
+    SET
+        date_of_purchase = COALESCE(p_date_of_purchase, date_of_purchase),
+        date_of_expire = COALESCE(p_date_of_expire, date_of_expire)
+    WHERE account_id = p_account_id AND subscription_id = p_subscription_id;
+
+    -- Raise a notice for successful update (optional for debugging)
+    RAISE NOTICE 'AccountSubscription updated successfully for account ID: % and subscription ID: %', p_account_id, p_subscription_id;
+END;
+$$;
