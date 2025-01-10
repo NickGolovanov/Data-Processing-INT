@@ -210,56 +210,126 @@ END;
 $$;
 
 
-CREATE OR REPLACE PROCEDURE create_or_update_preferences(
+CREATE OR REPLACE PROCEDURE add_preference_movie(
     p_profile_id BIGINT,
-    p_preference_id BIGINT
-)
-    LANGUAGE plpgsql
-AS $$
-BEGIN
-    IF NOT EXISTS (
-        SELECT 1 FROM public.profile WHERE profile_id = p_profile_id
-    ) THEN
-        RAISE EXCEPTION 'Profile not found with ID: %', p_profile_id;
-    END IF;
-
-    IF NOT EXISTS (
-        SELECT 1 FROM public.preference WHERE preference_id = p_preference_id
-    ) THEN
-        RAISE EXCEPTION 'Preference not found with ID: %', p_preference_id;
-    END IF;
-
-    UPDATE public.profile
-    SET preference_id = p_preference_id
-    WHERE profile_id = p_profile_id;
-
-    RAISE NOTICE 'Profile ID % updated with Preference ID %', p_profile_id, p_preference_id;
-END;
-$$;
-
-CREATE OR REPLACE PROCEDURE get_preferences(
-    p_profile_id BIGINT,
-    p_profile_name VARCHAR,
+    p_movie_id BIGINT,
     OUT p_preference_id BIGINT
 )
     LANGUAGE plpgsql
 AS $$
+DECLARE
+    v_movie_exists BOOLEAN;
+    v_profile_exists BOOLEAN;
 BEGIN
-    IF NOT EXISTS (
-        SELECT 1 FROM public.profile WHERE profile_id = p_profile_id
-    ) THEN
+    -- Check if the profile exists
+    SELECT EXISTS(SELECT 1 FROM public.profile WHERE profile_id = p_profile_id) INTO v_profile_exists;
+    IF NOT v_profile_exists THEN
         RAISE EXCEPTION 'Profile not found with ID: %', p_profile_id;
     END IF;
 
-    SELECT preference_id, profile_name
-    INTO p_preference_id, p_profile_name
-    FROM public.profile
-    WHERE profile_id = p_profile_id;
-
-    IF p_preference_id IS NULL THEN
-        RAISE EXCEPTION 'No preference set for profile with ID: %', p_profile_id;
+    -- Check if the movie exists
+    SELECT EXISTS(SELECT 1 FROM public.movie WHERE movie_id = p_movie_id) INTO v_movie_exists;
+    IF NOT v_movie_exists THEN
+        RAISE EXCEPTION 'Movie not found with ID: %', p_movie_id;
     END IF;
 
-    RAISE NOTICE 'Retrieved Preference ID % for Profile ID %', p_preference_id, p_profile_id;
+    -- Create a new preference
+    INSERT INTO public.preference (profile_id)
+    VALUES (p_profile_id)
+    RETURNING preference_id INTO p_preference_id;
+
+    -- Create a media preference for the movie
+    INSERT INTO public.mediapreferences (movie_id, preference_id)
+    VALUES (p_movie_id, p_preference_id);
+
+    RAISE NOTICE 'Preference added successfully with ID: %', p_preference_id;
+END;
+$$;
+
+CREATE OR REPLACE PROCEDURE delete_preference_movie(
+    p_preference_id BIGINT,
+    p_movie_id BIGINT
+)
+    LANGUAGE plpgsql
+AS $$
+BEGIN
+    DELETE FROM public.mediapreferences
+    WHERE movie_id = p_movie_id AND preference_id = p_preference_id;
+
+    DELETE FROM public.preference
+    WHERE preference_id = p_preference_id;
+
+    RAISE NOTICE 'Preference with ID % for movie ID % deleted successfully', p_preference_id, p_movie_id;
+END;
+$$;
+
+CREATE OR REPLACE PROCEDURE delete_preference_series(
+    p_preference_id BIGINT,
+    p_series_id BIGINT
+)
+    LANGUAGE plpgsql
+AS $$
+BEGIN
+    DELETE FROM public.mediapreferences
+    WHERE series_id = p_series_id AND preference_id = p_preference_id;
+
+    DELETE FROM public.preference
+    WHERE preference_id = p_preference_id;
+
+    RAISE NOTICE 'Preference with ID % for series ID % deleted successfully', p_preference_id, p_series_id;
+END;
+$$;
+
+CREATE OR REPLACE PROCEDURE add_account_subscription(
+    p_account_id BIGINT,
+    p_subscription_id BIGINT,
+    p_date_of_purchase DATE,
+    p_date_of_expire DATE
+)
+    LANGUAGE plpgsql
+AS $$
+BEGIN
+    -- Check if the account exists
+    IF NOT EXISTS (
+        SELECT 1
+        FROM public.account
+        WHERE accountid = p_account_id
+    ) THEN
+        RAISE EXCEPTION 'Account not found with ID: %', p_account_id;
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1
+        FROM public.subscription
+        WHERE subscription_id = p_subscription_id
+    ) THEN
+        RAISE EXCEPTION 'Subscription not found with ID: %', p_subscription_id;
+    END IF;
+
+    IF EXISTS (
+        SELECT 1
+        FROM public.account_subscription
+        WHERE account_id = p_account_id AND subscription_id = p_subscription_id
+    ) THEN
+        RAISE EXCEPTION 'Account already has this subscription: account_id = %, subscription_id = %',
+            p_account_id, p_subscription_id;
+    END IF;
+
+    INSERT INTO public.account_subscription (
+        account_id,
+        subscription_id,
+        date_of_purchase,
+        date_of_expire
+    )
+    VALUES (
+               p_account_id,
+               p_subscription_id,
+               p_date_of_purchase,
+               p_date_of_expire
+           );
+
+    -- Raise a notice for successful insertion
+    RAISE NOTICE 'Subscription added successfully for account_id: %, subscription_id: %',
+        p_account_id, p_subscription_id;
 END;
 $$;

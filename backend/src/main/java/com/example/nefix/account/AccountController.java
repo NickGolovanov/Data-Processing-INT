@@ -4,6 +4,7 @@ import com.example.nefix.accountsubscription.AccountSubscription;
 import com.example.nefix.blockedaccount.BlockedAccount;
 import com.example.nefix.genrealization.controller.BaseController;
 import com.example.nefix.referraldiscount.ReferralDiscount;
+import com.example.nefix.subscription.Subscription;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,13 +25,13 @@ public class AccountController extends BaseController<Account, Long>
     }
 
     @PostMapping("/{accountId}/subscription/{subscriptionId}")
-    public ResponseEntity<AccountSubscription> addSubscription(
+    public ResponseEntity<?> addSubscription(
             @PathVariable Long accountId,
             @PathVariable Long subscriptionId,
             @RequestBody AccountSubscriptionRequestDto requestDto) {
         try {
-            AccountSubscription accountSubscription = accountService.addSubscription(accountId, subscriptionId, requestDto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(accountSubscription);
+            Subscription subscription = accountService.addSubscription(accountId, subscriptionId, requestDto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(subscription);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }

@@ -17,8 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class PreferenceService extends BaseService<Preference, Long>
-{
+public class PreferenceService extends BaseService<Preference, Long> {
     @Autowired
     private ProfileRepository profileRepository;
     @Autowired
@@ -27,29 +26,30 @@ public class PreferenceService extends BaseService<Preference, Long>
     private MovieRepository movieRepository;
     @Autowired
     private MediaPreferencesRepository mediaPreferencesRepository;
+    @Autowired
+    private PreferenceRepository preferenceRepository;
 
-    public PreferenceService(PreferenceRepository repository)
-    {
+    public PreferenceService(PreferenceRepository repository) {
         super(repository);
     }
 
-    public Preference addPreferenceMovie(Long profileId, Long movieId)
-    {
-        Preference preference = new Preference();
-        Profile profile = profileRepository.findById(profileId).orElseThrow(() -> new RuntimeException("Profile not found with ID: " + profileId));
-        preference.setProfile(profile);
-        repository.save(preference);
-
-        MediaPreferences mediaPreferences = new MediaPreferences();
-
-        Movie movie = movieRepository.findById(movieId)
-                .orElseThrow(() -> new RuntimeException("Movie not found with ID: " + movieId));
-
-        mediaPreferences.setMovie(movie);
-        mediaPreferences.setPreference(preference);
-
-        mediaPreferencesRepository.save(mediaPreferences);
-        return preference;
+    public Preference addPreferenceMovie(Long profileId, Long movieId) {
+//        Preference preference = new Preference();
+//        Profile profile = profileRepository.findById(profileId).orElseThrow(() -> new RuntimeException("Profile not found with ID: " + profileId));
+//        preference.setProfile(profile);
+//        repository.save(preference);
+//
+//        MediaPreferences mediaPreferences = new MediaPreferences();
+//
+//        Movie movie = movieRepository.findById(movieId)
+//                .orElseThrow(() -> new RuntimeException("Movie not found with ID: " + movieId));
+//
+//        mediaPreferences.setMovie(movie);
+//        mediaPreferences.setPreference(preference);
+//
+//        mediaPreferencesRepository.save(mediaPreferences);
+        long preferenceId = ((PreferenceRepository) repository).callAddPreferenceMovie(profileId, movieId);
+        return repository.findById(preferenceId).orElseThrow(() -> new RuntimeException("Preference not found"));
     }
 
     public Preference addPreferenceSeries(Long preferenceId, Long seriesId) {
@@ -68,16 +68,18 @@ public class PreferenceService extends BaseService<Preference, Long>
     }
 
     @Transactional
-    public void deletePreferenceMovie(Long preferenceId, Long movieId)
-    {
-        mediaPreferencesRepository.deleteByMovieIdAndPreferenceId(movieId, preferenceId);
-        repository.deleteById(preferenceId);
+    public void deletePreferenceMovie(Long preferenceId, Long movieId) {
+//        mediaPreferencesRepository.deleteByMovieIdAndPreferenceId(movieId, preferenceId);
+//        repository.deleteById(preferenceId);
+        preferenceRepository.callDeletePreferenceMovie(preferenceId, movieId);
     }
 
     @Transactional
     public void deletePreferenceSeries(Long preferenceId, Long seriesId) {
-        mediaPreferencesRepository.deleteBySeriesIdAndPreferenceId(seriesId, preferenceId);
-        repository.deleteById(preferenceId);
+//        mediaPreferencesRepository.deleteBySeriesIdAndPreferenceId(seriesId, preferenceId);
+//        repository.deleteById(preferenceId);V
+        preferenceRepository.callDeletePreferenceSeries(preferenceId, seriesId);
+
     }
 
     public List<MediaPreferences> getMediaPreferences(Long preferenceId) {

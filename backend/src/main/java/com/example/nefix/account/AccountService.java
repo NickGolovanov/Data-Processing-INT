@@ -38,8 +38,34 @@ public class AccountService extends BaseService<Account, Long> {
         super(repository);
     }
 
+
+//    @Transactional
+//    public AccountSubscription addSubscription(Long accountId, Long subscriptionId, AccountSubscriptionRequestDto requestDto) {
+//        // Fetch Account
+//        Account account = accountRepository.findById(accountId)
+//                .orElseThrow(() -> new RuntimeException("Account not found with ID: " + accountId));
+//
+//        // Fetch Subscription
+//        Subscription subscription = subscriptionRepository.findById(subscriptionId)
+//                .orElseThrow(() -> new RuntimeException("Subscription not found with ID: " + subscriptionId));
+//
+//        // Create AccountSubscriptionId
+//        AccountSubscriptionId accountSubscriptionId = new AccountSubscriptionId(accountId, subscriptionId);
+//
+//        // Create and Populate AccountSubscription
+//        AccountSubscription accountSubscription = new AccountSubscription(
+//                accountSubscriptionId,
+//                account,
+//                subscription,
+//                requestDto.getDateOfPurchase(),
+//                requestDto.getDateOfExpire()
+//        );
+
+//        return accountSubscriptionRepository.save(accountSubscription);
+//    }
+
     @Transactional
-    public AccountSubscription addSubscription(Long accountId, Long subscriptionId, AccountSubscriptionRequestDto requestDto) {
+    public Subscription addSubscription(Long accountId, Long subscriptionId, AccountSubscriptionRequestDto requestDto) {
         // Fetch Account
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new RuntimeException("Account not found with ID: " + accountId));
