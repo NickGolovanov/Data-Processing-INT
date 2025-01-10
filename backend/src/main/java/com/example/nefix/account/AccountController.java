@@ -30,8 +30,8 @@ public class AccountController extends BaseController<Account, Long>
             @PathVariable Long subscriptionId,
             @RequestBody AccountSubscriptionRequestDto requestDto) {
         try {
-            Subscription subscription = accountService.addSubscription(accountId, subscriptionId, requestDto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(subscription);
+             AccountSubscription accountSubscription = accountService.addSubscription(accountId, subscriptionId, requestDto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(accountSubscription);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }

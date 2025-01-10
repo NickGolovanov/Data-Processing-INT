@@ -65,7 +65,7 @@ public class AccountService extends BaseService<Account, Long> {
 //    }
 
     @Transactional
-    public Subscription addSubscription(Long accountId, Long subscriptionId, AccountSubscriptionRequestDto requestDto) {
+    public AccountSubscription addSubscription(Long accountId, Long subscriptionId, AccountSubscriptionRequestDto requestDto) {
         // Fetch Account
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new RuntimeException("Account not found with ID: " + accountId));
