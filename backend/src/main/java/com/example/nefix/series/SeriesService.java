@@ -21,13 +21,9 @@ public class SeriesService extends BaseService<Series, Long> {
     }
 
     public Season addSeason(Long seriesId, Long seasonId) {
-        Series series = repository.findById(seriesId)
-                .orElseThrow(() -> new RuntimeException("Series not found with ID: " + seriesId));
-        Season season = seasonRepository.findById(seasonId)
-                .orElseThrow(() -> new RuntimeException("Season not found with ID: " + seasonId));
-
-        season.setSeries(series);
-        return seasonRepository.save(season);
+        // Call stored procedure through repository
+        seasonRepository.addSeasonToSeries(seriesId, seasonId);
+        return null;
     }
 
     public void removeSeason(Long seriesId, Long seasonId) {
@@ -37,14 +33,10 @@ public class SeriesService extends BaseService<Series, Long> {
         seasonRepository.delete(season);
     }
 
-    public InfoSeries addInfoSeries(Long seriesId, Long infoSeriesId) {
-        Series series = repository.findById(seriesId)
-                .orElseThrow(() -> new RuntimeException("Series not found with ID: " + seriesId));
-        InfoSeries infoSeries = infoSeriesRepository.findById(infoSeriesId)
-                .orElseThrow(() -> new RuntimeException("InfoSeries not found with ID: " + infoSeriesId));
-
-        infoSeries.setSeries(series);
-        return infoSeriesRepository.save(infoSeries);
+    public InfoSeries addInfoSeries(Long seriesId, Long infoId) {
+        // Call stored procedure through repository
+        infoSeriesRepository.addInfoToSeries(seriesId, infoId);
+        return null;
     }
 
     public void removeInfoSeries(Long seriesId, Long infoSeriesId) {

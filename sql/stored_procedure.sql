@@ -263,3 +263,57 @@ BEGIN
     RAISE NOTICE 'Retrieved Preference ID % for Profile ID %', p_preference_id, p_profile_id;
 END;
 $$;
+
+-- Series
+
+CREATE OR REPLACE PROCEDURE add_season_to_series(
+    p_series_id BIGINT,
+    p_season_id BIGINT,
+    p_season_number INTEGER
+)
+    LANGUAGE plpgsql
+AS $$
+BEGIN
+    -- Check if the series exists
+    IF NOT EXISTS (SELECT 1 FROM series WHERE series_id = p_series_id) THEN
+        RAISE EXCEPTION 'Series with ID % does not exist', p_series_id;
+    END IF;
+
+    -- Check if the season already exists for the series
+    IF EXISTS (SELECT 1 FROM season WHERE season_id = p_season_id) THEN
+        RAISE EXCEPTION 'Season with ID % already exists', p_season_id;
+    END IF;
+
+    -- Insert the season into the 'season' table
+    INSERT INTO season (season_id, series_id, season_number)
+    VALUES (p_season_id, p_series_id, p_season_number);
+
+    RAISE NOTICE 'Season with ID % successfully added to series with ID %', p_season_id, p_series_id;
+END;
+$$;
+
+CREATE OR REPLACE PROCEDURE add_season_to_series(
+    p_series_id BIGINT,
+    p_season_id BIGINT
+)
+    LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM series WHERE series_id = p_series_id) THEN
+        RAISE EXCEPTION 'Series with ID % does not exist', p_series_id;
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM season WHERE season_id = p_season_id) THEN
+        RAISE EXCEPTION 'Season with ID % does not exist', p_season_id;
+    END IF;
+
+    UPDATE season
+    SET series_id = p_series_id
+    WHERE season_id = p_season_id;
+
+    RAISE NOTICE 'Season % added to Series %', p_season_id, p_series_id;
+END;
+$$;
+
+-- Watchlist
+
