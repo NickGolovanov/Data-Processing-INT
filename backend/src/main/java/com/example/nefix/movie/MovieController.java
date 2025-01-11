@@ -5,6 +5,7 @@ import com.example.nefix.info.Info;
 import com.example.nefix.infomovie.InfoMovie;
 import com.example.nefix.subtitle.Subtitle;
 import com.example.nefix.subtitle.SubtitleResponseDTO;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +30,7 @@ public class MovieController extends BaseController<Movie, Long> {
     }
 
     @PostMapping("/{movieId}/subtitle")
-    public ResponseEntity<?> addSubtitle(@PathVariable Long movieId, @RequestBody Subtitle subtitle) {
+    public ResponseEntity<?> addSubtitle(@PathVariable Long movieId, @Valid @RequestBody Subtitle subtitle) {
         try {
             Subtitle createdSubtitle = ((MovieService) service).addSubtitle(movieId, subtitle);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdSubtitle);
@@ -51,7 +52,7 @@ public class MovieController extends BaseController<Movie, Long> {
     @PutMapping("/{movieId}/subtitle/{subtitleId}")
     public ResponseEntity<?> updateSubtitle(@PathVariable Long movieId,
                                             @PathVariable Long subtitleId,
-                                            @RequestBody Subtitle updatedSubtitle) {
+                                            @Valid @RequestBody Subtitle updatedSubtitle) {
         try {
             Subtitle subtitle = ((MovieService) service).updateSubtitle(movieId, subtitleId, updatedSubtitle);
             return ResponseEntity.ok(subtitle);
@@ -81,7 +82,7 @@ public class MovieController extends BaseController<Movie, Long> {
     }
 
     @PostMapping("/{movieId}/info-movie")
-    public ResponseEntity<?> addInfoMovie(@PathVariable Long movieId, @RequestBody Info info) {
+    public ResponseEntity<?> addInfoMovie(@PathVariable Long movieId, @Valid @RequestBody Info info) {
         try {
             return ResponseEntity.ok(((MovieService) service).addInfoMovie(movieId, info));
         } catch (Exception e) {
@@ -101,7 +102,7 @@ public class MovieController extends BaseController<Movie, Long> {
     }
 
     @PatchMapping("/{movieId}/info-movie/{infoId}")
-    public ResponseEntity<?> updateInfoMovie(@PathVariable Long movieId, @PathVariable Long infoId, @RequestBody Info updatedInfo) {
+    public ResponseEntity<?> updateInfoMovie(@PathVariable Long movieId, @PathVariable Long infoId, @Valid @RequestBody Info updatedInfo) {
 
         try {
             return ResponseEntity.ok(((MovieService) service).updateInfoMovie(movieId, infoId, updatedInfo));

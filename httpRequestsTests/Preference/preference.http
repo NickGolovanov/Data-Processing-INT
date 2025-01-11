@@ -2,4 +2,13 @@
 POST localhost:8080/preference/1/movie/1
 
 ### Delete preference
-DELETE localhost:8080/preference/1/movie/1
+DELETE localhost:8080/preference/5/movie/1
+
+###
+PATCH localhost:8080/account/1/subscription/2
+Content-Type: application/json
+
+{
+  "dateOfPurchase": "2025-01-01",
+  "dateOfExpire": "2026-01-01"
+}
