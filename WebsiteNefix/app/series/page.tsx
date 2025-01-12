@@ -4,6 +4,7 @@ import React, {useEffect, useState} from "react";
 import Logo from "@/components/logo";
 import Menu from "@/components/menu";
 import ContentDisplay from "@/components/contentDisplay";
+import AddButton from "@/components/addButton";
 
 interface Series {
     seriesId: number;
@@ -56,6 +57,8 @@ const SeriesPage: React.FC = () => {
                         type="series"
                     />
                 ))}
+
+                <AddButton type={"series"} />
             </div>
         </div>
     );

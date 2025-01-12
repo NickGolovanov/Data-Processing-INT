@@ -1,6 +1,7 @@
 import React from 'react';
-import { Italiana } from '@next/font/google';
+import { Italiana } from 'next/font/google';
 import Link from 'next/link';
+
 
 const italiana = Italiana({ subsets: ['latin'], weight: '400' });
 

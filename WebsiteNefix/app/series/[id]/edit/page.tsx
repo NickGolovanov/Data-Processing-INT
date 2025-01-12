@@ -3,6 +3,7 @@
 import React, {use, useEffect, useState} from "react";
 import Logo from "@/components/logo";
 import Menu from "@/components/menu";
+import Image from "next/image";
 
 interface Series {
     seriesId: number;
@@ -28,9 +29,12 @@ const SeriesEditPage = ({ params }: { params: Promise<{ id: string }> }) => {
                 const data = await response.json();
                 setSeries(data);
                 setFormState(data); // Pre-fill the form state
-            } catch (err: any) {
-                setError(err.message);
-            }
+            } catch (err: unknown) {
+                if (err instanceof Error) {
+                    setError(err.message);
+                } else {
+                    setError("An unknown error occurred");
+                }            }
         };
 
         fetchSeries();
@@ -62,9 +66,12 @@ const SeriesEditPage = ({ params }: { params: Promise<{ id: string }> }) => {
             const updatedSeries = await response.json();
             setSeries(updatedSeries); // Update the state with the new series data
             alert("Series updated successfully!");
-        } catch (err: any) {
-            setError(err.message);
-        }
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                setError(err.message);
+            } else {
+                setError("An unknown error occurred");
+            }        }
     };
 
     if (error) {
@@ -98,12 +105,12 @@ const SeriesEditPage = ({ params }: { params: Promise<{ id: string }> }) => {
                 }}
             >
                 {/* Series Image */}
-                <img
+                <Image
                     src="/images/Peppe.jpg"
                     alt={series.title}
+                    width={300} // Provide a numeric value for width
+                    height={400} // Provide a numeric value for height
                     style={{
-                        width: "300px",
-                        height: "400px",
                         objectFit: "cover",
                         borderRadius: "8px",
                         boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",

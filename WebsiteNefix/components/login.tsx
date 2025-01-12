@@ -1,5 +1,5 @@
 import React from 'react';
-import {Italiana} from '@next/font/google';
+import {Italiana} from 'next/font/google';
 import styles from '../styles/RegisterInput.module.css';
 import SubmitButton from "@/components/submiteButton";
 
@@ -24,14 +24,14 @@ const LoginBox: React.FC = () => {
             <input
                 type="text"
                 placeholder="Username"
-                style={{}}
+                style={{color: '#000'}}
                 className={styles.registerInput}
             />
 
             <input
                 type="password"
                 placeholder="Password"
-                style={{}}
+                style={{color: '#000'}}
                 className={styles.registerInput}
             />
 

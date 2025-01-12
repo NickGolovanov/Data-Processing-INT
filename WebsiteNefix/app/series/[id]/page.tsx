@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { use } from "react";
+import React, {useEffect, useState} from "react";
+import {use} from "react";
 import Logo from "@/components/logo";
 import Menu from "@/components/menu";
 import EditButton from "@/components/editContent";
+import Image from "next/image";
 
 interface Series {
     seriesId: number;
@@ -15,9 +16,9 @@ interface Series {
     infoSeries: { id: number; info: string }[]; // Simplified additional info
 }
 
-const SeriesPage = ({ params }: { params: Promise<{ id: string }> }) => {
+const SeriesPage = ({params}: { params: Promise<{ id: string }> }) => {
     // Unwrap the params Promise
-    const { id } = use(params);
+    const {id} = use(params);
 
     const [series, setSeries] = useState<Series | null>(null);
     const [error, setError] = useState<string | null>(null);
@@ -31,8 +32,12 @@ const SeriesPage = ({ params }: { params: Promise<{ id: string }> }) => {
                 }
                 const data = await response.json();
                 setSeries(data);
-            } catch (err: any) {
-                setError(err.message);
+            } catch (err: unknown) {
+                if (err instanceof Error) {
+                    setError(err.message);
+                } else {
+                    setError("An unknown error occurred");
+                }
             }
         };
 
@@ -55,8 +60,8 @@ const SeriesPage = ({ params }: { params: Promise<{ id: string }> }) => {
                 alignItems: "center",
             }}
         >
-            <Logo />
-            <Menu />
+            <Logo/>
+            <Menu/>
             <div
                 style={{
                     display: "flex",
@@ -69,20 +74,22 @@ const SeriesPage = ({ params }: { params: Promise<{ id: string }> }) => {
                 }}
             >
                 {/* Series Image */}
-                <img
+
+                <Image
                     src="/images/Peppe.jpg"
                     alt={series.title}
+                    width={300} // Provide a numeric value for width
+                    height={400} // Provide a numeric value for height
                     style={{
-                        width: "300px",
-                        height: "400px",
                         objectFit: "cover",
                         borderRadius: "8px",
                         boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
                     }}
                 />
 
+
                 <div className="flex flex-col justify-between items-start p-5 shadow-md rounded-lg w-1/2 ml-10">
-                    <h1 style={{ fontSize: "30px" }}>Title: {series.title}</h1>
+                    <h1 style={{fontSize: "30px"}}>Title: {series.title}</h1>
                     <p>Views: {series.views}</p>
                     <p>Minimum Age: {series.minimumAge}</p>
 
@@ -100,7 +107,7 @@ const SeriesPage = ({ params }: { params: Promise<{ id: string }> }) => {
                     {/*    ))}*/}
                     {/*</ul>*/}
 
-                    <EditButton type={"series"} id={id} />
+                    <EditButton type={"series"} id={id}/>
                 </div>
             </div>
         </div>

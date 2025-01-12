@@ -1,7 +1,8 @@
 import React from 'react';
-import {Italiana} from '@next/font/google';
+import {Italiana} from 'next/font/google';
 import styles from '../styles/RegisterInput.module.css';
 import SubmitButton from "@/components/submiteButton";
+import Link from "next/link";
 
 const italiana = Italiana({subsets: ['latin'], weight: '400'});
 
@@ -25,14 +26,14 @@ const RegisterBox: React.FC = () => {
             <input
                 type="text"
                 placeholder="Username"
-                style={{}}
+                style={{color: '#000'}}
                 className={styles.registerInput}
             />
 
             <input
                 type="text"
                 placeholder="Email"
-                style={{}}
+                style={{color: '#000'}}
                 className={styles.registerInput}
             />
 
@@ -40,20 +41,20 @@ const RegisterBox: React.FC = () => {
             <input
                 type="password"
                 placeholder="Password"
-                style={{}}
+                style={{color: '#000'}}
                 className={styles.registerInput}
             />
 
             <input
                 type="password"
                 placeholder="Repeat Password"
-                style={{}}
+                style={{color: '#000'}}
                 className={styles.registerInput}
             />
 
             <SubmitButton/>
 
-            <a
+            <Link
                 href="/"
                 style={{
                     marginTop: '10px',
@@ -64,7 +65,7 @@ const RegisterBox: React.FC = () => {
                 }}
             >
                 Login
-            </a>
+            </Link>
         </div>
     );
 };

@@ -4,6 +4,7 @@ import React, {useEffect, useState} from "react";
 import Logo from "@/components/logo";
 import Menu from "@/components/menu";
 import ContentDisplay from "@/components/contentDisplay";
+import AddButton from "@/components/addButton";
 
 interface Movie {
     id: number;
@@ -19,7 +20,7 @@ const MoviesPage: React.FC = () => {
             try {
                 const response = await fetch("http://localhost:8080/movie/general");
                 const data = await response.json();
-                setMovies(data.slice(0, 10)); // Use the first 10 items
+                setMovies(data.slice(0, 100));
             } catch (err: unknown) {
                 if (err instanceof Error)
                     setError(err.message);
@@ -56,6 +57,7 @@ const MoviesPage: React.FC = () => {
                         type="movies"
                     />
                 ))}
+                <AddButton type={"movies"} />
             </div>
         </div>
     );

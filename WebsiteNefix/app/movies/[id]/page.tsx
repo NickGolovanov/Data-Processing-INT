@@ -5,6 +5,7 @@ import {use} from "react";
 import Logo from "@/components/logo";
 import Menu from "@/components/menu";
 import EditButton from "@/components/editContent";
+import Image from "next/image";
 
 interface Movie {
     id: number;
@@ -33,9 +34,12 @@ const MoviePage = ({params}: { params: Promise<{ id: string }> }) => {
                 }
                 const data = await response.json();
                 setMovie(data);
-            } catch (err: any) {
-                setError(err.message);
-            }
+            } catch (err: unknown) {
+                if (err instanceof Error) {
+                    setError(err.message);
+                } else {
+                    setError("An unknown error occurred");
+                }            }
         };
 
         fetchMovie();
@@ -71,12 +75,12 @@ const MoviePage = ({params}: { params: Promise<{ id: string }> }) => {
                 }}
             >
                 {/* Movie Image */}
-                <img
+                <Image
                     src="/images/Drive.jpg"
                     alt={movie.title}
+                    width={300}
+                    height={400}
                     style={{
-                        width: "300px",
-                        height: "400px",
                         objectFit: "cover",
                         borderRadius: "8px",
                         boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",

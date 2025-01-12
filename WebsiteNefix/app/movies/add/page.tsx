@@ -1,13 +1,11 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { use } from "react";
+import React, { useState } from "react";
 import Logo from "@/components/logo";
 import Menu from "@/components/menu";
 import Image from "next/image";
 
 interface Movie {
-    id: number;
     title: string;
     duration: number;
     SD: boolean;
@@ -16,39 +14,22 @@ interface Movie {
     views: number;
 }
 
-const MovieEditPage = ({ params }: { params: Promise<{ id: string }> }) => {
-    const { id } = use(params);
-
-    const [movie, setMovie] = useState<Movie | null>(null);
+const MovieAddPage: React.FC = () => {
+    const [formState, setFormState] = useState<Partial<Movie>>({
+        title: "",
+        duration: 0,
+        SD: false,
+        HD: false,
+        UHD: false,
+        views: 0,
+    });
     const [error, setError] = useState<string | null>(null);
-    const [formState, setFormState] = useState<Partial<Movie>>({});
-
-    useEffect(() => {
-        const fetchMovie = async () => {
-            try {
-                const response = await fetch(`http://localhost:8080/movie/${id}`);
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch: ${response.status}`);
-                }
-                const data = await response.json();
-                setMovie(data);
-                setFormState(data); // Pre-fill the form state
-            } catch (err: unknown) {
-                if (err instanceof Error) {
-                    setError(err.message);
-                } else {
-                    setError("An unknown error occurred");
-                }            }
-        };
-
-        fetchMovie();
-    }, [id]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormState((prev) => ({
             ...prev,
-            [name]: value,
+            [name]: name === "duration" || name === "views" ? parseInt(value) : value,
         }));
     };
 
@@ -63,8 +44,8 @@ const MovieEditPage = ({ params }: { params: Promise<{ id: string }> }) => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await fetch(`http://localhost:8080/movie/${id}`, {
-                method: "PUT",
+            const response = await fetch(`http://localhost:8080/movie`, {
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -72,27 +53,20 @@ const MovieEditPage = ({ params }: { params: Promise<{ id: string }> }) => {
             });
 
             if (!response.ok) {
-                throw new Error(`Failed to update: ${response.status}`);
+                throw new Error(`Failed to add movie: ${response.status}`);
             }
 
-            const updatedMovie = await response.json();
-            setMovie(updatedMovie); // Update the state with the new movie data
-            alert("Movie updated successfully!");
+            const newMovie = await response.json();
+            alert("Movie added successfully!");
+            console.log("New Movie:", newMovie);
         } catch (err: unknown) {
             if (err instanceof Error) {
                 setError(err.message);
             } else {
                 setError("An unknown error occurred");
-            }        }
+            }
+        }
     };
-
-    if (error) {
-        return <div>Error: {error}</div>;
-    }
-
-    if (!movie) {
-        return <div>Loading...</div>;
-    }
 
     return (
         <div
@@ -116,12 +90,12 @@ const MovieEditPage = ({ params }: { params: Promise<{ id: string }> }) => {
                     width: "80%",
                 }}
             >
-                {/* Movie Image */}
+                {/* Movie Image Placeholder */}
                 <Image
                     src="/images/Drive.jpg"
-                    alt={movie.title}
-                    width={300} // Provide a numeric value for width
-                    height={400} // Provide a numeric value for height
+                    alt="Add Movie"
+                    width={300}
+                    height={400}
                     style={{
                         objectFit: "cover",
                         borderRadius: "8px",
@@ -129,7 +103,7 @@ const MovieEditPage = ({ params }: { params: Promise<{ id: string }> }) => {
                     }}
                 />
 
-                {/* Editable Movie Info */}
+                {/* Add Movie Form */}
                 <div
                     style={{
                         display: "flex",
@@ -142,7 +116,7 @@ const MovieEditPage = ({ params }: { params: Promise<{ id: string }> }) => {
                         width: "50%",
                     }}
                 >
-                    <h1>Edit Movie</h1>
+                    <h1>Add Movie</h1>
                     <label>
                         Title:
                         <input
@@ -213,7 +187,7 @@ const MovieEditPage = ({ params }: { params: Promise<{ id: string }> }) => {
                             marginTop: "20px",
                         }}
                     >
-                        Save Changes
+                        Add Movie
                     </button>
                 </div>
             </form>
@@ -221,4 +195,4 @@ const MovieEditPage = ({ params }: { params: Promise<{ id: string }> }) => {
     );
 };
 
-export default MovieEditPage;
+export default MovieAddPage;

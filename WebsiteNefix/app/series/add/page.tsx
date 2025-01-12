@@ -1,66 +1,37 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { use } from "react";
+import React, { useState } from "react";
 import Logo from "@/components/logo";
 import Menu from "@/components/menu";
+import Image from "next/image";
 
-interface Movie {
-    id: number;
+interface Series {
     title: string;
-    duration: number;
-    SD: boolean;
-    HD: boolean;
-    UHD: boolean;
     views: number;
+    minimumAge: number;
 }
 
-const MovieEditPage = ({ params }: { params: Promise<{ id: string }> }) => {
-    const { id } = use(params);
-
-    const [movie, setMovie] = useState<Movie | null>(null);
+const SeriesAddPage: React.FC = () => {
+    const [formState, setFormState] = useState<Partial<Series>>({
+        title: "",
+        views: 0,
+        minimumAge: 0,
+    });
     const [error, setError] = useState<string | null>(null);
-    const [formState, setFormState] = useState<Partial<Movie>>({});
-
-    useEffect(() => {
-        const fetchMovie = async () => {
-            try {
-                const response = await fetch(`http://localhost:8080/movie/${id}`);
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch: ${response.status}`);
-                }
-                const data = await response.json();
-                setMovie(data);
-                setFormState(data); // Pre-fill the form state
-            } catch (err: any) {
-                setError(err.message);
-            }
-        };
-
-        fetchMovie();
-    }, [id]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormState((prev) => ({
             ...prev,
-            [name]: value,
-        }));
-    };
-
-    const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, checked } = e.target;
-        setFormState((prev) => ({
-            ...prev,
-            [name]: checked,
+            [name]: name === "views" || name === "minimumAge" ? parseInt(value) : value,
         }));
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await fetch(`http://localhost:8080/movie/${id}`, {
-                method: "PUT",
+            const response = await fetch(`http://localhost:8080/series`, {
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -68,24 +39,20 @@ const MovieEditPage = ({ params }: { params: Promise<{ id: string }> }) => {
             });
 
             if (!response.ok) {
-                throw new Error(`Failed to update: ${response.status}`);
+                throw new Error(`Failed to add series: ${response.status}`);
             }
 
-            const updatedMovie = await response.json();
-            setMovie(updatedMovie); // Update the state with the new movie data
-            alert("Movie updated successfully!");
-        } catch (err: any) {
-            setError(err.message);
+            const newSeries = await response.json();
+            alert("Series added successfully!");
+            console.log("New Series:", newSeries);
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                setError(err.message);
+            } else {
+                setError("An unknown error occurred");
+            }
         }
     };
-
-    if (error) {
-        return <div>Error: {error}</div>;
-    }
-
-    if (!movie) {
-        return <div>Loading...</div>;
-    }
 
     return (
         <div
@@ -109,20 +76,20 @@ const MovieEditPage = ({ params }: { params: Promise<{ id: string }> }) => {
                     width: "80%",
                 }}
             >
-                {/* Movie Image */}
-                <img
-                    src="/images/Drive.jpg"
-                    alt={movie.title}
+                {/* Series Image Placeholder */}
+                <Image
+                    src="/images/Peppe.jpg"
+                    alt="Add Series"
+                    width={300}
+                    height={400}
                     style={{
-                        width: "300px",
-                        height: "400px",
                         objectFit: "cover",
                         borderRadius: "8px",
                         boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
                     }}
                 />
 
-                {/* Editable Movie Info */}
+                {/* Add Series Form */}
                 <div
                     style={{
                         display: "flex",
@@ -135,7 +102,7 @@ const MovieEditPage = ({ params }: { params: Promise<{ id: string }> }) => {
                         width: "50%",
                     }}
                 >
-                    <h1>Edit Movie</h1>
+                    <h1>Add Series</h1>
                     <label>
                         Title:
                         <input
@@ -147,48 +114,21 @@ const MovieEditPage = ({ params }: { params: Promise<{ id: string }> }) => {
                         />
                     </label>
                     <label>
-                        Duration:
-                        <input
-                            type="number"
-                            name="duration"
-                            value={formState.duration || ""}
-                            onChange={handleInputChange}
-                            style={{ width: "100%", padding: "5px", marginBottom: "10px", color: "#000" }}
-                        />
-                    </label>
-                    <label>
-                        SD:
-                        <input
-                            type="checkbox"
-                            name="SD"
-                            checked={formState.SD || false}
-                            onChange={handleCheckboxChange}
-                        />
-                    </label>
-                    <label>
-                        HD:
-                        <input
-                            type="checkbox"
-                            name="HD"
-                            checked={formState.HD || false}
-                            onChange={handleCheckboxChange}
-                        />
-                    </label>
-                    <label>
-                        UHD:
-                        <input
-                            type="checkbox"
-                            name="UHD"
-                            checked={formState.UHD || false}
-                            onChange={handleCheckboxChange}
-                        />
-                    </label>
-                    <label>
                         Views:
                         <input
                             type="number"
                             name="views"
                             value={formState.views || ""}
+                            onChange={handleInputChange}
+                            style={{ width: "100%", padding: "5px", marginBottom: "10px", color: "#000" }}
+                        />
+                    </label>
+                    <label>
+                        Minimum Age:
+                        <input
+                            type="number"
+                            name="minimumAge"
+                            value={formState.minimumAge || ""}
                             onChange={handleInputChange}
                             style={{ width: "100%", padding: "5px", marginBottom: "10px", color: "#000" }}
                         />
@@ -206,7 +146,7 @@ const MovieEditPage = ({ params }: { params: Promise<{ id: string }> }) => {
                             marginTop: "20px",
                         }}
                     >
-                        Save Changes
+                        Add Series
                     </button>
                 </div>
             </form>
@@ -214,4 +154,4 @@ const MovieEditPage = ({ params }: { params: Promise<{ id: string }> }) => {
     );
 };
 
-export default MovieEditPage;
+export default SeriesAddPage;

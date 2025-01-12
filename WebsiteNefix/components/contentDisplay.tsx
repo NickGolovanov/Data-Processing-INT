@@ -1,7 +1,6 @@
 import React from 'react';
-import { Italiana } from '@next/font/google';
+import Image from "next/image";
 
-// const italiana = Italiana({ subsets: ['latin'], weight: '400' });
 
 interface ContentDisplayProps {
     imageSrc: string;
@@ -35,12 +34,12 @@ const ContentDisplay: React.FC<ContentDisplayProps> = ({ imageSrc, title, id, ty
                         color: '#000',
                     }}
                 >
-                    <img
+                    <Image
                         src={imageSrc}
                         alt={title}
+                        width={800}
+                        height={600}
                         style={{
-                            width: '100%',
-                            height: 'auto',
                             borderRadius: '8px',
                         }}
                     />
