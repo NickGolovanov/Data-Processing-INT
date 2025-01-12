@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -147,6 +148,7 @@ public class AccountService extends BaseService<Account, Long> {
 //        accountSubscriptionRepository.delete(accountSubscription);
         accountSubscriptionRepository.callDeleteSubscription(accountId, subscriptionId);
     }
+
     public boolean isAccountBlocked(Long accountId) {
         List<BlockedAccount> blockedAccounts = blockedAccountsRepository.getBlockedAccountsByAccount_AccountId(accountId);
         for(BlockedAccount blockedAccount : blockedAccounts) {
@@ -159,31 +161,12 @@ public class AccountService extends BaseService<Account, Long> {
     }
 
     public BlockedAccount blockAccount(Long accountId, BlockedAccountRequestDto requestDto) {
-        // Fetch the account to be blocked
-        Account account = repository.findById(accountId)
-                .orElseThrow(() -> new RuntimeException("Account not found with ID: " + accountId));
-
-        // Create and populate the BlockedAccount entity
-        BlockedAccount blockedAccount = new BlockedAccount();
-        blockedAccount.setAccount(account);
-        blockedAccount.setIsPermanent(requestDto.isPermanent());
-        blockedAccount.setDateOfExpire(requestDto.isPermanent() ? null : requestDto.getDateOfExpire());
-
-        // Save the BlockedAccount
-        return blockedAccountsRepository.save(blockedAccount);
+        blockedAccountsRepository.callBlockAccount(accountId, requestDto.isPermanent(), requestDto.getDateOfExpire(), null);
+        return blockedAccountsRepository.findByAccount_AccountId(accountId).orElseThrow(() -> new RuntimeException("Account not found with ID: " + accountId));
     }
 
     public void unblockAccount(Long accountId) {
-        // Fetch the account to unblock
-        Account account = repository.findById(accountId)
-                .orElseThrow(() -> new RuntimeException("Account not found with ID: " + accountId));
-
-        // Find the associated BlockedAccount record
-        BlockedAccount blockedAccount = blockedAccountsRepository.findByAccount_AccountId(account.getAccountId())
-                .orElseThrow(() -> new RuntimeException("No block record found for account ID: " + accountId));
-
-        // Delete the BlockedAccount record
-        blockedAccountsRepository.delete(blockedAccount);
+        blockedAccountsRepository.callUnblockAccount(accountId);
     }
 
     @Transactional

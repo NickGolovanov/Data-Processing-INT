@@ -444,9 +444,9 @@ $$;
 -- Series
 
 CREATE OR REPLACE PROCEDURE add_season_to_series(
-    p_series_id BIGINT,
-    p_season_id BIGINT,
-    p_season_number INTEGER
+    IN p_series_id BIGINT,
+    IN p_season_id BIGINT,
+    OUT o_season_id BIGINT
 )
     LANGUAGE plpgsql
 AS $$
@@ -456,41 +456,126 @@ BEGIN
         RAISE EXCEPTION 'Series with ID % does not exist', p_series_id;
     END IF;
 
-    -- Check if the season already exists for the series
+    -- Check if the season already exists
     IF EXISTS (SELECT 1 FROM season WHERE season_id = p_season_id) THEN
         RAISE EXCEPTION 'Season with ID % already exists', p_season_id;
     END IF;
 
     -- Insert the season into the 'season' table
-    INSERT INTO season (season_id, series_id, season_number)
-    VALUES (p_season_id, p_series_id, p_season_number);
+    INSERT INTO season (season_id, series_id)
+    VALUES (p_season_id, p_series_id)
+    RETURNING season_id INTO o_season_id;
 
-    RAISE NOTICE 'Season with ID % successfully added to series with ID %', p_season_id, p_series_id;
+    RAISE NOTICE 'Season with ID % successfully added to series with ID %', o_season_id, p_series_id;
 END;
 $$;
 
-CREATE OR REPLACE PROCEDURE add_season_to_series(
-    p_series_id BIGINT,
-    p_season_id BIGINT
+CREATE OR REPLACE PROCEDURE add_info_to_series(
+    IN p_series_id BIGINT,
+    IN p_info_id BIGINT,
+    OUT o_info_series_id BIGINT
 )
     LANGUAGE plpgsql
 AS $$
 BEGIN
+    -- Check if the series exists
     IF NOT EXISTS (SELECT 1 FROM series WHERE series_id = p_series_id) THEN
         RAISE EXCEPTION 'Series with ID % does not exist', p_series_id;
     END IF;
 
-    IF NOT EXISTS (SELECT 1 FROM season WHERE season_id = p_season_id) THEN
-        RAISE EXCEPTION 'Season with ID % does not exist', p_season_id;
+    -- Check if the information already exists
+    IF EXISTS (SELECT 1 FROM infoseries WHERE series_id = p_series_id AND info_id = p_info_id) THEN
+        RAISE EXCEPTION 'Information with ID % is already associated with series %', p_info_id, p_series_id;
     END IF;
 
-    UPDATE season
-    SET series_id = p_series_id
-    WHERE season_id = p_season_id;
+    -- Insert the information into the info_series table
+    INSERT INTO infoseries (series_id, info_id)
+    VALUES (p_series_id, p_info_id)
+    RETURNING infoseries.info_id INTO o_info_series_id;
 
-    RAISE NOTICE 'Season % added to Series %', p_season_id, p_series_id;
+    RAISE NOTICE 'Information with ID % successfully added to series with ID %', p_info_id, p_series_id;
 END;
 $$;
 
+
 -- Watchlist
+
+CREATE OR REPLACE PROCEDURE add_series_to_watchlist(
+    IN p_profile_id BIGINT,
+    IN p_series_id BIGINT,
+    OUT o_watchlist_id BIGINT
+)
+    LANGUAGE plpgsql
+AS $$
+BEGIN
+    -- Check if the profile exists
+    IF NOT EXISTS (SELECT 1 FROM profile WHERE profile_id = p_profile_id) THEN
+        RAISE EXCEPTION 'Profile with ID % does not exist', p_profile_id;
+    END IF;
+
+    -- Check if the series exists
+    IF NOT EXISTS (SELECT 1 FROM series WHERE series_id = p_series_id) THEN
+        RAISE EXCEPTION 'Series with ID % does not exist', p_series_id;
+    END IF;
+
+    -- Check if the combination of profile_id and series_id already exists in the watchlist
+    IF EXISTS (SELECT 1 FROM watchlist WHERE profile_id = p_profile_id AND series_id = p_series_id) THEN
+        RAISE EXCEPTION 'This series is already in the watchlist for profile ID %', p_profile_id;
+    END IF;
+
+    -- Insert into the watchlist table
+    INSERT INTO watchlist (profile_id, series_id)
+    VALUES (p_profile_id, p_series_id)
+    RETURNING watchlist_id INTO o_watchlist_id;
+
+    RAISE NOTICE 'Series with ID % successfully added to the watchlist for profile ID %', p_series_id, p_profile_id;
+END;
+$$;
+
+-- Account
+
+CREATE OR REPLACE PROCEDURE block_account(
+    IN p_account_id BIGINT,
+    IN p_is_permanent BOOLEAN,
+    IN p_date_of_expire DATE,
+    OUT o_blocked_account_id BIGINT
+)
+    LANGUAGE plpgsql
+AS $$
+BEGIN
+    -- Check if the account exists
+    IF NOT EXISTS (SELECT 1 FROM account WHERE accountid = p_account_id) THEN
+        RAISE EXCEPTION 'Account with ID % does not exist', p_account_id;
+    END IF;
+
+    -- Insert into blocked_account table
+    INSERT INTO blocked_account (account_id, is_permanent, date_of_expire)
+    VALUES (p_account_id, p_is_permanent, p_date_of_expire)
+    RETURNING blocked_accountid INTO o_blocked_account_id;
+END;
+$$;
+
+CREATE OR REPLACE PROCEDURE unblock_account(
+    IN p_account_id BIGINT
+)
+    LANGUAGE plpgsql
+AS $$
+BEGIN
+    -- Check if the account exists
+    IF NOT EXISTS (SELECT 1 FROM account WHERE accountid = p_account_id) THEN
+        RAISE EXCEPTION 'Account with ID % does not exist', p_account_id;
+    END IF;
+
+    -- Delete from blocked_account table
+    DELETE FROM blocked_account
+    WHERE account_id = p_account_id;
+
+    -- Check if the account was blocked
+    IF NOT FOUND THEN
+        RAISE EXCEPTION 'No block record found for account ID %', p_account_id;
+    END IF;
+END;
+$$;
+
+
 

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 public interface SeasonRepository extends JpaRepository<Season, Long>
 {
     @Query(value = "CALL add_season_to_series(:seriesId, :seasonId)", nativeQuery = true)
-    void addSeasonToSeries(
+    long addSeasonToSeries(
             @Param("seriesId") Long seriesId,
             @Param("seasonId") Long seasonId
     );
