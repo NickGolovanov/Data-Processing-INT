@@ -30,7 +30,7 @@ services:
     ports:
       - '${POSTGRES_PORT}:5432'
     healthcheck:
-      test: ['CMD', 'pg_isready', '-U', '${POSTGRES_USER}']
+      test: [ 'CMD', 'pg_isready', '-U', '${POSTGRES_USER}' ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -47,8 +47,8 @@ services:
       FLYWAY_URL: jdbc:postgresql://db:5432/${POSTGRES_DATABASE}
       FLYWAY_USER: ${POSTGRES_USER}
       FLYWAY_PASSWORD: ${POSTGRES_PASSWORD}
-    entrypoint: ["/bin/sh", "-c", "sleep 10 && flyway migrate"]
-#    command: migrate
+    entrypoint: [ "/bin/sh", "-c", "sleep 10 && flyway migrate" ]
+  #    command: migrate
   # add this for simplicity and easy access to the database
   pgadmin:
     image: dpage/pgadmin4

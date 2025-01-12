@@ -4,7 +4,6 @@ import com.example.nefix.account.Account;
 import com.example.nefix.account.AccountRepository;
 import com.example.nefix.authentification.config.JwtService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,7 +32,7 @@ public class AuthenticationService
                 .build();
     }
 
-    public AuthenticationResponse authenticate(AuthenticationRequest request)
+    public AuthenticationResponse login(LoginRequest request)
     {
         this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken
                 (request.getEmail(),

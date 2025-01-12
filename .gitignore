@@ -28,3 +28,4 @@ replay_pid*
 .env
 .DS_Store
 .idea/
+wal_archive/
