@@ -1,12 +1,15 @@
 package com.example.nefix.series;
 
 import com.example.nefix.genrealization.service.BaseService;
+import com.example.nefix.movie.MovieGeneralDto;
 import com.example.nefix.season.Season;
 import com.example.nefix.season.SeasonRepository;
 import com.example.nefix.infoseries.InfoSeries;
 import com.example.nefix.infoseries.InfoSeriesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class SeriesService extends BaseService<Series, Long> {
@@ -19,6 +22,13 @@ public class SeriesService extends BaseService<Series, Long> {
     public SeriesService(SeriesRepository repository) {
         super(repository);
     }
+
+    public List<SeriesGeneralDto> getSeriesGeneralDto() {
+        return repository.findAll().stream()
+                .map(SeriesGeneralDto::new)
+                .toList();
+    }
+
 
     public Season addSeason(Long seriesId, Long seasonId) {
         // Call stored procedure through repository

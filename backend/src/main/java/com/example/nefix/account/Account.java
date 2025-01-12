@@ -21,7 +21,7 @@ public class Account
     private Long accountId;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties("account")
+    @JsonManagedReference
     private Set<AccountSubscription> subscriptions = new HashSet<>();
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -35,6 +35,7 @@ public class Account
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "referral_discount_id")
     @JsonProperty("referralDiscount")
+    @JsonIgnoreProperties("account")
     private ReferralDiscount referralDiscount;
 
     @Enumerated(EnumType.STRING)

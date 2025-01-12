@@ -7,7 +7,7 @@ import ContentDisplay from "@/components/contentDisplay";
 import AddButton from "@/components/addButton";
 
 interface Series {
-    seriesId: number;
+    id: number;
     title: string;
 }
 
@@ -18,7 +18,7 @@ const SeriesPage: React.FC = () => {
     useEffect(() => {
         const fetchMovies = async () => {
             try {
-                const response = await fetch("http://localhost:8080/series");
+                const response = await fetch("http://localhost:8080/series/general");
                 const data = await response.json();
                 setseries(data.slice(0, 100));
             } catch (err: unknown) {
@@ -50,10 +50,10 @@ const SeriesPage: React.FC = () => {
             >
                 {series.map((series) => (
                     <ContentDisplay
-                        key={series.seriesId}
+                        key={series.id}
                         imageSrc="/images/Peppe.jpg"
                         title={series.title}
-                        id={series.seriesId}
+                        id={series.id}
                         type="series"
                     />
                 ))}

@@ -1,19 +1,18 @@
 package com.example.nefix.account;
 
 import com.example.nefix.accountsubscription.AccountSubscription;
-import com.example.nefix.accountsubscription.AccountSubscriptionId;
 import com.example.nefix.accountsubscription.AccountSubscriptionRepository;
 import com.example.nefix.blockedaccount.BlockedAccount;
 import com.example.nefix.blockedaccount.BlockedAccountsRepository;
 import com.example.nefix.genrealization.service.BaseService;
 import com.example.nefix.referraldiscount.ReferralDiscount;
 import com.example.nefix.referraldiscount.ReferralDiscountRepository;
-import com.example.nefix.subscription.Subscription;
 import com.example.nefix.subscription.SubscriptionRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -147,6 +146,16 @@ public class AccountService extends BaseService<Account, Long> {
 //        // Delete the AccountSubscription
 //        accountSubscriptionRepository.delete(accountSubscription);
         accountSubscriptionRepository.callDeleteSubscription(accountId, subscriptionId);
+    }
+    public boolean isAccountBlocked(Long accountId) {
+        List<BlockedAccount> blockedAccounts = blockedAccountsRepository.getBlockedAccountsByAccount_AccountId(accountId);
+        for(BlockedAccount blockedAccount : blockedAccounts) {
+            if(blockedAccount.getIsPermanent() || blockedAccount.getDateOfExpire().isAfter(LocalDate.now())) {
+                return true;
+            }
+        }
+        return false;
+
     }
 
     public BlockedAccount blockAccount(Long accountId, BlockedAccountRequestDto requestDto) {

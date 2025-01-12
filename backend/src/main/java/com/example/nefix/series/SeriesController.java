@@ -2,6 +2,7 @@ package com.example.nefix.series;
 
 import com.example.nefix.genrealization.controller.BaseController;
 import com.example.nefix.infoseries.InfoSeries;
+import com.example.nefix.movie.MovieService;
 import com.example.nefix.season.Season;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,14 @@ public class SeriesController extends BaseController<Series, Long> {
         super(service);
     }
 
+    @GetMapping("/general")
+    public ResponseEntity<?> getMovieGeneralDto(){
+        try {
+            return ResponseEntity.ok(((SeriesService) service).getSeriesGeneralDto());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
+    }
     @PostMapping("/{seriesId}/seasons/{seasonId}")
     public ResponseEntity<?> addSeason(@PathVariable Long seriesId, @PathVariable Long seasonId) {
         try {

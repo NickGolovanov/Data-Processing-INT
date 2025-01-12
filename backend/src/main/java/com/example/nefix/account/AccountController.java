@@ -4,7 +4,6 @@ import com.example.nefix.accountsubscription.AccountSubscription;
 import com.example.nefix.blockedaccount.BlockedAccount;
 import com.example.nefix.genrealization.controller.BaseController;
 import com.example.nefix.referraldiscount.ReferralDiscount;
-import com.example.nefix.subscription.Subscription;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -64,11 +63,19 @@ public class AccountController extends BaseController<Account, Long>
             accountService.deleteSubscription(accountId, subscriptionId);
             return ResponseEntity.noContent().build();
         } catch (RuntimeException e) {
-            // Handle case when Account or Subscription is not found
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 
+    @GetMapping("/{accountId}/is-blocked")
+    public ResponseEntity<?> isAccountBlocked(@PathVariable Long accountId) {
+        try {
+            return ResponseEntity.ok(accountService.isAccountBlocked(accountId));
+        }
+        catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
     @PostMapping("/{accountId}/block")
     public ResponseEntity<BlockedAccount> blockAccount(
             @PathVariable Long accountId,

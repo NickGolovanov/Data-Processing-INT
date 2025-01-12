@@ -1,9 +1,7 @@
 package com.example.nefix.subscription;
 
 import com.example.nefix.accountsubscription.AccountSubscription;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -27,6 +25,7 @@ public class Subscription
     private Double subscriptionPrice;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties({"subscription"})
+//    @JsonIgnoreProperties({"subscription", "accounts"})
+    @JsonManagedReference
     private Set<AccountSubscription> accounts = new HashSet<>();
 }

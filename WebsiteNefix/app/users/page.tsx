@@ -8,11 +8,28 @@ interface Account {
     accountId: number;
     email: string;
     paymentMethod: string;
-    profiles: { id: number; name: string }[];
+    referralDiscount: {referralDiscountId: number, link: string};
+    subscriptions: {subscriptionId: number, type: string, startDate: string, endDate: string}[];
 }
+
+const isBlocked = async (accountId: number) => {
+    try {
+        const response = await fetch(`http://localhost:8080/account/${accountId}/is-blocked`);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch account status: ${response.status}`);
+        }
+        const data: { isBlocked: boolean } = await response.json();
+        return data;
+    } catch (err: unknown) {
+        if (err instanceof Error) {
+            console.error(err.message);
+        }
+    }
+};
 
 const UserPage: React.FC = () => {
     const [accounts, setAccounts] = useState<Account[]>([]);
+    const [blockedStatus, setBlockedStatus] = useState<{ [key: number]: boolean }>({});
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
@@ -22,16 +39,28 @@ const UserPage: React.FC = () => {
                 if (!response.ok) {
                     throw new Error(`Failed to fetch accounts: ${response.status}`);
                 }
-                const data = await response.json();
-                console.log(data);
+                const data: Account[] = await response.json();
                 setAccounts(data);
+                console.log(data)
             } catch (err: any) {
+                console.error(err.message);
                 setError(err.message);
             }
         };
 
         fetchAccounts();
     }, []);
+
+    useEffect(() => {
+        const fetchBlockedStatus = async () => {
+            const statuses: { [key: number]: boolean } = {};
+            setBlockedStatus(statuses);
+        };
+
+        if (accounts.length > 0) {
+            fetchBlockedStatus();
+        }
+    }, [accounts]);
 
     if (error) {
         return <div>Error: {error}</div>;
@@ -46,8 +75,8 @@ const UserPage: React.FC = () => {
                 alignItems: "center",
             }}
         >
-            <Logo/>
-            <Menu/>
+            <Logo />
+            <Menu />
             <h1>User Accounts</h1>
             <table
                 style={{
@@ -57,14 +86,16 @@ const UserPage: React.FC = () => {
                 }}
             >
                 <thead>
-                <tr style={{ backgroundColor: "#007bff", color: "#fff" }}>
+                <tr style={{backgroundColor: "#007bff", color: "#fff"}}>
                     <th style={cellStyle}>Account ID</th>
                     <th style={cellStyle}>Email</th>
                     <th style={cellStyle}>Payment Method</th>
                     <th style={cellStyle}>Referral Discount</th>
-                    <th style={cellStyle}>Subscriptions</th>
+                    <th style={cellStyle}>Subscription Type</th>
+                    <th style={cellStyle}>Starts</th>
+                    <th style={cellStyle}>Ends</th>
                     <th style={cellStyle}>Profiles</th>
-                    <th style={cellStyle}>Blocked Accounts</th>
+                    <th style={cellStyle}>Account Blocked</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -73,27 +104,13 @@ const UserPage: React.FC = () => {
                         <td style={cellStyle}>{account.accountId}</td>
                         <td style={cellStyle}>{account.email}</td>
                         <td style={cellStyle}>{account.paymentMethod}</td>
+                        <td style={cellStyle}>{account.referralDiscount == null ? "No" : "Yes"}</td>
+                        <td style={cellStyle}>Placeholder</td>
+                        <td style={cellStyle}>Placeholder</td>
+                        <td style={cellStyle}>Placeholder</td>
+                        <td style={cellStyle}>Placeholder</td>
                         <td style={cellStyle}>
-                            {account.referralDiscount
-                                ? `${account.referralDiscount.amount}%`
-                                : "None"}
-                        </td>
-                        <td style={cellStyle}>
-                            {account.subscriptions.length > 0
-                                ? account.subscriptions.map((sub) => sub.name).join(", ")
-                                : "None"}
-                        </td>
-                        <td style={cellStyle}>
-                            {account.profiles.length > 0
-                                ? account.profiles.map((profile) => profile.name).join(", ")
-                                : "None"}
-                        </td>
-                        <td style={cellStyle}>
-                            {account.blockedAccounts.length > 0
-                                ? account.blockedAccounts
-                                    .map((blocked) => blocked.reason)
-                                    .join(", ")
-                                : "None"}
+                            {blockedStatus[account.accountId] ? "Yes" : "No"}
                         </td>
                     </tr>
                 ))}
