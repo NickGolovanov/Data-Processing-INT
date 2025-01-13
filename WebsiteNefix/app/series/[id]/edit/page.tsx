@@ -4,6 +4,7 @@ import React, {use, useEffect, useState} from "react";
 import Logo from "@/components/logo";
 import Menu from "@/components/menu";
 import Image from "next/image";
+import DeleteButton from "@/components/deleteButton";
 
 interface Series {
     seriesId: number;
@@ -22,7 +23,13 @@ const SeriesEditPage = ({ params }: { params: Promise<{ id: string }> }) => {
     useEffect(() => {
         const fetchSeries = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/series/${id}`);
+                const response = await fetch(`http://localhost:8080/series/${id}`, {
+                    method: "GET",
+                    headers: {
+                        Authorization: "Bearer " + localStorage.getItem("authToken")
+                    }
+
+                });
                 if (!response.ok) {
                     throw new Error(`Failed to fetch: ${response.status}`);
                 }
@@ -55,6 +62,7 @@ const SeriesEditPage = ({ params }: { params: Promise<{ id: string }> }) => {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
+                    Authorization: "Bearer " + localStorage.getItem("authToken")
                 },
                 body: JSON.stringify(formState),
             });
@@ -175,6 +183,7 @@ const SeriesEditPage = ({ params }: { params: Promise<{ id: string }> }) => {
                     >
                         Save Changes
                     </button>
+                    <DeleteButton id={parseInt(id)} type={"series"}/>
                 </div>
             </form>
         </div>

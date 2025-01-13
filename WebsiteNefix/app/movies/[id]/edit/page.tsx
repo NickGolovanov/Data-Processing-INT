@@ -5,6 +5,7 @@ import { use } from "react";
 import Logo from "@/components/logo";
 import Menu from "@/components/menu";
 import Image from "next/image";
+import DeleteButton from "@/components/deleteButton";
 
 interface Movie {
     id: number;
@@ -26,7 +27,12 @@ const MovieEditPage = ({ params }: { params: Promise<{ id: string }> }) => {
     useEffect(() => {
         const fetchMovie = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/movie/${id}`);
+                const response = await fetch(`http://localhost:8080/movie/${id}`, {
+                    method: "GET",
+                    headers: {
+                        Authorization: "Bearer " + localStorage.getItem("authToken")
+                    }
+                });
                 if (!response.ok) {
                     throw new Error(`Failed to fetch: ${response.status}`);
                 }
@@ -67,6 +73,7 @@ const MovieEditPage = ({ params }: { params: Promise<{ id: string }> }) => {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
+                    Authorization: "Bearer " + localStorage.getItem("authToken")
                 },
                 body: JSON.stringify(formState),
             });
@@ -215,6 +222,7 @@ const MovieEditPage = ({ params }: { params: Promise<{ id: string }> }) => {
                     >
                         Save Changes
                     </button>
+                    <DeleteButton id={ parseInt(id) } type={"movie"}/>
                 </div>
             </form>
         </div>

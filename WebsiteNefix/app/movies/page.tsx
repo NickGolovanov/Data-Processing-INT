@@ -18,8 +18,10 @@ const MoviesPage: React.FC = () => {
     useEffect(() => {
         const fetchMovies = async () => {
             try {
-                const response = await fetch("http://localhost:8080/movie/general");
-                const data = await response.json();
+                const response = await fetch("http://localhost:8080/movie/general", {
+                    method: "GET",
+                    headers: {Authorization: "Bearer " + localStorage.getItem("authToken")}
+                });                const data = await response.json();
                 setMovies(data.slice(0, 100));
             } catch (err: unknown) {
                 if (err instanceof Error)

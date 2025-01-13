@@ -26,7 +26,12 @@ const SeriesPage = ({params}: { params: Promise<{ id: string }> }) => {
     useEffect(() => {
         const fetchSeries = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/series/${id}`);
+                const response = await fetch(`http://localhost:8080/series/${id}`, {
+                    method: "GET",
+                    headers: {
+                        Authorization: "Bearer " + localStorage.getItem("authToken")
+                    }
+                });
                 if (!response.ok) {
                     throw new Error(`Failed to fetch: ${response.status}`);
                 }

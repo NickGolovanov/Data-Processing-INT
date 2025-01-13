@@ -27,6 +27,11 @@ public class AuthenticationService
         this.repository.save(account);
 
         String jwtToken = this.jwtService.generateToken(account);
+
+        System.out.println(AuthenticationResponse.builder()
+                .token(jwtToken)
+                .build());
+
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();

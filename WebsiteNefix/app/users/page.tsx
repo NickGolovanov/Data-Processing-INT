@@ -35,7 +35,10 @@ const UserPage: React.FC = () => {
     useEffect(() => {
         const fetchAccounts = async () => {
             try {
-                const response = await fetch("http://localhost:8080/account");
+                const response = await fetch("http://localhost:8080/account", {
+                    method: "GET",
+                    headers: {Authorization: "Bearer " + localStorage.getItem("authToken")}
+                });
                 if (!response.ok) {
                     throw new Error(`Failed to fetch accounts: ${response.status}`);
                 }
@@ -43,7 +46,6 @@ const UserPage: React.FC = () => {
                 setAccounts(data);
                 console.log(data)
             } catch (err: any) {
-                console.error(err.message);
                 setError(err.message);
             }
         };

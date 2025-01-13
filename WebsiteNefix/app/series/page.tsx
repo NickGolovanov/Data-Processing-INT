@@ -18,7 +18,10 @@ const SeriesPage: React.FC = () => {
     useEffect(() => {
         const fetchMovies = async () => {
             try {
-                const response = await fetch("http://localhost:8080/series/general");
+                const response = await fetch("http://localhost:8080/series/general", {
+                    method: "GET",
+                    headers: {Authorization: "Bearer " + localStorage.getItem("authToken")}
+                });
                 const data = await response.json();
                 setseries(data.slice(0, 100));
             } catch (err: unknown) {
