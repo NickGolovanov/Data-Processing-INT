@@ -28,7 +28,11 @@ public class MovieService extends BaseService<Movie, Long> {
         super(repository);
     }
 
-
+    public List<MovieGeneralDto> getMovieGeneralDto() {
+        return repository.findAll().stream()
+                .map(MovieGeneralDto::new)
+                .toList();
+    }
 
     public Subtitle addSubtitle(Long movieId, Subtitle subtitle) {
         long subtitleId = subtitleRepository.callAddSubtitle(

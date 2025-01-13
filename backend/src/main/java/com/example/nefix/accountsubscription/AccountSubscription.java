@@ -29,14 +29,14 @@ public class AccountSubscription
     @MapsId("accountId")
     @JoinColumn(name = "account_id", insertable = false, updatable = false)
     @JsonProperty("accountId")
-    @JsonIgnoreProperties("subscriptions")
+    @JsonBackReference // Child reference for Jackson
     private Account account;
 
     @ManyToOne
     @MapsId("subscriptionId")
     @JoinColumn(name = "subscription_id", insertable = false, updatable = false)
     @JsonProperty("subscriptionId")
-    @JsonIgnoreProperties("accounts")
+    @JsonBackReference // Child reference for Jackson
     private Subscription subscription;
 
     @JsonProperty("dateOfPurchase")

@@ -19,6 +19,14 @@ public class MovieController extends BaseController<Movie, Long> {
         super(service);
     }
 
+    @GetMapping("/general")
+    public ResponseEntity<?> getMovieGeneralDto(){
+        try {
+            return ResponseEntity.ok(((MovieService) service).getMovieGeneralDto());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
+    }
     @GetMapping("/{movieId}/subtitle")
     public ResponseEntity<?> getSubtitles(@PathVariable Long movieId) {
         try {

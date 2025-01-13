@@ -30,17 +30,11 @@ public class WatchListService extends BaseService<WatchList, Long> {
     }
 
     public WatchList addSeriesToWatchList(Long profileId, Long seriesId) {
-        Profile profile = profileRepository.findById(profileId)
-                .orElseThrow(() -> new RuntimeException("Profile not found with ID: " + profileId));
-        Series series = seriesRepository.findById(seriesId)
-                .orElseThrow(() -> new RuntimeException("Series not found with ID: " + seriesId));
-
-        WatchList watchList = new WatchList();
-        watchList.setProfile(profile);
-        watchList.setSeries(series);
-
-        return watchListRepository.save(watchList);
+        Long watchlistId = watchListRepository.addSeriesToWatchList(profileId, seriesId, null);
+        return watchListRepository.findById(watchlistId)
+                .orElseThrow(() -> new RuntimeException("Failed to add series to watchlist"));
     }
+
 
     public List<Series> getSeriesFromWatchList(Long profileId) {
         return watchListRepository.findAllByProfile_ProfileIdAndSeriesIsNotNull(profileId)

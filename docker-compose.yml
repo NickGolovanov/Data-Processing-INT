@@ -68,6 +68,17 @@ services:
       - pgadmin-data:/var/lib/pgadmin
       - ./backups:/backups
 
+  website:
+    build:
+      context: ./websiteNefix
+    ports:
+      - '3000:3000'
+    depends_on:
+      - app
+    environment:
+      API_URL: http://localhost:8080
+    volumes:
+      - ./websiteNefix:/usr/src/app
 volumes:
   postgres-data:
   pgadmin-data:

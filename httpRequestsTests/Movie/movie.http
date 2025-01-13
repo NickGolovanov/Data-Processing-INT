@@ -1,6 +1,10 @@
 ### Get all movies
 GET localhost:8080/movie
 
+### GET Movie general
+GET localhost:8080/movie/general
+
+
 ### Subtitle ###
 
 

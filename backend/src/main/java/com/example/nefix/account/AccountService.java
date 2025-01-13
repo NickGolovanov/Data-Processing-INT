@@ -1,20 +1,20 @@
 package com.example.nefix.account;
 
 import com.example.nefix.accountsubscription.AccountSubscription;
-import com.example.nefix.accountsubscription.AccountSubscriptionId;
 import com.example.nefix.accountsubscription.AccountSubscriptionRepository;
 import com.example.nefix.blockedaccount.BlockedAccount;
 import com.example.nefix.blockedaccount.BlockedAccountsRepository;
 import com.example.nefix.genrealization.service.BaseService;
 import com.example.nefix.referraldiscount.ReferralDiscount;
 import com.example.nefix.referraldiscount.ReferralDiscountRepository;
-import com.example.nefix.subscription.Subscription;
 import com.example.nefix.subscription.SubscriptionRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -149,32 +149,24 @@ public class AccountService extends BaseService<Account, Long> {
         accountSubscriptionRepository.callDeleteSubscription(accountId, subscriptionId);
     }
 
+    public boolean isAccountBlocked(Long accountId) {
+        List<BlockedAccount> blockedAccounts = blockedAccountsRepository.getBlockedAccountsByAccount_AccountId(accountId);
+        for(BlockedAccount blockedAccount : blockedAccounts) {
+            if(blockedAccount.getIsPermanent() || blockedAccount.getDateOfExpire().isAfter(LocalDate.now())) {
+                return true;
+            }
+        }
+        return false;
+
+    }
+
     public BlockedAccount blockAccount(Long accountId, BlockedAccountRequestDto requestDto) {
-        // Fetch the account to be blocked
-        Account account = repository.findById(accountId)
-                .orElseThrow(() -> new RuntimeException("Account not found with ID: " + accountId));
-
-        // Create and populate the BlockedAccount entity
-        BlockedAccount blockedAccount = new BlockedAccount();
-        blockedAccount.setAccount(account);
-        blockedAccount.setIsPermanent(requestDto.isPermanent());
-        blockedAccount.setDateOfExpire(requestDto.isPermanent() ? null : requestDto.getDateOfExpire());
-
-        // Save the BlockedAccount
-        return blockedAccountsRepository.save(blockedAccount);
+        blockedAccountsRepository.callBlockAccount(accountId, requestDto.isPermanent(), requestDto.getDateOfExpire(), null);
+        return blockedAccountsRepository.findByAccount_AccountId(accountId).orElseThrow(() -> new RuntimeException("Account not found with ID: " + accountId));
     }
 
     public void unblockAccount(Long accountId) {
-        // Fetch the account to unblock
-        Account account = repository.findById(accountId)
-                .orElseThrow(() -> new RuntimeException("Account not found with ID: " + accountId));
-
-        // Find the associated BlockedAccount record
-        BlockedAccount blockedAccount = blockedAccountsRepository.findByAccount_AccountId(account.getAccountId())
-                .orElseThrow(() -> new RuntimeException("No block record found for account ID: " + accountId));
-
-        // Delete the BlockedAccount record
-        blockedAccountsRepository.delete(blockedAccount);
+        blockedAccountsRepository.callUnblockAccount(accountId);
     }
 
     @Transactional
