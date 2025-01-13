@@ -5,23 +5,25 @@ import com.example.nefix.info.Info;
 import com.example.nefix.movie.Movie;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class InfoMovie
 {
     @EmbeddedId
-    @JsonProperty("id")
     private InfoMovieId id;
 
     @ManyToOne
-    @JoinColumn(name = "movie_id", nullable = false, insertable = false, updatable = false)
-    @JsonProperty("movieId")
+    @JoinColumn(name = "movie_id", insertable = false, updatable = false)
     private Movie movie;
 
     @ManyToOne
-    @JoinColumn(name = "info_id", nullable = false, insertable = false, updatable = false)
-    @JsonProperty("infoId")
+    @JoinColumn(name = "info_id", insertable = false, updatable = false)
     private Info info;
+
 }

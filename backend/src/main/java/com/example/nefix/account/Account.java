@@ -6,10 +6,7 @@ import com.example.nefix.profile.Profile;
 import com.example.nefix.referraldiscount.ReferralDiscount;
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,7 +26,7 @@ public class Account implements UserDetails
     private Long accountId;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties("account")
+    @JsonManagedReference
     private Set<AccountSubscription> subscriptions = new HashSet<>();
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -43,6 +40,7 @@ public class Account implements UserDetails
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "referral_discount_id")
     @JsonProperty("referralDiscount")
+    @JsonIgnoreProperties("account")
     private ReferralDiscount referralDiscount;
 
     @Enumerated(EnumType.STRING)

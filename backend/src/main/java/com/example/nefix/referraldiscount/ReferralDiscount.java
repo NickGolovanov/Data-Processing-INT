@@ -3,8 +3,10 @@ package com.example.nefix.referraldiscount;
 import com.example.nefix.account.Account;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
+@Data
 public class ReferralDiscount
 {
     @Id

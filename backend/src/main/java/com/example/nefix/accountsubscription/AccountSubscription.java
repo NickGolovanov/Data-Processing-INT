@@ -3,14 +3,20 @@ package com.example.nefix.accountsubscription;
 import com.example.nefix.account.Account;
 import com.example.nefix.subscription.Subscription;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "account_subscription")
 public class AccountSubscription
@@ -23,12 +29,14 @@ public class AccountSubscription
     @MapsId("accountId")
     @JoinColumn(name = "account_id", insertable = false, updatable = false)
     @JsonProperty("accountId")
+    @JsonBackReference // Child reference for Jackson
     private Account account;
 
     @ManyToOne
     @MapsId("subscriptionId")
     @JoinColumn(name = "subscription_id", insertable = false, updatable = false)
     @JsonProperty("subscriptionId")
+    @JsonBackReference // Child reference for Jackson
     private Subscription subscription;
 
     @JsonProperty("dateOfPurchase")

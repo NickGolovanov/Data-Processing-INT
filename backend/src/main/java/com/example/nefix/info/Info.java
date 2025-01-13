@@ -2,6 +2,8 @@ package com.example.nefix.info;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
@@ -14,8 +16,11 @@ public class Info
     private Long infoId;
 
     @JsonProperty("description")
+    @NotBlank(message = "Description cannot be blank")
     private String description;
 
+    @Enumerated(EnumType.STRING)
     @JsonProperty("type")
+    @NotNull(message = "Type must not be null")
     private InfoType type;
 }

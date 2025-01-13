@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+import org.springframework.context.annotation.Lazy;
 
 @Data
 @Entity
@@ -35,9 +37,11 @@ public class Subtitle
     private Movie movie;
 
     @JsonProperty("language")
+    @NotBlank(message = "Language cannot be blank")
     private String language;
 
     @JsonProperty("subtitleLocation")
     @Column(name = "subtitle_location")
+    @NotBlank(message = "Subtitle location cannot be blank")
     private String subtitleLocation;
 }

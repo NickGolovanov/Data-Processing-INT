@@ -21,7 +21,8 @@ services:
       - .env
     volumes:
       - postgres-data:/var/lib/postgresql/data
-      - ./sql/views.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./backups:/backups
+      - ./wal_archive:/var/lib/postgresql/wal_archive
     restart: unless-stopped
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -34,8 +35,11 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    labels:
-      org.springframework.boot.service-connection: db
+    command: >
+      postgres -c wal_level=replica
+               -c archive_mode=on
+               -c archive_command='cp %p /var/lib/postgresql/wal_archive/%f'
+               -c archive_timeout=60
 
   flyway:
     image: flyway/flyway:latest
@@ -48,8 +52,8 @@ services:
       FLYWAY_USER: ${POSTGRES_USER}
       FLYWAY_PASSWORD: ${POSTGRES_PASSWORD}
     entrypoint: [ "/bin/sh", "-c", "sleep 10 && flyway migrate" ]
-  #    command: migrate
-  # add this for simplicity and easy access to the database
+    command: migrate
+
   pgadmin:
     image: dpage/pgadmin4
     restart: always
@@ -62,6 +66,17 @@ services:
       - pgadmin-data:/var/lib/pgadmin
       - ./backups:/backups
 
+  website:
+    build:
+      context: ./websiteNefix
+    ports:
+      - '3000:3000'
+    depends_on:
+      - app
+    environment:
+      API_URL: http://localhost:8080
+    volumes:
+      - ./websiteNefix:/usr/src/app
 volumes:
   postgres-data:
   pgadmin-data:
