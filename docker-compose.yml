@@ -1,5 +1,5 @@
 services:
-  app:
+  backend:
     image: docker-spring-boot-postgres:latest
     env_file:
       - .env
@@ -14,6 +14,18 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DATABASE: ${POSTGRES_DATABASE}
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - '3000:3000'
+    depends_on:
+      - app
+    environment:
+      API_URL: http://localhost:8080
+    volumes:
+      - ./frontend:/usr/src/app
 
   db:
     image: postgres:17
@@ -66,17 +78,6 @@ services:
       - pgadmin-data:/var/lib/pgadmin
       - ./backups:/backups
 
-  website:
-    build:
-      context: ./websiteNefix
-    ports:
-      - '3000:3000'
-    depends_on:
-      - app
-    environment:
-      API_URL: http://localhost:8080
-    volumes:
-      - ./websiteNefix:/usr/src/app
 volumes:
   postgres-data:
   pgadmin-data:
