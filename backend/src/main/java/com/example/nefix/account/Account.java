@@ -6,6 +6,7 @@ import com.example.nefix.profile.Profile;
 import com.example.nefix.referraldiscount.ReferralDiscount;
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Set;
 
 @Data
+@Builder
 @Entity
 public class Account implements UserDetails
 {
