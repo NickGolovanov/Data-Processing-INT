@@ -1,4 +1,4 @@
-package com.example.nefix.backup.backups;
+package com.example.nefix.backup;
 
 import org.springframework.beans.factory.annotation.Value;
 import lombok.Data;

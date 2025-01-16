@@ -1,6 +1,5 @@
-package com.example.nefix.backup.backups;
+package com.example.nefix.backup;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -12,7 +11,7 @@ import java.time.format.DateTimeFormatter;
 
 
 @Data
-@Service //why service ?
+@Service
 public class DatabaseBackupService
 {
     private final BackupFileProperties backupFileProperties;

@@ -1,10 +1,13 @@
 package com.example.nefix.info;
 
+import com.example.nefix.blockedaccount.BlockedAccount;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+
+import java.util.Objects;
 
 @Data
 @Entity
@@ -23,4 +26,17 @@ public class Info
     @JsonProperty("type")
     @NotNull(message = "Type must not be null")
     private InfoType type;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Info that = (Info) o;
+        return Objects.equals(this.infoId, that.infoId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.infoId);
+    }
 }

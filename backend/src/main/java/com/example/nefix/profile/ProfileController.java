@@ -1,6 +1,8 @@
 package com.example.nefix.profile;
 
 import com.example.nefix.genrealization.controller.BaseController;
+import com.example.nefix.genrealization.response.ApiResponse;
+import com.example.nefix.genrealization.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +22,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 @RestController
-@RequestMapping("/profile")
+@RequestMapping("/api/v1/profile")
 public class ProfileController extends BaseController<Profile, Long> {
     private ProfileService profileService;
 
@@ -30,45 +32,57 @@ public class ProfileController extends BaseController<Profile, Long> {
 
     @Override
     @PostMapping
-    public ResponseEntity<Profile> create(@RequestBody Profile entity)
+    public ResponseEntity<ApiResponse<Profile>> create(@RequestBody Profile entity)
     {
-
-        if(entity.getProfileImage() == null || entity.getProfileImage().isEmpty())
+        try
         {
-            String imageUrl;
+            if (entity.getProfileImage() == null || entity.getProfileImage().isEmpty())
+            {
+                String imageUrl;
 
-            try {
-                HttpClient httpClient = HttpClient.newBuilder()
-                        .followRedirects(HttpClient.Redirect.NORMAL)
-                        .build();
+                try
+                {
+                    HttpClient httpClient = HttpClient.newBuilder()
+                            .followRedirects(HttpClient.Redirect.NORMAL)
+                            .build();
 
-                HttpRequest request = HttpRequest.newBuilder()
-                        .uri(URI.create("https://picsum.photos/512"))
-                        .GET()
-                        .build();
+                    HttpRequest request = HttpRequest.newBuilder()
+                            .uri(URI.create("https://picsum.photos/512"))
+                            .GET()
+                            .build();
 
-                HttpResponse<Void> response = httpClient.send(request, HttpResponse.BodyHandlers.discarding());
+                    HttpResponse<Void> response = httpClient.send(request, HttpResponse.BodyHandlers.discarding());
 
-                List<String> locationHeaders = response.headers().allValues("location");
-                if (!locationHeaders.isEmpty()) {
-                    imageUrl = locationHeaders.get(0);
-                } else if (response.uri() != null) {
-                    imageUrl = response.uri().toString();
-                } else {
-                    throw new RuntimeException("Unable to fetch the redirected URL");
+                    List<String> locationHeaders = response.headers().allValues("location");
+                    if (!locationHeaders.isEmpty())
+                    {
+                        imageUrl = locationHeaders.get(0);
+                    } else if (response.uri() != null)
+                    {
+                        imageUrl = response.uri().toString();
+                    } else
+                    {
+                        throw new RuntimeException("Unable to fetch the redirected URL");
+                    }
+
+                } catch (Exception e)
+                {
+                    throw new RuntimeException("Error while fetching image from Picsum Photos", e);
                 }
 
-            } catch (Exception e) {
-                throw new RuntimeException("Error while fetching image from Picsum Photos", e);
+                System.out.println("Image URL: " + imageUrl);
+
+                entity.setProfileImage(imageUrl);
             }
 
-            System.out.println("Image URL: " + imageUrl);
-
-            entity.setProfileImage(imageUrl);
+            Profile savedEntity = service.save(entity);
+            return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(savedEntity, null));
         }
-
-        Profile savedEntity = service.save(entity);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedEntity);
+        catch (Exception e)
+        {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>(null, new ErrorResponse("Error creating entity: " + e.getMessage())));
+        }
     }
 
     @GetMapping("/{profileId}/watch-list")

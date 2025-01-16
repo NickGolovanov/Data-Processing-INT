@@ -1,9 +1,15 @@
 package com.example.nefix.account;
 
 import com.example.nefix.accountsubscription.AccountSubscription;
+import com.example.nefix.accountsubscription.AccountSubscriptionRequestDto;
 import com.example.nefix.blockedaccount.BlockedAccount;
+import com.example.nefix.blockedaccount.BlockedAccountRequestDto;
 import com.example.nefix.genrealization.controller.BaseController;
+import com.example.nefix.genrealization.response.ApiResponse;
+import com.example.nefix.genrealization.response.ErrorResponse;
 import com.example.nefix.referraldiscount.ReferralDiscount;
+import com.example.nefix.referraldiscount.ReferralDiscountRequestDto;
+import com.example.nefix.referraldiscount.ReferralDiscountResponseDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/account")
+@RequestMapping("/api/v1/account")
 public class AccountController extends BaseController<Account, Long>
 {
     @Autowired
@@ -25,92 +31,95 @@ public class AccountController extends BaseController<Account, Long>
     }
 
     @PostMapping("/{accountId}/subscription/{subscriptionId}")
-    public ResponseEntity<?> addSubscription(
+    public ResponseEntity<ApiResponse<AccountSubscription>> addSubscription(
             @PathVariable Long accountId,
             @PathVariable Long subscriptionId,
             @Valid @RequestBody AccountSubscriptionRequestDto requestDto) {
         try {
-             AccountSubscription accountSubscription = accountService.addSubscription(accountId, subscriptionId, requestDto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(accountSubscription);
+            AccountSubscription accountSubscription = accountService.addSubscription(accountId, subscriptionId, requestDto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(accountSubscription, null));
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse<>(null, new ErrorResponse(e.getMessage())));
         }
     }
 
-    // PATCH endpoint to update the subscription
     @PatchMapping("/{accountId}/subscription/{subscriptionId}")
-    public ResponseEntity<?> updateSubscription(
+    public ResponseEntity<ApiResponse<AccountSubscription>> updateSubscription(
             @PathVariable Long accountId,
             @PathVariable Long subscriptionId,
             @Valid @RequestBody AccountSubscriptionRequestDto requestDto) {
         try {
-            // Call service to update the subscription
             AccountSubscription updatedAccountSubscription = accountService.updateSubscription(accountId, subscriptionId, requestDto);
-            // Return the updated subscription details in the response DTO
-            return ResponseEntity.status(HttpStatus.OK).body(updatedAccountSubscription);
+            return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(updatedAccountSubscription, null));
         } catch (RuntimeException e) {
-            // If account or subscription is not found, return 404
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse<>(null, new ErrorResponse(e.getMessage())));
         }
     }
 
     @DeleteMapping("/{accountId}/subscription/{subscriptionId}")
-    public ResponseEntity<?> deleteSubscription(
+    public ResponseEntity<ApiResponse<Void>> deleteSubscription(
             @PathVariable Long accountId,
             @PathVariable Long subscriptionId) {
         try {
-            // Call the service to delete the subscription
             accountService.deleteSubscription(accountId, subscriptionId);
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new ApiResponse<>(null, null));
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiResponse<>(null, new ErrorResponse(e.getMessage())));
         }
     }
 
     @GetMapping("/{accountId}/is-blocked")
-    public ResponseEntity<?> isAccountBlocked(@PathVariable Long accountId) {
+    public ResponseEntity<ApiResponse<Boolean>> isAccountBlocked(@PathVariable Long accountId) {
         try {
-            return ResponseEntity.ok(accountService.isAccountBlocked(accountId));
-        }
-        catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            Boolean isBlocked = accountService.isAccountBlocked(accountId);
+            return ResponseEntity.ok(new ApiResponse<>(isBlocked, null));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse<>(null, new ErrorResponse(e.getMessage())));
         }
     }
+
     @PostMapping("/{accountId}/block")
-    public ResponseEntity<BlockedAccount> blockAccount(
+    public ResponseEntity<ApiResponse<BlockedAccount>> blockAccount(
             @PathVariable Long accountId,
             @Valid @RequestBody BlockedAccountRequestDto requestDto) {
-        BlockedAccount blockedAccount = accountService.blockAccount(accountId, requestDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(blockedAccount);
+        try {
+            BlockedAccount blockedAccount = accountService.blockAccount(accountId, requestDto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(blockedAccount, null));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse<>(null, new ErrorResponse(e.getMessage())));
+        }
     }
 
     @DeleteMapping("/{accountId}/block")
-    public ResponseEntity<Void> unblockAccount(@PathVariable Long accountId) {
-        accountService.unblockAccount(accountId);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<ApiResponse<Void>> unblockAccount(@PathVariable Long accountId) {
+        try {
+            accountService.unblockAccount(accountId);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new ApiResponse<>(null, null));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse<>(null, new ErrorResponse(e.getMessage())));
+        }
     }
 
-    @PostMapping("/{accountId}/referralDiscount")
-    public ResponseEntity<ReferralDiscount> addReferralDiscount(
+    @PostMapping("/{accountId}/referral-discount")
+    public ResponseEntity<ApiResponse<ReferralDiscount>> addReferralDiscount(
             @PathVariable Long accountId,
             @Valid @RequestBody ReferralDiscountRequestDto requestDto) {
         try {
             ReferralDiscount referralDiscount = accountService.addReferralDiscount(accountId, requestDto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(referralDiscount);
+            return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(referralDiscount, null));
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse<>(null, new ErrorResponse(e.getMessage())));
         }
     }
 
-    @GetMapping("/{accountId}/referralDiscount")
-    public ResponseEntity<List<ReferralDiscountResponseDto>> getAllReferralDiscounts(
+    @GetMapping("/{accountId}/referral-discount")
+    public ResponseEntity<ApiResponse<List<ReferralDiscountResponseDto>>> getAllReferralDiscounts(
             @PathVariable Long accountId) {
         try {
             List<ReferralDiscountResponseDto> referralDiscounts = accountService.getReferralDiscounts(accountId);
-            return ResponseEntity.status(HttpStatus.OK).body(referralDiscounts);
+            return ResponseEntity.ok(new ApiResponse<>(referralDiscounts, null));
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse<>(null, new ErrorResponse(e.getMessage())));
         }
     }
-
 }

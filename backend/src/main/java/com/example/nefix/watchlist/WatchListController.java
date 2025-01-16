@@ -2,14 +2,13 @@ package com.example.nefix.watchlist;
 
 import com.example.nefix.genrealization.controller.BaseController;
 import com.example.nefix.series.Series;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/watch-list")
+@RequestMapping("/api/v1/watch-list")
 public class WatchListController extends BaseController<WatchList, Long> {
     public WatchListController(WatchListService service) {
         super(service);

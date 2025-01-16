@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/series")
+@RequestMapping("/api/v1/series")
 public class SeriesController extends BaseController<Series, Long> {
     public SeriesController(SeriesService service) {
         super(service);

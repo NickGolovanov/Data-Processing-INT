@@ -2,11 +2,15 @@ package com.example.nefix.account;
 
 import com.example.nefix.accountsubscription.AccountSubscription;
 import com.example.nefix.accountsubscription.AccountSubscriptionRepository;
+import com.example.nefix.accountsubscription.AccountSubscriptionRequestDto;
 import com.example.nefix.blockedaccount.BlockedAccount;
+import com.example.nefix.blockedaccount.BlockedAccountRequestDto;
 import com.example.nefix.blockedaccount.BlockedAccountsRepository;
 import com.example.nefix.genrealization.service.BaseService;
 import com.example.nefix.referraldiscount.ReferralDiscount;
 import com.example.nefix.referraldiscount.ReferralDiscountRepository;
+import com.example.nefix.referraldiscount.ReferralDiscountRequestDto;
+import com.example.nefix.referraldiscount.ReferralDiscountResponseDto;
 import com.example.nefix.subscription.SubscriptionRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

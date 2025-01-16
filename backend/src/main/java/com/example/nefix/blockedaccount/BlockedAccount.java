@@ -9,12 +9,15 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Data
 @Table(name = "blocked_account")
-public class BlockedAccount
+public class BlockedAccount implements Serializable
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,9 +26,8 @@ public class BlockedAccount
 
     @ManyToOne
     @JoinColumn(name = "account_id", nullable = false)
-    @JsonProperty("accountId")
+    @JsonProperty(value = "accountId", access = JsonProperty.Access.WRITE_ONLY)
     @JsonDeserialize(using = AccountDeserializer.class)
-    @JsonIgnoreProperties({"blockedAccounts", "referralDiscount", "subscriptions", "profiles"})
     private Account account;
 
     @JsonProperty("dateOfExpire")
@@ -35,4 +37,23 @@ public class BlockedAccount
     @JsonProperty("isPermanent")
     @Column(name = "is_permanent")
     private Boolean isPermanent;
+
+    @JsonProperty(value = "accountId", access = JsonProperty.Access.READ_ONLY)
+    public Long getAccountId()
+    {
+        return account.getAccountId();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BlockedAccount that = (BlockedAccount) o;
+        return Objects.equals(this.blockedAccountId, that.blockedAccountId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.blockedAccountId);
+    }
 }

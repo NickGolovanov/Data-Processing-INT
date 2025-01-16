@@ -8,40 +8,26 @@ import com.example.nefix.watchlist.WatchList;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 @Entity
-public class Profile
+public class Profile implements Serializable
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "profile_id")
     private Long profileId;
-
-    @ManyToOne
-    @JoinColumn(name = "account_id", nullable = false)
-    @JsonProperty("accountId")
-    @JsonDeserialize(using = AccountDeserializer.class)
-    @JsonIgnoreProperties({"profiles", "blockedAccounts", "referralDiscount", "subscriptions"})
-    private Account account;
-
-    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties({"profile", "episode", "movie"})
-    private Set<LiveInfo> liveInfos = new HashSet<>();
-
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "preference_id", nullable = true)
-    @JsonProperty("preferenceId")
-    @JsonIgnoreProperties({"profile"})
-    private Preference preference;
-
-    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties({"profile", "series", "movie"})
-    private Set<WatchList> watchList = new HashSet<>();
 
     @JsonProperty("series")
     private Boolean series;
@@ -49,25 +35,75 @@ public class Profile
     @JsonProperty("film")
     private Boolean film;
 
-    @JsonProperty("minimumAge")
     @Column(name = "minimum_age")
+    @JsonProperty("minimumAge")
+    @Min(value = 0, message = "Min age must not be negative.")
     private Integer minimumAge;
 
-    @JsonProperty("profileImage")
     @Column(name = "profile_image")
+    @JsonProperty("profileImage")
     private String profileImage;
 
-    @JsonProperty("profileChild")
     @Column(name = "profile_child")
+    @JsonProperty("profileChild")
     private Boolean profileChild;
 
-    @JsonProperty("profileName")
     @Column(name = "profile_name")
+    @JsonProperty("profileName")
+    @NotBlank(message = "Profile name must not be blank.")
     private String profileName;
 
     @JsonProperty("age")
+    @Min(value = 0, message = "Age must not be negative.")
     private Integer age;
 
     @JsonProperty("language")
+    @NotBlank(message = "Language must not be blank.")
     private String language;
+
+    @ManyToOne
+    @JoinColumn(name = "account_id", nullable = false)
+    @JsonProperty(value = "accountId", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonDeserialize(using = AccountDeserializer.class)
+    @NotNull(message = "Account must not be null.")
+    private Account account;
+
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonProperty("liveInfos")
+    private Set<LiveInfo> liveInfos = new HashSet<>();
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "preference_id", nullable = true)
+    @JsonProperty(value = "preferenceId", access = JsonProperty.Access.READ_ONLY)
+    private Preference preference;
+
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties({"profileId"})
+    private Set<WatchList> watchList = new HashSet<>();
+
+    @JsonProperty(value = "accountId", access = JsonProperty.Access.READ_ONLY)
+    public Long getAccountId() {
+        return this.account.getAccountId();
+    }
+
+    @JsonProperty(value = "preferenceId", access = JsonProperty.Access.READ_ONLY)
+    public Long getPreferenceId() {
+        if (this.preference == null) {
+            return null;
+        }
+        return this.preference.getPreferenceId();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Profile that = (Profile) o;
+        return Objects.equals(this.profileId, that.profileId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.profileId);
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.nefix.watchlist;
 
+import com.example.nefix.blockedaccount.BlockedAccount;
 import com.example.nefix.movie.Movie;
 import com.example.nefix.movie.MovieDeserializer;
 import com.example.nefix.profile.Profile;
@@ -13,10 +14,13 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.io.Serializable;
+import java.util.Objects;
+
 @Data
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"profile_id", "series_id", "movie_id"}))
-public class WatchList
+public class WatchList implements Serializable
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,22 +29,58 @@ public class WatchList
 
     @ManyToOne
     @JoinColumn(name = "profile_id", nullable = false)
-    @JsonProperty("profileId")
+    @JsonProperty(value = "profileId", access = JsonProperty.Access.WRITE_ONLY)
     @JsonDeserialize(using = ProfileDeserializer.class)
-    @JsonIgnoreProperties({"watchList", "liveInfos", "preference"})
     private Profile profile;
 
     @ManyToOne
     @JoinColumn(name = "series_id")
-    @JsonProperty("seriesId")
+    @JsonProperty(value = "seriesId", access = JsonProperty.Access.WRITE_ONLY)
     @JsonDeserialize(using = SeriesDeserializer.class)
-    @JsonIgnoreProperties({"season", "infoSeries"})
     private Series series;
 
     @ManyToOne
     @JoinColumn(name = "movie_id")
-    @JsonProperty("movieId")
+    @JsonProperty(value = "movieId", access = JsonProperty.Access.WRITE_ONLY)
     @JsonDeserialize(using = MovieDeserializer.class)
-    @JsonIgnoreProperties({"subtitles", "infoMovies"})
     private Movie movie;
+
+    @JsonProperty(value = "profileId", access = JsonProperty.Access.READ_ONLY)
+    public Long getProfileId()
+    {
+        return this.profile.getProfileId();
+    }
+
+    @JsonProperty(value = "movieId", access = JsonProperty.Access.READ_ONLY)
+    public Long getMovieId()
+    {
+        if (movie == null)
+        {
+            return null;
+        }
+        return this.movie.getMovieId();
+    }
+
+    @JsonProperty(value = "seriesId", access = JsonProperty.Access.READ_ONLY)
+    public Long getSeriesId()
+    {
+        if (series == null)
+        {
+            return null;
+        }
+        return this.series.getSeriesId();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        WatchList that = (WatchList) o;
+        return Objects.equals(this.watchListId, that.watchListId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.watchListId);
+    }
 }

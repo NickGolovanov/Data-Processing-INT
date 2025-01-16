@@ -1,14 +1,15 @@
 package com.example.nefix.genrealization.controller;
 
+import com.example.nefix.genrealization.response.ApiResponse;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface ControllerBase<T, ID> {
-    public ResponseEntity<List<T>> getAll();
-    public ResponseEntity<T> getById(ID id);
-    public ResponseEntity<T> create(T entity);
-    public ResponseEntity<T> update(ID id, T entity);
-    public ResponseEntity<Void> delete(ID id);
+    ResponseEntity<ApiResponse<List<T>>> getAll();
+    ResponseEntity<ApiResponse<T>> getById(ID id);
+    ResponseEntity<ApiResponse<T>> create(T entity);
+    ResponseEntity<ApiResponse<T>> update(ID id, T entity);
+    ResponseEntity<ApiResponse<Void>> delete(ID id);
 }

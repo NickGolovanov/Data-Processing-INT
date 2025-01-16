@@ -2,7 +2,6 @@ package com.example.nefix.movie;
 
 import com.example.nefix.genrealization.controller.BaseController;
 import com.example.nefix.info.Info;
-import com.example.nefix.infomovie.InfoMovie;
 import com.example.nefix.subtitle.Subtitle;
 import com.example.nefix.subtitle.SubtitleResponseDTO;
 import jakarta.validation.Valid;
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/movie")
+@RequestMapping("/api/v1/movie")
 public class MovieController extends BaseController<Movie, Long> {
     public MovieController(MovieService service) {
         super(service);

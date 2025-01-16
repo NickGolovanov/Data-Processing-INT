@@ -1,6 +1,5 @@
-package com.example.nefix.account;
+package com.example.nefix.accountsubscription;
 
-import com.example.nefix.accountsubscription.AccountSubscription;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
@@ -11,7 +10,8 @@ import java.time.LocalDate;
 
 @Getter
 @AllArgsConstructor
-public class AccountSubscriptionResponseDto {
+public class AccountSubscriptionDto
+{
     @NotNull(message = "Account ID cannot be null")
     private final Long accountId;
 

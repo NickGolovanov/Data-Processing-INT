@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/preference")
+@RequestMapping("/api/v1/preference")
 public class PreferenceController extends BaseController<Preference, Long>
 {
     public PreferenceController(PreferenceService service)

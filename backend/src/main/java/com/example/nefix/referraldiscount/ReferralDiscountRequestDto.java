@@ -1,4 +1,4 @@
-package com.example.nefix.account;
+package com.example.nefix.referraldiscount;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 

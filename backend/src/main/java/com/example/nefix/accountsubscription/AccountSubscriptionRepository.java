@@ -11,8 +11,6 @@ import java.time.LocalDate;
 @Repository
 public interface AccountSubscriptionRepository extends JpaRepository<AccountSubscription, AccountSubscriptionId> {
     AccountSubscription getByAccount_AccountIdAndSubscription_SubscriptionId(Long accountAccountId, Long subscriptionSubscriptionId);
-    // You don't need custom queries for basic CRUD operations.
-
 
     @Query(value = "CALL add_subscription(:p_account_id, :p_subscription_id, :p_date_of_purchase, :p_date_of_expire, null)", nativeQuery = true)
     long callAddSubscription(@Param("p_account_id") Long p_account_id,

@@ -2,7 +2,6 @@ package com.example.nefix.episode;
 
 import com.example.nefix.season.Season;
 import com.example.nefix.season.SeasonDeserializer;
-import com.example.nefix.series.SeriesDeserializer;
 import com.example.nefix.subtitle.Subtitle;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,30 +9,20 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.DialectOverride;
-import org.springframework.context.annotation.Lazy;
 
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Data
 @Entity
-public class Episode
+public class Episode implements Serializable
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "episode_id")
     private Long episodeId;
-
-    @ManyToOne
-    @JoinColumn(name = "season_id", nullable = false)
-    @JsonProperty("seasonId")
-    @JsonDeserialize(using = SeasonDeserializer.class)
-    @JsonIgnoreProperties({"episodes", "series"})
-    private Season season;
-
-    @OneToMany(mappedBy = "episode", cascade = CascadeType.ALL, orphanRemoval = false)
-    @JsonIgnoreProperties({"movie", "episode"})
-    private Set<Subtitle> subtitles;
 
     @JsonProperty("title")
     private String title;
@@ -56,4 +45,33 @@ public class Episode
     @JsonProperty("UHD")
     @ColumnDefault("false")
     private Boolean UHD;
+
+    @ManyToOne
+    @JoinColumn(name = "season_id", nullable = false)
+    @JsonProperty(value = "seasonId", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonDeserialize(using = SeasonDeserializer.class)
+    private Season season;
+
+    @OneToMany(mappedBy = "episode", cascade = CascadeType.ALL, orphanRemoval = false)
+    @JsonIgnoreProperties({"episodeId", "movieId"})
+    private Set<Subtitle> subtitles = new HashSet<>();
+
+    @JsonProperty("seasonId")
+    public Long getSeasonId()
+    {
+        return this.season.getSeasonId();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Episode that = (Episode) o;
+        return Objects.equals(this.episodeId, that.episodeId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.episodeId);
+    }
 }
