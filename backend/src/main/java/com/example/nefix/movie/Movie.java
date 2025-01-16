@@ -6,7 +6,10 @@ import com.example.nefix.subtitle.Subtitle;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -24,21 +27,28 @@ public class Movie implements Serializable
     private Long movieId;
 
     @JsonProperty("title")
+    @NotNull(message = "Type must not be null")
     private String title;
 
     @JsonProperty("duration")
+    @Min(value = 1, message = "Duration must be greater than 0.")
+    @NotNull(message = "Duration must not be null.")
     private Integer duration;
 
     @JsonProperty("views")
+    @ColumnDefault("0")
     private Integer views;
 
     @JsonProperty("SD")
+    @ColumnDefault("false")
     private Boolean SD;
 
     @JsonProperty("HD")
+    @ColumnDefault("false")
     private Boolean HD;
 
     @JsonProperty("UHD")
+    @ColumnDefault("false")
     private Boolean UHD;
 
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = false)

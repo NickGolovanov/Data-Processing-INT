@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -30,6 +31,7 @@ public class Preference implements Serializable
     @JoinColumn(name = "profile_id", nullable = false)
     @JsonProperty(value = "profileId", access = JsonProperty.Access.WRITE_ONLY)
     @JsonDeserialize(using = ProfileDeserializer.class)
+    @NotNull(message = "Profile must not be null.")
     private Profile profile;
 
     @JsonProperty(value = "profileId", access = JsonProperty.Access.READ_ONLY)

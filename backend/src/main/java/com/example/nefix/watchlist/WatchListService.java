@@ -1,11 +1,14 @@
 package com.example.nefix.watchlist;
 
+import com.example.nefix.account.Account;
 import com.example.nefix.genrealization.service.BaseService;
 import com.example.nefix.movie.Movie;
 import com.example.nefix.profile.Profile;
 import com.example.nefix.profile.ProfileRepository;
+import com.example.nefix.referraldiscount.ReferralDiscount;
 import com.example.nefix.series.Series;
 import com.example.nefix.series.SeriesRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,8 +29,21 @@ public class WatchListService extends BaseService<WatchList, Long> {
     private WatchListRepository watchListRepository;
 
     public WatchListService(WatchListRepository repository) {
-        super(repository);
+        super(repository, List.of());
     }
+
+    @Override
+    public WatchList update(Long id, WatchList entity) throws RuntimeException {
+        WatchList existingEntity = this.repository.findById(id).orElseThrow(() ->
+                new RuntimeException("Entity not found with id: " + id)
+        );
+
+        existingEntity.setProfile(entity.getProfile());
+        existingEntity.setMovie(entity.getMovie());
+        existingEntity.setSeries(entity.getSeries());
+
+        return this.repository.save(existingEntity);
+    };
 
     public WatchList addSeriesToWatchList(Long profileId, Long seriesId) {
         Long watchlistId = watchListRepository.addSeriesToWatchList(profileId, seriesId, null);

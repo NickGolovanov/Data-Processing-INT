@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -28,14 +30,18 @@ public class BlockedAccount implements Serializable
     @JoinColumn(name = "account_id", nullable = false)
     @JsonProperty(value = "accountId", access = JsonProperty.Access.WRITE_ONLY)
     @JsonDeserialize(using = AccountDeserializer.class)
+    @NotNull(message = "Account must not be null.")
     private Account account;
 
     @JsonProperty("dateOfExpire")
     @Column(name = "date_of_expire")
+    @Future(message = "Date of expire must be in the future.")
+    @NotNull(message = "Date of expire must not be null.")
     private LocalDate dateOfExpire;
 
     @JsonProperty("isPermanent")
     @Column(name = "is_permanent")
+    @NotNull(message = "Permanent status must not be null.")
     private Boolean isPermanent;
 
     @JsonProperty(value = "accountId", access = JsonProperty.Access.READ_ONLY)

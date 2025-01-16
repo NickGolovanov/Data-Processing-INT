@@ -12,6 +12,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -30,9 +31,11 @@ public class Profile implements Serializable
     private Long profileId;
 
     @JsonProperty("series")
+    @ColumnDefault("true")
     private Boolean series;
 
     @JsonProperty("film")
+    @ColumnDefault("true")
     private Boolean film;
 
     @Column(name = "minimum_age")
@@ -46,6 +49,7 @@ public class Profile implements Serializable
 
     @Column(name = "profile_child")
     @JsonProperty("profileChild")
+    @NotNull(message = "Profile child must not be null.")
     private Boolean profileChild;
 
     @Column(name = "profile_name")

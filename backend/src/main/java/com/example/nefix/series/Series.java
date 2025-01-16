@@ -6,6 +6,8 @@ import com.example.nefix.season.Season;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -24,13 +26,16 @@ public class Series implements Serializable
     private Long seriesId;
 
     @JsonProperty("title")
+    @NotBlank(message = "Title must not be blank.")
     private String title;
 
+    @JsonProperty("views")
     @ColumnDefault("0")
     private Integer views;
 
     @JsonProperty("minimumAge")
     @Column(name = "minimum_age")
+    @Min(value = 0, message = "Minimum age must not be negative.")
     private Integer minimumAge;
 
     @OneToMany(mappedBy = "series")

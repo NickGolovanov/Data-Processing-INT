@@ -30,7 +30,7 @@ public class PreferenceService extends BaseService<Preference, Long> {
     private PreferenceRepository preferenceRepository;
 
     public PreferenceService(PreferenceRepository repository) {
-        super(repository);
+        super(repository, List.of("preferenceId"));
     }
 
     public Preference addPreferenceMovie(Long profileId, Long movieId) {

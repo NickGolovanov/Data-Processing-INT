@@ -5,6 +5,7 @@ import com.example.nefix.blockedaccount.BlockedAccount;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -19,11 +20,12 @@ public class ReferralDiscount implements Serializable
     @Column(name = "referral_discount_id")
     private Long referralDiscountId;
 
-    @OneToOne(mappedBy = "referralDiscount")
+    @OneToOne
     @JsonIgnore
     private Account account;
 
     @JsonProperty("link")
+    @Pattern(regexp = "^(https?://)?([\\w.-]+)+(:\\d+)?(/\\S*)?$", message = "Invalid link format.")
     private String link;
 
     @JsonProperty(value = "accountId", access = JsonProperty.Access.READ_ONLY)

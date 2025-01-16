@@ -6,6 +6,7 @@ import com.example.nefix.preference.PreferenceRepository;
 import com.example.nefix.watchlist.WatchList;
 import com.example.nefix.watchlist.WatchListRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class ProfileService extends BaseService<Profile, Long>
 
     public ProfileService(ProfileRepository repository)
     {
-        super(repository);
+        super(repository, List.of("profileId", "liveInfos", "watchList", "preference"));
     }
 
     public WatchList addToWatchList(WatchList watchList)

@@ -2,10 +2,12 @@ package com.example.nefix.series;
 
 import com.example.nefix.genrealization.service.BaseService;
 import com.example.nefix.movie.MovieGeneralDto;
+import com.example.nefix.referraldiscount.ReferralDiscount;
 import com.example.nefix.season.Season;
 import com.example.nefix.season.SeasonRepository;
 import com.example.nefix.infoseries.InfoSeries;
 import com.example.nefix.infoseries.InfoSeriesRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +25,7 @@ public class SeriesService extends BaseService<Series, Long> {
     private SeriesRepository seriesRepository;
 
     public SeriesService(SeriesRepository repository) {
-        super(repository);
+        super(repository, List.of("seriesId"));
     }
 
     public List<SeriesGeneralDto> getSeriesGeneralDto() {

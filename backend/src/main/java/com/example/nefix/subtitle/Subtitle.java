@@ -29,6 +29,7 @@ public class Subtitle implements Serializable
 
     @JsonProperty("language")
     @NotBlank(message = "Language cannot be blank")
+    @NotBlank(message = "Language must not be blank.")
     private String language;
 
     @JsonProperty("subtitleLocation")

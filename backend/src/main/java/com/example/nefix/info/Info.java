@@ -24,7 +24,7 @@ public class Info
 
     @Enumerated(EnumType.STRING)
     @JsonProperty("type")
-    @NotNull(message = "Type must not be null")
+    @NotBlank(message = "Description must not be blank.")
     private InfoType type;
 
     @Override

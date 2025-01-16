@@ -54,7 +54,7 @@ public class Account implements Serializable, UserDetails
     @JsonIgnoreProperties({"accountId"})
     private Set<BlockedAccount> blockedAccounts = new HashSet<>();
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "account")
     @JoinColumn(name = "referral_discount_id")
     private ReferralDiscount referralDiscount;
 

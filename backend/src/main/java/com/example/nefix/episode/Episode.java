@@ -7,6 +7,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -25,9 +28,12 @@ public class Episode implements Serializable
     private Long episodeId;
 
     @JsonProperty("title")
+    @NotBlank(message = "Title must not be blank.")
     private String title;
 
     @JsonProperty("duration")
+    @Min(value = 1, message = "Duration must be greater than 0.")
+    @NotNull(message = "Duration must not be null.")
     private Double duration;
 
     @JsonProperty("views")
@@ -50,6 +56,7 @@ public class Episode implements Serializable
     @JoinColumn(name = "season_id", nullable = false)
     @JsonProperty(value = "seasonId", access = JsonProperty.Access.WRITE_ONLY)
     @JsonDeserialize(using = SeasonDeserializer.class)
+    @NotNull(message = "Season must not be null.")
     private Season season;
 
     @OneToMany(mappedBy = "episode", cascade = CascadeType.ALL, orphanRemoval = false)

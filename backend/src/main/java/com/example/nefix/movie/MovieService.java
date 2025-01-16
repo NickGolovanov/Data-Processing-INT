@@ -25,7 +25,7 @@ public class MovieService extends BaseService<Movie, Long> {
 
 
     public MovieService(MovieRepository repository) {
-        super(repository);
+        super(repository, List.of("movieId"));
     }
 
     public List<MovieGeneralDto> getMovieGeneralDto() {

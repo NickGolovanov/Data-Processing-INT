@@ -13,7 +13,9 @@ import com.example.nefix.referraldiscount.ReferralDiscountRequestDto;
 import com.example.nefix.referraldiscount.ReferralDiscountResponseDto;
 import com.example.nefix.subscription.SubscriptionRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -37,10 +39,24 @@ public class AccountService extends BaseService<Account, Long> {
     @Autowired
     private ReferralDiscountRepository referralDiscountRepository;
 
+    private PasswordEncoder passwordEncoder;
+
     public AccountService(AccountRepository repository) {
-        super(repository);
+        super(repository, List.of());
     }
 
+    @Override
+    public Account update(Long id, Account entity) throws RuntimeException {
+        Account existingEntity = this.repository.findById(id).orElseThrow(() ->
+                new RuntimeException("Entity not found with id: " + id)
+        );
+
+        existingEntity.setEmail(entity.getEmail());
+        existingEntity.setPassword(this.passwordEncoder.encode(entity.getPassword()));
+        existingEntity.setPaymentMethod(entity.getPaymentMethod());
+
+        return this.repository.save(existingEntity);
+    };
 
 //    @Transactional
 //    public AccountSubscription addSubscription(Long accountId, Long subscriptionId, AccountSubscriptionRequestDto requestDto) {
