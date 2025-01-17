@@ -1,5 +1,6 @@
 package com.example.nefix.authentification.auth;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,6 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LoginRequest
 {
+    @NotNull
     private String email;
+
+    @NotNull
     private String password;
 }

@@ -28,7 +28,7 @@ const MoviePage = ({params}: { params: Promise<{ id: string }> }) => {
     useEffect(() => {
         const fetchMovie = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/movie/${id}`, {
+                const response = await fetch(`http://localhost:8080/api/v1/movie/${id}`, {
                     method: "GET",
                     headers: {
                         Authorization: "Bearer " + localStorage.getItem("authToken")
@@ -38,7 +38,8 @@ const MoviePage = ({params}: { params: Promise<{ id: string }> }) => {
                     throw new Error(`Failed to fetch: ${response.status}`);
                 }
                 const data = await response.json();
-                setMovie(data);
+                console.log(data);
+                setMovie(data.data);
             } catch (err: unknown) {
                 if (err instanceof Error) {
                     setError(err.message);

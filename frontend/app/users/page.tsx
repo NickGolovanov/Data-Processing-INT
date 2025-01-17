@@ -8,43 +8,55 @@ interface Account {
     accountId: number;
     email: string;
     paymentMethod: string;
-    referralDiscount: {referralDiscountId: number, link: string};
-    subscriptions: {subscriptionId: number, type: string, startDate: string, endDate: string}[];
+    referralDiscount: { referralDiscountId: number; link: string } | null;
+    subscriptions: { subscriptionId: number; type: string; startDate: string; endDate: string }[];
+    isBlocked?: boolean; // Added optional field for blocked status
 }
 
 const isBlocked = async (accountId: number) => {
     try {
-        const response = await fetch(`http://localhost:8080/account/${accountId}/is-blocked`);
+        const response = await fetch(`http://localhost:8080/api/v1/account/${accountId}/is-blocked`, {
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem("authToken"),
+            },
+        });
         if (!response.ok) {
-            throw new Error(`Failed to fetch account status: ${response.status}`);
+            throw new Error(`Failed to fetch account blocked status: ${response.status}`);
         }
-        const data: { isBlocked: boolean } = await response.json();
-        return data;
+        const data = await response.json();
+        return data.data;
     } catch (err: unknown) {
-        if (err instanceof Error) {
-            console.error(err.message);
-        }
+        console.error(err);
+        return false;
     }
 };
 
 const UserPage: React.FC = () => {
     const [accounts, setAccounts] = useState<Account[]>([]);
-    const [blockedStatus, setBlockedStatus] = useState<{ [key: number]: boolean }>({});
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchAccounts = async () => {
             try {
-                const response = await fetch("http://localhost:8080/account", {
+                const response = await fetch("http://localhost:8080/api/v1/account", {
                     method: "GET",
-                    headers: {Authorization: "Bearer " + localStorage.getItem("authToken")}
+                    headers: { Authorization: "Bearer " + localStorage.getItem("authToken") },
                 });
                 if (!response.ok) {
                     throw new Error(`Failed to fetch accounts: ${response.status}`);
                 }
-                const data: Account[] = await response.json();
-                setAccounts(data);
-                console.log(data)
+                const data = await response.json();
+                const accountsData: Account[] = data.data;
+
+                // Fetch blocked status for each account
+                const updatedAccounts = await Promise.all(
+                    accountsData.map(async (account) => ({
+                        ...account,
+                        isBlocked: await isBlocked(account.accountId),
+                    }))
+                );
+
+                setAccounts(updatedAccounts);
             } catch (err: any) {
                 setError(err.message);
             }
@@ -52,17 +64,6 @@ const UserPage: React.FC = () => {
 
         fetchAccounts();
     }, []);
-
-    useEffect(() => {
-        const fetchBlockedStatus = async () => {
-            const statuses: { [key: number]: boolean } = {};
-            setBlockedStatus(statuses);
-        };
-
-        if (accounts.length > 0) {
-            fetchBlockedStatus();
-        }
-    }, [accounts]);
 
     if (error) {
         return <div>Error: {error}</div>;
@@ -88,13 +89,12 @@ const UserPage: React.FC = () => {
                 }}
             >
                 <thead>
-                <tr style={{backgroundColor: "#007bff", color: "#fff"}}>
+                <tr style={{ backgroundColor: "#007bff", color: "#fff" }}>
                     <th style={cellStyle}>Account ID</th>
                     <th style={cellStyle}>Email</th>
                     <th style={cellStyle}>Payment Method</th>
                     <th style={cellStyle}>Referral Discount</th>
                     <th style={cellStyle}>Account Blocked</th>
-                    <th style={cellStyle}>Block account</th>
                     <th style={cellStyle}>Delete account</th>
                 </tr>
                 </thead>
@@ -104,35 +104,63 @@ const UserPage: React.FC = () => {
                         <td style={cellStyle}>{account.accountId}</td>
                         <td style={cellStyle}>{account.email}</td>
                         <td style={cellStyle}>{account.paymentMethod}</td>
-                        <td style={cellStyle}>{account.referralDiscount == null ? "No" : "Yes"}</td>
                         <td style={cellStyle}>
-                            {blockedStatus[account.accountId] ? "Yes" : "No"}
+                            {account.referralDiscount ? "Yes" : "No"}
                         </td>
                         <td style={cellStyle}>
+                            {account.isBlocked !== undefined ? (
+                                account.isBlocked ? (
+                                    "Yes"
+                                ) : (
+                                    "No"
+                                )
+                            ) : (
+                                "Loading..."
+                            )}
+                        </td>
+
+
+                        <td style={cellStyle}>
                             <button
-                                onClick={async () => {
-                                    const isBlockedStatus = await isBlocked(account.accountId);
-                                    setBlockedStatus({
-                                        ...blockedStatus,
-                                        [account.accountId]: isBlockedStatus.isBlocked,
-                                    });
+                                style={{
+                                    padding: "10px 20px",
+                                    backgroundColor: "#dc3545",
+                                    color: "#fff",
+                                    border: "none",
+                                    borderRadius: "4px",
+                                    cursor: "pointer",
+                                    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                                    transition: "background-color 0.3s ease",
                                 }}
-                            >
-                                {blockedStatus[account.accountId] ? "Unblock" : "Block"}
-                            </button>
-                        </td>
-                        <td style={cellStyle}>
-                            <button
+                                onMouseOver={(e) =>
+                                    (e.currentTarget.style.backgroundColor = "#c82333")
+                                }
+                                onMouseOut={(e) =>
+                                    (e.currentTarget.style.backgroundColor = "#dc3545")
+                                }
                                 onClick={async () => {
                                     try {
-                                        const response = await fetch(`http://localhost:8080/account/${account.accountId}`, {
-                                            method: "DELETE",
-                                            headers: {Authorization: "Bearer " + localStorage.getItem("authToken")}
-                                        });
+                                        const response = await fetch(
+                                            `http://localhost:8080/api/v1/account/${account.accountId}`,
+                                            {
+                                                method: "DELETE",
+                                                headers: {
+                                                    Authorization:
+                                                        "Bearer " +
+                                                        localStorage.getItem("authToken"),
+                                                },
+                                            }
+                                        );
                                         if (!response.ok) {
-                                            throw new Error(`Failed to delete account: ${response.status}`);
+                                            throw new Error(
+                                                `Failed to delete account: ${response.status}`
+                                            );
                                         }
-                                        setAccounts(accounts.filter((acc) => acc.accountId !== account.accountId));
+                                        setAccounts(
+                                            accounts.filter(
+                                                (acc) => acc.accountId !== account.accountId
+                                            )
+                                        );
                                     } catch (err: any) {
                                         setError(err.message);
                                     }

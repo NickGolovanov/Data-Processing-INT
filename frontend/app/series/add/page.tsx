@@ -30,7 +30,7 @@ const SeriesAddPage: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await fetch(`http://localhost:8080/series`, {
+            const response = await fetch(`http://localhost:8080/api/v1/series`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

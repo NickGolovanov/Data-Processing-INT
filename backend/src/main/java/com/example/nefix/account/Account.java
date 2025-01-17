@@ -35,6 +35,8 @@ public class Account implements Serializable, UserDetails
     @Column(name = "payment_method")
     private PaymentMethod paymentMethod;
 
+    @Column(unique = true, nullable = false)
+    @Email
     @JsonProperty("email")
     private String email;
 

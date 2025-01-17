@@ -5,6 +5,7 @@ import com.example.nefix.account.AccountRepository;
 import com.example.nefix.authentification.config.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,12 @@ public class AuthenticationService
 
     public AuthenticationResponse register(RegisterRequest request)
     {
+        if (repository.findByEmail(request.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("Email already exists.");
+        }
+
         Account account = new Account();
+
         account.setEmail(request.getEmail());
         account.setPassword(this.passwordEncoder.encode(request.getPassword()));
 
@@ -37,16 +43,25 @@ public class AuthenticationService
                 .build();
     }
 
-    public AuthenticationResponse login(LoginRequest request)
-    {
-        this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken
-                (request.getEmail(),
-                        request.getPassword()
-                ));
-        Account account = repository.findByEmail(request.getEmail()).orElseThrow(() -> new RuntimeException("Account not found"));
-        String jwtToken = jwtService.generateToken(account);
-        return AuthenticationResponse.builder()
-                .token(jwtToken)
-                .build();
+    public AuthenticationResponse login(LoginRequest request) {
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+            );
+
+            Account account = repository.findByEmail(request.getEmail())
+                    .orElseThrow(() -> new RuntimeException("Account not found"));
+
+            String jwtToken = jwtService.generateToken(account);
+
+            return AuthenticationResponse.builder()
+                    .token(jwtToken)
+                    .build();
+
+        } catch (BadCredentialsException ex) {
+            throw new IllegalArgumentException("Invalid email or password.");
+        } catch (Exception ex) {
+            throw new RuntimeException("An unexpected error occurred.");
+        }
     }
 }

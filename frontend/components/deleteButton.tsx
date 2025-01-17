@@ -18,7 +18,7 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({id, type, onDelete}) => {
         }
 
         try {
-            const response = await fetch(`http://localhost:8080/${type}/${id}`, {
+            const response = await fetch(`http://localhost:8080/api/v1/${type}/${id}`, {
                 method: "DELETE",
                 headers: {
 
