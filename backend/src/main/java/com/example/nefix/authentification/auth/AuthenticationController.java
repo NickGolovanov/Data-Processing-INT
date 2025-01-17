@@ -25,13 +25,13 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody @Valid RegisterRequest request) {
+    public ResponseEntity<ApiResponse<AuthenticationResponse>> register(@RequestBody @Valid RegisterRequest request) {
         try {
             AuthenticationResponse response = service.register(request);
-            return ResponseEntity.ok(response);
-        } catch (IllegalArgumentException ex) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiResponse<>(null, new ErrorResponse(ex.getMessage())));
-        } catch (Exception ex) {
+            return ResponseEntity.ok((new ApiResponse<>(response, null)));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiResponse<>(null, new ErrorResponse(e.getMessage())));
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse<>(null, new ErrorResponse("An unexpected error occurred.")));
         }
     }
@@ -42,12 +42,12 @@ public class AuthenticationController {
             AuthenticationResponse response = service.login(request);
             return ResponseEntity.ok(new ApiResponse<>(response, null));
         }
-        catch (IllegalArgumentException ex) {
+        catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
                     new ApiResponse<>(null, new ErrorResponse("Invalid email or password."))
             );
         }
-        catch (Exception ex) {
+        catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                     new ApiResponse<>(null, new ErrorResponse("An unexpected error occurred."))
             );
