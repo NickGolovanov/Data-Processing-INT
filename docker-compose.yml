@@ -63,8 +63,7 @@ services:
       FLYWAY_URL: jdbc:postgresql://db:5432/${POSTGRES_DATABASE}
       FLYWAY_USER: ${POSTGRES_USER}
       FLYWAY_PASSWORD: ${POSTGRES_PASSWORD}
-    entrypoint: [ "/bin/sh", "-c", "sleep 10 && flyway migrate" ]
-    command: migrate
+    entrypoint: [ "/bin/sh", "-c", "sleep 5 && flyway baseline && flyway migrate" ]
 
   pgadmin:
     image: dpage/pgadmin4
