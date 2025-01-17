@@ -15,17 +15,17 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DATABASE: ${POSTGRES_DATABASE}
 
-#  frontend:
-#    build:
-#      context: ./frontend
-#    ports:
-#      - '3000:3000'
-#    depends_on:
-#      -  backend
-#    environment:
-#      API_URL: http://localhost:8080
-#    volumes:
-#      - ./frontend:/usr/src/app
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - '3000:3000'
+    depends_on:
+      -  backend
+    environment:
+      API_URL: http://localhost:8080
+    volumes:
+      - ./frontend:/usr/src/app
 
   db:
     image: postgres:17
@@ -68,12 +68,14 @@ services:
 
   pgadmin:
     image: dpage/pgadmin4
+    env_file:
+      - .env
     restart: always
     ports:
       - '8888:80'
     environment:
-      PGADMIN_DEFAULT_EMAIL: user-name@domain-name.com
-      PGADMIN_DEFAULT_PASSWORD: strong-password
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
     volumes:
       - pgadmin-data:/var/lib/pgadmin
       - ./backups:/backups

@@ -109,21 +109,25 @@ CREATE OR REPLACE TRIGGER limit_to_4_profiles
     FOR EACH ROW
 EXECUTE FUNCTION profiles_4_limit();
 
+
+--
+-- NOT VALID TRIGGER, DOESN'T CONTAIN HALF OF PROFILE NOT NULL FIELDS!!!!!
+--
 --- Auto create profile for account and preference for profile
-CREATE OR REPLACE FUNCTION create_profile_for_account()
-    RETURNS TRIGGER AS $$
-BEGIN
-    INSERT INTO profile (account_id)
-    VALUES (NEW.accountid);
-
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE OR REPLACE TRIGGER after_account_insert
-    AFTER INSERT ON account
-    FOR EACH ROW
-EXECUTE FUNCTION create_profile_for_account();
+-- CREATE OR REPLACE FUNCTION create_profile_for_account()
+--     RETURNS TRIGGER AS $$
+-- BEGIN
+--     INSERT INTO profile (account_id)
+--     VALUES (NEW.accountid);
+--
+--     RETURN NEW;
+-- END;
+-- $$ LANGUAGE plpgsql;
+--
+-- CREATE OR REPLACE TRIGGER after_account_insert
+--     AFTER INSERT ON account
+--     FOR EACH ROW
+-- EXECUTE FUNCTION create_profile_for_account();
 
 
 
