@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { Italiana } from 'next/font/google';
 import styles from '../styles/RegisterInput.module.css';
-import SubmitButton from "@/components/submiteButton";
 import Link from "next/link";
 
 const italiana = Italiana({ subsets: ['latin'], weight: '400' });
@@ -54,9 +53,8 @@ const RegisterBox: React.FC = () => {
 
             if (response.ok) {
                 const responseData = await response.json();
-                const token: string = responseData.token;
+                const token: string = responseData.data.token;
 
-                // Store the token in localStorage
                 localStorage.setItem('authToken', token);
 
                 setSuccessMessage('Registration successful! You can now log in.');

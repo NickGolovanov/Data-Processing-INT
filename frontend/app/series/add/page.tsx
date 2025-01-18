@@ -119,6 +119,7 @@ const SeriesAddPage: React.FC = () => {
                         <input
                             type="number"
                             name="views"
+                            max={100000}
                             value={formState.views || ""}
                             onChange={handleInputChange}
                             style={{ width: "100%", padding: "5px", marginBottom: "10px", color: "#000" }}
@@ -129,6 +130,7 @@ const SeriesAddPage: React.FC = () => {
                         <input
                             type="number"
                             name="minimumAge"
+                            max={100000}
                             value={formState.minimumAge || ""}
                             onChange={handleInputChange}
                             style={{ width: "100%", padding: "5px", marginBottom: "10px", color: "#000" }}

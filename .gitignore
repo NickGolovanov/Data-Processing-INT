@@ -26,3 +26,5 @@ replay_pid*
 .env
 .DS_Store
 wal_archive/
+
+build_docker_short.ps1

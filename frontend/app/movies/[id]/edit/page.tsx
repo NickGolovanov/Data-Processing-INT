@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { use } from "react";
+import React, {useEffect, useState} from "react";
+import {use} from "react";
 import Logo from "@/components/logo";
 import Menu from "@/components/menu";
 import Image from "next/image";
@@ -17,8 +17,8 @@ interface Movie {
     views: number;
 }
 
-const MovieEditPage = ({ params }: { params: Promise<{ id: string }> }) => {
-    const { id } = use(params);
+const MovieEditPage = ({params}: { params: Promise<{ id: string }> }) => {
+    const {id} = use(params);
 
     const [movie, setMovie] = useState<Movie | null>(null);
     const [error, setError] = useState<string | null>(null);
@@ -33,9 +33,11 @@ const MovieEditPage = ({ params }: { params: Promise<{ id: string }> }) => {
                         Authorization: "Bearer " + localStorage.getItem("authToken")
                     }
                 });
+
                 if (!response.ok) {
-                    throw new Error(`Failed to fetch: ${response.status}`);
+                    throw new Error(`Failed to fetch: ${response.statusText}`);
                 }
+
                 const data = await response.json();
                 setMovie(data.data);
                 setFormState(data.data);
@@ -44,14 +46,16 @@ const MovieEditPage = ({ params }: { params: Promise<{ id: string }> }) => {
                     setError(err.message);
                 } else {
                     setError("An unknown error occurred");
-                }            }
+                }
+            }
         };
+
 
         fetchMovie();
     }, [id]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
         setFormState((prev) => ({
             ...prev,
             [name]: value,
@@ -59,7 +63,7 @@ const MovieEditPage = ({ params }: { params: Promise<{ id: string }> }) => {
     };
 
     const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, checked } = e.target;
+        const {name, checked} = e.target;
         setFormState((prev) => ({
             ...prev,
             [name]: checked,
@@ -69,14 +73,16 @@ const MovieEditPage = ({ params }: { params: Promise<{ id: string }> }) => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await fetch(`http://localhost:8080/api/v1//movie/${id}`, {
+            console.log("I am doing this")
+            const response = await fetch(`http://localhost:8080/api/v1/movie/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: "Bearer " + localStorage.getItem("authToken")
+                    Authorization: "Bearer " + localStorage.getItem("authToken"),
                 },
                 body: JSON.stringify(formState),
             });
+
 
             if (!response.ok) {
                 throw new Error(`Failed to update: ${response.status}`);
@@ -90,7 +96,8 @@ const MovieEditPage = ({ params }: { params: Promise<{ id: string }> }) => {
                 setError(err.message);
             } else {
                 setError("An unknown error occurred");
-            }        }
+            }
+        }
     };
 
     if (error) {
@@ -109,8 +116,8 @@ const MovieEditPage = ({ params }: { params: Promise<{ id: string }> }) => {
                 alignItems: "center",
             }}
         >
-            <Logo />
-            <Menu />
+            <Logo/>
+            <Menu/>
             <form
                 onSubmit={handleSubmit}
                 style={{
@@ -157,7 +164,7 @@ const MovieEditPage = ({ params }: { params: Promise<{ id: string }> }) => {
                             name="title"
                             value={formState.title || ""}
                             onChange={handleInputChange}
-                            style={{ width: "100%", padding: "5px", marginBottom: "10px", color: "#000" }}
+                            style={{width: "100%", padding: "5px", marginBottom: "10px", color: "#000"}}
                         />
                     </label>
                     <label>
@@ -165,9 +172,10 @@ const MovieEditPage = ({ params }: { params: Promise<{ id: string }> }) => {
                         <input
                             type="number"
                             name="duration"
+                            max={100000}
                             value={formState.duration || ""}
                             onChange={handleInputChange}
-                            style={{ width: "100%", padding: "5px", marginBottom: "10px", color: "#000" }}
+                            style={{width: "100%", padding: "5px", marginBottom: "10px", color: "#000"}}
                         />
                     </label>
                     <label>
@@ -202,9 +210,10 @@ const MovieEditPage = ({ params }: { params: Promise<{ id: string }> }) => {
                         <input
                             type="number"
                             name="views"
+                            max={100}
                             value={formState.views || ""}
                             onChange={handleInputChange}
-                            style={{ width: "100%", padding: "5px", marginBottom: "10px", color: "#000" }}
+                            style={{width: "100%", padding: "5px", marginBottom: "10px", color: "#000"}}
                         />
                     </label>
 
@@ -222,7 +231,7 @@ const MovieEditPage = ({ params }: { params: Promise<{ id: string }> }) => {
                     >
                         Save Changes
                     </button>
-                    <DeleteButton id={ parseInt(id) } type={"movie"}/>
+                    <DeleteButton id={parseInt(id)} type={"movie"}/>
                 </div>
             </form>
         </div>

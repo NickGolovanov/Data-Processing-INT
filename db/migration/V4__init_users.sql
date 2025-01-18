@@ -1,20 +1,46 @@
-CREATE ROLE admin_role;
-CREATE ROLE editor_role;
-CREATE ROLE viewer_role;
+CREATE ROLE senior_role;
+CREATE ROLE medior_role;
+CREATE ROLE junior_role;
 
-GRANT ALL PRIVILEGES ON DATABASE postgres TO admin_role;
-GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO admin_role;
+ALTER ROLE senior_role LOGIN;
+ALTER ROLE medior_role LOGIN;
+ALTER ROLE junior_role LOGIN;
 
-GRANT SELECT, INSERT, UPDATE ON ALL TABLES IN SCHEMA public TO editor_role;
 
-GRANT SELECT ON ALL TABLES IN SCHEMA public TO viewer_role;
+--- Senior
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO senior_role;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO senior_role;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO senior_role;
 
--- This part should be done manually because otherwise the password will be stored in plaintext in the
--- docker-entrypoint-initdb.d/01_init_users.sql file, which is not good =(.
-CREATE USER admin_user WITH PASSWORD 'securepassword';
-CREATE USER editor_user WITH PASSWORD 'securepassword';
-CREATE USER viewer_user WITH PASSWORD 'securepassword';
+--- Medior
+REVOKE ALL ON ALL TABLES IN SCHEMA public FROM medior_role;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO medior_role;
 
-GRANT admin_role TO admin_user;
-GRANT editor_role TO editor_user;
-GRANT viewer_role TO viewer_user;
+REVOKE ALL PRIVILEGES ON public.subscription FROM medior_role;
+REVOKE ALL PRIVILEGES ON public.subscription_accounts FROM medior_role;
+REVOKE ALL PRIVILEGES ON public.referraldiscount FROM medior_role;
+
+
+--- Junior
+REVOKE ALL ON ALL TABLES IN SCHEMA public FROM junior_role;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO junior_role;
+
+REVOKE ALL PRIVILEGES ON public.subscription FROM junior_role;
+REVOKE ALL PRIVILEGES ON public.subscription_accounts FROM junior_role;
+REVOKE ALL PRIVILEGES ON public.referraldiscount FROM junior_role;
+
+CREATE VIEW public.account_junior AS
+SELECT accountid, payment_method
+FROM public.account;
+GRANT SELECT ON public.account_junior TO junior_role;
+
+REVOKE ALL PRIVILEGES ON public.account FROM junior_role;
+
+--- Assigned roles
+CREATE USER senior_user WITH PASSWORD 'securepassword';
+CREATE USER medior_user WITH PASSWORD 'securepassword';
+CREATE USER junior_user WITH PASSWORD 'securepassword';
+
+GRANT senior_role TO senior_user;
+GRANT medior_role TO medior_user;
+GRANT junior_role TO junior_user;

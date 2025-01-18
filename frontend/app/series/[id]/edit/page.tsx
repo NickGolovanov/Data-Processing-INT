@@ -35,7 +35,7 @@ const SeriesEditPage = ({ params }: { params: Promise<{ id: string }> }) => {
                 }
                 const data = await response.json();
                 setSeries(data.data);
-                setFormState(data.data); // Pre-fill the form state
+                setFormState(data.data);
             } catch (err: unknown) {
                 if (err instanceof Error) {
                     setError(err.message);
@@ -153,6 +153,7 @@ const SeriesEditPage = ({ params }: { params: Promise<{ id: string }> }) => {
                         <input
                             type="number"
                             name="views"
+                            max={100000}
                             value={formState.views || ""}
                             onChange={handleInputChange}
                             style={{ width: "100%", padding: "5px", marginBottom: "10px", color: "#000" }}
@@ -163,6 +164,7 @@ const SeriesEditPage = ({ params }: { params: Promise<{ id: string }> }) => {
                         <input
                             type="number"
                             name="minimumAge"
+                            max={100}
                             value={formState.minimumAge || ""}
                             onChange={handleInputChange}
                             style={{ width: "100%", padding: "5px", marginBottom: "10px", color: "#000" }}
