@@ -23,12 +23,12 @@ public class EpisodeService extends BaseService<Episode, Long>
 
     public Subtitle addSubtitle(Long episodeId, Subtitle subtitle)
     {
-        long subtitleId = subtitleRepository.callAddSubtitleEpisode(
+        long subtitleId = this.subtitleRepository.callAddSubtitleEpisode(
                 episodeId,
                 subtitle.getLanguage(),
                 subtitle.getSubtitleLocation()
         );
-        return subtitleRepository.findById(subtitleId).orElseThrow(() -> new RuntimeException("Subtitle not found"));
+        return this.subtitleRepository.findById(subtitleId).orElseThrow(() -> new RuntimeException("Subtitle not found"));
     }
 
     public List<SubtitleResponseDTO> getSubtitles(Long episodeId)
@@ -40,25 +40,25 @@ public class EpisodeService extends BaseService<Episode, Long>
 
     public Subtitle getSubtitle(Long movieId, Long subtitleId)
     {
-        return subtitleRepository.findSubtitleBySubtitleIdAndEpisode_EpisodeId(movieId, subtitleId);
+        return this.subtitleRepository.findSubtitleBySubtitleIdAndEpisode_EpisodeId(movieId, subtitleId);
     }
 
     @Transactional
     public Subtitle updateSubtitle(Long movieId, Long subtitleId, Subtitle updatedSubtitle)
     {
-        subtitleRepository.callUpdateSubtitleEpisode(
+        this.subtitleRepository.callUpdateSubtitleEpisode(
                 subtitleId,
                 movieId,
                 updatedSubtitle.getLanguage(),
                 updatedSubtitle.getSubtitleLocation()
         );
 
-        return subtitleRepository.findById(subtitleId).orElseThrow(() -> new RuntimeException("Subtitle not found"));
+        return this.subtitleRepository.findById(subtitleId).orElseThrow(() -> new RuntimeException("Subtitle not found"));
     }
 
     public void deleteSubtitle(Long episodeId, Long subtitleId)
     {
         Subtitle subtitle = getSubtitle(episodeId, subtitleId);
-        subtitleRepository.delete(subtitle);
+        this.subtitleRepository.delete(subtitle);
     }
 }

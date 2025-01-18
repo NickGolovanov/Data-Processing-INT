@@ -21,7 +21,7 @@ public class AuthenticationService
 
     public AuthenticationResponse register(RegisterRequest request)
     {
-        if (repository.findByEmail(request.getEmail()).isPresent())
+        if (this.repository.findByEmail(request.getEmail()).isPresent())
         {
             throw new IllegalArgumentException("Email already exists.");
         }
@@ -48,14 +48,14 @@ public class AuthenticationService
     {
         try
         {
-            authenticationManager.authenticate(
+            this.authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
             );
 
-            Account account = repository.findByEmail(request.getEmail())
+            Account account = this.repository.findByEmail(request.getEmail())
                     .orElseThrow(() -> new RuntimeException("Account not found"));
 
-            String jwtToken = jwtService.generateToken(account);
+            String jwtToken = this.jwtService.generateToken(account);
 
             return AuthenticationResponse.builder()
                     .token(jwtToken)

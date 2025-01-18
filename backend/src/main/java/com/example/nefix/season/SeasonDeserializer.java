@@ -19,6 +19,6 @@ public class SeasonDeserializer extends JsonDeserializer<Season>
     {
         Long seasonId = jsonParser.getValueAsLong();
 
-        return seasonRepository.findById(seasonId).orElseThrow(() -> new IllegalArgumentException("Season with ID " + seasonId + " not found"));
+        return this.seasonRepository.findById(seasonId).orElseThrow(() -> new IllegalArgumentException("Season with ID " + seasonId + " not found"));
     }
 }

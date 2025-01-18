@@ -15,13 +15,6 @@ import java.util.stream.Collectors;
 @Service
 public class WatchListService extends BaseService<WatchList, Long>
 {
-
-    @Autowired
-    private SeriesRepository seriesRepository;
-
-    @Autowired
-    private ProfileRepository profileRepository;
-
     @Autowired
     private WatchListRepository watchListRepository;
 
@@ -32,16 +25,16 @@ public class WatchListService extends BaseService<WatchList, Long>
 
     public WatchList addSeriesToWatchList(Long profileId, Long seriesId)
     {
-        Long watchlistId = watchListRepository.addSeriesToWatchList(profileId, seriesId);
+        Long watchlistId = this.watchListRepository.addSeriesToWatchList(profileId, seriesId);
 
-        return watchListRepository.findById(watchlistId)
+        return this.watchListRepository.findById(watchlistId)
                 .orElseThrow(() -> new RuntimeException("Failed to add series to watchlist"));
     }
 
 
     public List<Series> getSeriesFromWatchList(Long profileId)
     {
-        return watchListRepository.findAllByProfile_ProfileIdAndSeriesIsNotNull(profileId)
+        return this.watchListRepository.findAllByProfile_ProfileIdAndSeriesIsNotNull(profileId)
                 .stream()
                 .map(WatchList::getSeries)
                 .collect(Collectors.toList());
@@ -50,21 +43,21 @@ public class WatchListService extends BaseService<WatchList, Long>
     @Transactional
     public void removeSeriesFromWatchList(Long profileId, Long seriesId)
     {
-        watchListRepository.deleteByProfile_ProfileIdAndSeries_SeriesId(profileId, seriesId);
+        this.watchListRepository.deleteByProfile_ProfileIdAndSeries_SeriesId(profileId, seriesId);
     }
 
     public WatchList addMovieToWatchList(Long profileId, Long movieId)
     {
-        Long watchlistId = watchListRepository.addMovieToWatchList(profileId, movieId);
+        Long watchlistId = this.watchListRepository.addMovieToWatchList(profileId, movieId);
 
-        return watchListRepository.findById(watchlistId)
+        return this.watchListRepository.findById(watchlistId)
                 .orElseThrow(() -> new RuntimeException("Failed to add series to watchlist"));
     }
 
 
     public List<Movie> getMoviesFromWatchList(Long profileId)
     {
-        return watchListRepository.findAllByProfile_ProfileIdAndMovieIsNotNull(profileId)
+        return this.watchListRepository.findAllByProfile_ProfileIdAndMovieIsNotNull(profileId)
                 .stream()
                 .map(WatchList::getMovie)
                 .collect(Collectors.toList());
@@ -73,6 +66,6 @@ public class WatchListService extends BaseService<WatchList, Long>
     @Transactional
     public void removeMovieFromWatchList(Long profileId, Long movieId)
     {
-        watchListRepository.deleteByProfile_ProfileIdAndMovie_MovieId(profileId, movieId);
+        this.watchListRepository.deleteByProfile_ProfileIdAndMovie_MovieId(profileId, movieId);
     }
 }

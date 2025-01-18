@@ -84,7 +84,7 @@ public class AccountController extends BaseController<Account, Long>
     {
         try
         {
-            Boolean isBlocked = accountService.isAccountBlocked(accountId);
+            Boolean isBlocked = this.accountService.isAccountBlocked(accountId);
             return ResponseEntity.ok(new ApiResponse<>(isBlocked, null));
         } catch (RuntimeException e)
         {
@@ -99,7 +99,7 @@ public class AccountController extends BaseController<Account, Long>
     {
         try
         {
-            BlockedAccount blockedAccount = accountService.blockAccount(accountId, requestDto);
+            BlockedAccount blockedAccount = this.accountService.blockAccount(accountId, requestDto);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(blockedAccount, null));
         } catch (RuntimeException e)
@@ -113,7 +113,7 @@ public class AccountController extends BaseController<Account, Long>
     {
         try
         {
-            accountService.unblockAccount(accountId);
+            this.accountService.unblockAccount(accountId);
 
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new ApiResponse<>(null, null));
         } catch (RuntimeException e)
@@ -129,7 +129,7 @@ public class AccountController extends BaseController<Account, Long>
     {
         try
         {
-            ReferralDiscount referralDiscount = accountService.addReferralDiscount(accountId, requestDto);
+            ReferralDiscount referralDiscount = this.accountService.addReferralDiscount(accountId, requestDto);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(referralDiscount, null));
         } catch (RuntimeException e)
@@ -144,7 +144,7 @@ public class AccountController extends BaseController<Account, Long>
     {
         try
         {
-            List<ReferralDiscountResponseDto> referralDiscounts = accountService.getReferralDiscounts(accountId);
+            List<ReferralDiscountResponseDto> referralDiscounts = this.accountService.getReferralDiscounts(accountId);
 
             return ResponseEntity.ok(new ApiResponse<>(referralDiscounts, null));
         } catch (RuntimeException e)

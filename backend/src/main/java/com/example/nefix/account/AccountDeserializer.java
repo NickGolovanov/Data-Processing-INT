@@ -19,6 +19,6 @@ public class AccountDeserializer extends JsonDeserializer<Account>
     {
         Long accountId = jsonParser.getValueAsLong();
 
-        return accountRepository.findById(accountId).orElseThrow(() -> new IllegalArgumentException("Account with ID " + accountId + " not found"));
+        return this.accountRepository.findById(accountId).orElseThrow(() -> new IllegalArgumentException("Account with ID " + accountId + " not found"));
     }
 }

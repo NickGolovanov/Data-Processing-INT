@@ -19,6 +19,6 @@ public class MovieDeserializer extends JsonDeserializer<Movie>
     {
         Long movieId = jsonParser.getValueAsLong();
 
-        return movieRepository.findById(movieId).orElseThrow(() -> new IllegalArgumentException("Movie with ID " + movieId + " not found"));
+        return this.movieRepository.findById(movieId).orElseThrow(() -> new IllegalArgumentException("Movie with ID " + movieId + " not found"));
     }
 }

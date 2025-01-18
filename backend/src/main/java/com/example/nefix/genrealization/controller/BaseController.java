@@ -24,7 +24,7 @@ public abstract class BaseController<E, ID> implements ControllerBase<E, ID>
     {
         try
         {
-            List<E> entities = service.findAll();
+            List<E> entities = this.service.findAll();
 
             if (entities.isEmpty())
             {
@@ -44,7 +44,7 @@ public abstract class BaseController<E, ID> implements ControllerBase<E, ID>
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<E>> getById(@PathVariable ID id)
     {
-        E entity = service.findById(id).orElse(null);
+        E entity = this.service.findById(id).orElse(null);
 
         if (entity == null)
         {
@@ -60,7 +60,7 @@ public abstract class BaseController<E, ID> implements ControllerBase<E, ID>
     {
         try
         {
-            E savedEntity = service.save(entity);
+            E savedEntity = this.service.save(entity);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(savedEntity, null));
         } catch (Exception e)
@@ -75,7 +75,7 @@ public abstract class BaseController<E, ID> implements ControllerBase<E, ID>
     {
         try
         {
-            E updatedEntity = service.update(id, entity);
+            E updatedEntity = this.service.update(id, entity);
 
             return ResponseEntity.ok(new ApiResponse<>(updatedEntity, null));
         } catch (Exception e)
@@ -90,7 +90,7 @@ public abstract class BaseController<E, ID> implements ControllerBase<E, ID>
     {
         try
         {
-            service.deleteById(id);
+            this.service.deleteById(id);
 
             return ResponseEntity.noContent().build();
         } catch (RuntimeException e)

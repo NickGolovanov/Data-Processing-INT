@@ -19,6 +19,6 @@ public class ProfileDeserializer extends JsonDeserializer<Profile>
     {
         Long profileId = jsonParser.getValueAsLong();
 
-        return profileRepository.findById(profileId).orElseThrow(() -> new IllegalArgumentException("Profile with ID " + profileId + " not found"));
+        return this.profileRepository.findById(profileId).orElseThrow(() -> new IllegalArgumentException("Profile with ID " + profileId + " not found"));
     }
 }

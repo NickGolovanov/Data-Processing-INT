@@ -18,9 +18,6 @@ import java.util.List;
 public class SeriesService extends BaseService<Series, Long>
 {
     @Autowired
-    private SeasonRepository seasonRepository;
-
-    @Autowired
     private InfoSeriesRepository infoSeriesRepository;
 
     @Autowired

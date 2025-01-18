@@ -19,15 +19,16 @@ import java.util.List;
 public class PreferenceService extends BaseService<Preference, Long>
 {
     @Autowired
-    private ProfileRepository profileRepository;
+    private PreferenceRepository preferenceRepository;
+
     @Autowired
     private SeriesRepository seriesRepository;
+
     @Autowired
     private MovieRepository movieRepository;
+
     @Autowired
     private MediaPreferencesRepository mediaPreferencesRepository;
-    @Autowired
-    private PreferenceRepository preferenceRepository;
 
     public PreferenceService(PreferenceRepository repository)
     {
@@ -37,7 +38,7 @@ public class PreferenceService extends BaseService<Preference, Long>
     @Transactional
     public MediaPreferences addPreferenceMovie(Long preferenceId, Long movieId)
     {
-        Preference preference = this.repository.findById(preferenceId)
+        Preference preference = this.preferenceRepository.findById(preferenceId)
                 .orElseThrow(() -> new RuntimeException("Preference not found with ID: " + preferenceId));
 
         Movie movie = this.movieRepository.findById(movieId)
@@ -55,7 +56,7 @@ public class PreferenceService extends BaseService<Preference, Long>
     @Transactional
     public MediaPreferences addPreferenceSeries(Long preferenceId, Long seriesId)
     {
-        Preference preference = this.repository.findById(preferenceId)
+        Preference preference = this.preferenceRepository.findById(preferenceId)
                 .orElseThrow(() -> new RuntimeException("Preference not found with ID: " + preferenceId));
 
         Series series = this.seriesRepository.findById(seriesId)
@@ -73,18 +74,17 @@ public class PreferenceService extends BaseService<Preference, Long>
     @Transactional
     public void deletePreferenceMovie(Long preferenceId, Long movieId)
     {
-        preferenceRepository.callDeletePreferenceMovie(preferenceId, movieId);
+        this.preferenceRepository.callDeletePreferenceMovie(preferenceId, movieId);
     }
 
     @Transactional
     public void deletePreferenceSeries(Long preferenceId, Long seriesId)
     {
-        preferenceRepository.callDeletePreferenceSeries(preferenceId, seriesId);
-
+        this.preferenceRepository.callDeletePreferenceSeries(preferenceId, seriesId);
     }
 
     public List<MediaPreferences> getMediaPreferences(Long preferenceId)
     {
-        return mediaPreferencesRepository.findAllByPreference_PreferenceId(preferenceId);
+        return this.mediaPreferencesRepository.findAllByPreference_PreferenceId(preferenceId);
     }
 }

@@ -38,7 +38,7 @@ public abstract class BaseService<E, ID> implements ServiceBase<E, ID>
                 new RuntimeException("Entity not found with id: " + id)
         );
 
-        BeanUtils.copyProperties(entity, existingEntity, ignoreProperties.toArray(new String[0]));
+        BeanUtils.copyProperties(entity, existingEntity, this.ignoreProperties.toArray(new String[0]));
 
         return this.repository.save(existingEntity);
     }

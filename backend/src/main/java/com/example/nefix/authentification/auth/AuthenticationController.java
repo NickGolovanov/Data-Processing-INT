@@ -28,7 +28,8 @@ public class AuthenticationController
     {
         try
         {
-            AuthenticationResponse response = service.register(request);
+            AuthenticationResponse response = this.service.register(request);
+
             return ResponseEntity.ok((new ApiResponse<>(response, null)));
         } catch (IllegalArgumentException e)
         {
@@ -44,7 +45,8 @@ public class AuthenticationController
     {
         try
         {
-            AuthenticationResponse response = service.login(request);
+            AuthenticationResponse response = this.service.login(request);
+
             return ResponseEntity.ok(new ApiResponse<>(response, null));
         } catch (IllegalArgumentException e)
         {

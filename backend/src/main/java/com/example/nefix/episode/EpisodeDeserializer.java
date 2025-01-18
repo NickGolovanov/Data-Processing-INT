@@ -19,6 +19,6 @@ public class EpisodeDeserializer extends JsonDeserializer<Episode>
     {
         Long episodeId = jsonParser.getValueAsLong();
 
-        return episodeRepository.findById(episodeId).orElseThrow(() -> new IllegalArgumentException("Episode with ID " + episodeId + " not found"));
+        return this.episodeRepository.findById(episodeId).orElseThrow(() -> new IllegalArgumentException("Episode with ID " + episodeId + " not found"));
     }
 }

@@ -120,7 +120,7 @@ public class ProfileController extends BaseController<Profile, Long>
     {
         try
         {
-            Preference preference = profileService.getPreferences(profileId);
+            Preference preference = this.profileService.getPreferences(profileId);
 
             return ResponseEntity.ok(new ApiResponse<>(preference, null));
         } catch (Exception e)

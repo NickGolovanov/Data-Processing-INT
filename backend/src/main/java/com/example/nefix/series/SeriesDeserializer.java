@@ -19,6 +19,6 @@ public class SeriesDeserializer extends JsonDeserializer<Series>
     {
         Long seriesId = jsonParser.getValueAsLong();
 
-        return seriesRepository.findById(seriesId).orElseThrow(() -> new IllegalArgumentException("Series with ID " + seriesId + " not found"));
+        return this.seriesRepository.findById(seriesId).orElseThrow(() -> new IllegalArgumentException("Series with ID " + seriesId + " not found"));
     }
 }

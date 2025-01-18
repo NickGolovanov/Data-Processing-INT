@@ -54,11 +54,12 @@ public class PreferenceController extends BaseController<Preference, Long>
     }
 
     @DeleteMapping("/{preferenceId}/movie/{movieId}")
-    public ResponseEntity<?> deletePreferenceMovie(@PathVariable Long preferenceId, @PathVariable Long movieId)
+    public ResponseEntity<ApiResponse<Void>> deletePreferenceMovie(@PathVariable Long preferenceId, @PathVariable Long movieId)
     {
         try
         {
-            ((PreferenceService) service).deletePreferenceMovie(preferenceId, movieId);
+            this.preferenceService.deletePreferenceMovie(preferenceId, movieId);
+
             return ResponseEntity.noContent().build();
         } catch (Exception e)
         {
@@ -68,11 +69,12 @@ public class PreferenceController extends BaseController<Preference, Long>
     }
 
     @DeleteMapping("/{preferenceId}/series/{seriesId}")
-    public ResponseEntity<?> deletePreferenceSeries(@PathVariable Long preferenceId, @PathVariable Long seriesId)
+    public ResponseEntity<ApiResponse<Void>> deletePreferenceSeries(@PathVariable Long preferenceId, @PathVariable Long seriesId)
     {
         try
         {
-            ((PreferenceService) service).deletePreferenceSeries(preferenceId, seriesId);
+            this.preferenceService.deletePreferenceSeries(preferenceId, seriesId);
+
             return ResponseEntity.noContent().build();
         } catch (Exception e)
         {
