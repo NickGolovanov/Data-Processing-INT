@@ -26,20 +26,20 @@ This project demonstrates the development of an **API** using **Java**, **Spring
 
 ## Setup Instructions
 
-1. Remove existing project volumes:
-   ```bash
-   docker-compose down -v
-   ```
+You can run the application using one of the provided scripts based on your operating system:
 
-2. Rebuild the project without cache:
-   ```bash
-   docker-compose build --no-cache
-   ```
+- **For Windows**: Use the `start_project.ps1` script. Run it in PowerShell with:
+  ```powershell
+  ./start_project.ps1
+  ```
 
-3. Start the containers:
-   ```bash
-   docker-compose up
-   ```
+- **For Unix-based systems**: Use the `start_project.sh` script. Ensure it has execute permissions:
+  ```bash
+  chmod +x start_project.sh
+  ./start_project.sh
+  ```
+
+Ensure you have the necessary permissions and configurations before running the scripts.
 
 ## Troubleshooting
 
@@ -73,10 +73,7 @@ In case something doesn't work:
 6. **Port Conflicts**:
     - If you're unable to access the app or database, check if other applications are using the same ports. You can modify the `docker-compose.yml` to change port mappings.
 
-7. **Network Issues**:
-    - If there's a network issue between services, ensure that the services are correctly linked in `docker-compose.yml` under the `networks` section.
-
-8. **Rebuild with No Cache**:
+7. **Rebuild with No Cache**:
     - If changes aren’t reflected or there are caching issues, rebuild with no cache:
       ```bash
       docker-compose build --no-cache
