@@ -5,6 +5,8 @@ import com.example.nefix.info.Info;
 import com.example.nefix.info.InfoRepository;
 import com.example.nefix.infomovie.InfoMovie;
 import com.example.nefix.infomovie.InfoMovieRepository;
+import com.example.nefix.liveinfo.LiveInfo;
+import com.example.nefix.liveinfo.LiveInfoRepository;
 import com.example.nefix.subtitle.Subtitle;
 import com.example.nefix.subtitle.SubtitleRepository;
 import com.example.nefix.subtitle.SubtitleResponseDTO;
@@ -25,7 +27,6 @@ public class MovieService extends BaseService<Movie, Long>
     private InfoMovieRepository infoMovieRepository;
     @Autowired
     private InfoRepository infoRepository;
-
 
     public MovieService(MovieRepository repository)
     {

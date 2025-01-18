@@ -5,6 +5,8 @@ import com.example.nefix.genrealization.response.ApiResponse;
 import com.example.nefix.genrealization.response.ErrorResponse;
 import com.example.nefix.info.Info;
 import com.example.nefix.infomovie.InfoMovie;
+import com.example.nefix.liveinfo.LiveInfo;
+import com.example.nefix.liveinfo.LiveInfoRepository;
 import com.example.nefix.subtitle.Subtitle;
 import com.example.nefix.subtitle.SubtitleResponseDTO;
 import jakarta.validation.Valid;

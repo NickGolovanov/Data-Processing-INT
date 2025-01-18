@@ -3,6 +3,8 @@ package com.example.nefix.profile;
 import com.example.nefix.genrealization.controller.BaseController;
 import com.example.nefix.genrealization.response.ApiResponse;
 import com.example.nefix.genrealization.response.ErrorResponse;
+import com.example.nefix.liveinfo.LiveInfo;
+import com.example.nefix.liveinfo.LiveInfoDTO;
 import com.example.nefix.preference.Preference;
 import com.example.nefix.watchlist.WatchList;
 import com.example.nefix.watchlist.WatchListService;
@@ -17,6 +19,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/profile")
@@ -127,6 +130,72 @@ public class ProfileController extends BaseController<Profile, Long>
         {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ApiResponse<>(null, new ErrorResponse("Error creating entity: " + e.getMessage())));
+        }
+    }
+
+    @GetMapping("/{profileId}/movie/{movieId}/live-info")
+    public ResponseEntity<ApiResponse<LiveInfo>> getLiveInfoByMovieId(@PathVariable Long profileId, @PathVariable Long movieId)
+    {
+        try
+        {
+            Optional<LiveInfo> liveInfo = this.profileService.getLiveInfoByMovieId(profileId, movieId);
+
+            if (liveInfo.isEmpty())
+            {
+                return ResponseEntity.noContent().build();
+            }
+
+            return ResponseEntity.ok(new ApiResponse<>(liveInfo.get(), null));
+        } catch (Exception e)
+        {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse<>(null, new ErrorResponse(e.getMessage())));
+        }
+    }
+
+    @PostMapping("/{profileId}/movie/{movieId}/live-info")
+    public ResponseEntity<ApiResponse<LiveInfo>> createOrUpdateLiveInfoForMovie(@PathVariable Long profileId, @PathVariable Long movieId, @Valid @RequestBody LiveInfoDTO liveInfo)
+    {
+        try
+        {
+            LiveInfo createdLiveInfo = this.profileService.createOrUpdateLiveInfoForMovie(profileId, movieId, liveInfo);
+
+            return ResponseEntity.ok(new ApiResponse<>(createdLiveInfo, null));
+        } catch (Exception e)
+        {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse<>(null, new ErrorResponse(e.getMessage())));
+        }
+    }
+
+    @GetMapping("/{profileId}/episode/{episodeId}/live-info")
+    public ResponseEntity<ApiResponse<LiveInfo>> getLiveInfoByEpisodeId(@PathVariable Long profileId, @PathVariable Long episodeId)
+    {
+        try
+        {
+            Optional<LiveInfo> liveInfo = this.profileService.getLiveInfoByEpisodeId(profileId, episodeId);
+
+            if (liveInfo.isEmpty())
+            {
+                return ResponseEntity.noContent().build();
+            }
+
+            return ResponseEntity.ok(new ApiResponse<>(liveInfo.get(), null));
+        } catch (Exception e)
+        {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse<>(null, new ErrorResponse(e.getMessage())));
+        }
+    }
+
+    @PostMapping("/{profileId}/episode/{episodeId}/live-info")
+    public ResponseEntity<ApiResponse<LiveInfo>> createOrUpdateLiveInfoForEpisode(@PathVariable Long profileId, @PathVariable Long episodeId, @Valid @RequestBody LiveInfoDTO liveInfo)
+    {
+        try
+        {
+            LiveInfo createdLiveInfo = this.profileService.createOrUpdateLiveInfoForEpisode(profileId, episodeId, liveInfo);
+
+            return ResponseEntity.ok(new ApiResponse<>(createdLiveInfo, null));
+        } catch (Exception e)
+        {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse<>(null, new ErrorResponse(e.getMessage())));
         }
     }
 }

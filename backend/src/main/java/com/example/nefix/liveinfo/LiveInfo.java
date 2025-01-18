@@ -21,17 +21,17 @@ public class LiveInfo implements Serializable
     private Long liveInfoId;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "profile_id", updatable = false, insertable = false)
+    @JoinColumn(name = "profile_id", updatable = false)
     @JsonIgnore
     private Profile profile;
 
     @ManyToOne
-    @JoinColumn(name = "episode_id", nullable = true, insertable = false, updatable = false)
+    @JoinColumn(name = "episode_id")
     @JsonIgnore
     private Episode episode;
 
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name = "movie_id", nullable = true, insertable = false, updatable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "movie_id")
     @JsonIgnore
     private Movie movie;
 
