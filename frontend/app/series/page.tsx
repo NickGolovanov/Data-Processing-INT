@@ -22,8 +22,11 @@ const SeriesPage: React.FC = () => {
                     method: "GET",
                     headers: {Authorization: "Bearer " + localStorage.getItem("authToken")}
                 });
-                const data = await response.json();
-                setseries(data.slice(0, 100));
+
+                if (response.status === 200) {
+                    const data = await response.json();
+                    setseries(data.data.slice(0, 100));
+                }
             } catch (err: unknown) {
                 if (err instanceof Error)
                     setError(err.message);
