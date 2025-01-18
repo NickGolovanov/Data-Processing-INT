@@ -15,7 +15,7 @@ interface Account {
 
 const isBlocked = async (accountId: number) => {
     try {
-        const response = await fetch(`http://localhost:8080/api/v1/account/${accountId}/is-blocked`, {
+        const response = await fetch(`http://localhost:8080/api/v1/account/${accountId}/block`, {
             headers: {
                 Authorization: "Bearer " + localStorage.getItem("authToken"),
             },

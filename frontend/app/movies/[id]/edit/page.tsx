@@ -73,7 +73,6 @@ const MovieEditPage = ({params}: { params: Promise<{ id: string }> }) => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            console.log("I am doing this")
             const response = await fetch(`http://localhost:8080/api/v1/movie/${id}`, {
                 method: "PUT",
                 headers: {

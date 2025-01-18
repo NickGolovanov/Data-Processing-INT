@@ -21,8 +21,11 @@ const MoviesPage: React.FC = () => {
                 const response = await fetch("http://localhost:8080/api/v1/movie/general", {
                     method: "GET",
                     headers: {Authorization: "Bearer " + localStorage.getItem("authToken")}
-                });                const data = await response.json();
-                setMovies(data.slice(0, 100));
+                });
+                if (response.status === 200) {
+                    const data = await response.json();
+                    setMovies(data.data.slice(0, 100));
+                }
             } catch (err: unknown) {
                 if (err instanceof Error)
                     setError(err.message);
@@ -59,7 +62,7 @@ const MoviesPage: React.FC = () => {
                         type="movies"
                     />
                 ))}
-                <AddButton type={"movies"} />
+                <AddButton type={"movies"}/>
             </div>
         </div>
     );
