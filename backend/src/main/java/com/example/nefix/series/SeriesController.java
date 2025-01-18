@@ -34,6 +34,11 @@ public class SeriesController extends BaseController<Series, Long>
         {
             List<SeriesGeneralDto> seriesGeneralDto = this.seriesService.getSeriesGeneralDto();
 
+            if (seriesGeneralDto.isEmpty())
+            {
+                return ResponseEntity.noContent().build();
+            }
+
             return ResponseEntity.ok(new ApiResponse<>(seriesGeneralDto, null));
         } catch (Exception e)
         {

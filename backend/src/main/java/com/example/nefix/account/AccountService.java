@@ -96,11 +96,12 @@ public class AccountService extends BaseService<Account, Long>
 
     public BlockedAccount blockAccount(Long accountId, BlockedAccountRequestDto requestDto)
     {
-        this.blockedAccountsRepository.callBlockAccount(accountId, requestDto.isPermanent(), requestDto.getDateOfExpire(), null);
+        this.blockedAccountsRepository.callBlockAccount(accountId, requestDto.isPermanent(), requestDto.getDateOfExpire());
 
         return this.blockedAccountsRepository.findByAccount_AccountId(accountId).orElseThrow(() -> new RuntimeException("Account not found with ID: " + accountId));
     }
 
+    @Transactional
     public void unblockAccount(Long accountId)
     {
         this.blockedAccountsRepository.callUnblockAccount(accountId);

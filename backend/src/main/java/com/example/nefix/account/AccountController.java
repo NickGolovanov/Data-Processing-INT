@@ -85,6 +85,7 @@ public class AccountController extends BaseController<Account, Long>
         try
         {
             Boolean isBlocked = this.accountService.isAccountBlocked(accountId);
+
             return ResponseEntity.ok(new ApiResponse<>(isBlocked, null));
         } catch (RuntimeException e)
         {

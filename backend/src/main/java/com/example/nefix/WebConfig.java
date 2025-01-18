@@ -10,22 +10,6 @@ import java.util.List;
 @Configuration
 public class WebConfig implements WebMvcConfigurer
 {
-
-    //    @Bean
-    //    public CorsFilter corsFilter()
-    //    {
-    //        CorsConfiguration config = new CorsConfiguration();
-    //        config.setAllowCredentials(true);
-
-    /// /        config.addAllowedOrigin("http://localhost:3000");
-    //        config.addAllowedHeader("*");
-    //        config.addAllowedMethod("*");
-    //
-    //        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    //        source.registerCorsConfiguration("/**", config); // Apply CORS to all endpoints
-    //
-    //        return new CorsFilter(source);
-    //    }
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters)
     {
