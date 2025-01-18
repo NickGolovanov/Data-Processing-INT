@@ -51,7 +51,7 @@ services:
       postgres -c wal_level=replica
                -c archive_mode=on
                -c archive_command='cp %p /var/lib/postgresql/wal_archive/%f'
-               -c archive_timeout=60
+               -c archive_timeout=300
 
   flyway:
     image: flyway/flyway:latest

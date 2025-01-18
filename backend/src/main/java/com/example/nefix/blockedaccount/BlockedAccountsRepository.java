@@ -21,7 +21,7 @@ public interface BlockedAccountsRepository extends JpaRepository<BlockedAccount,
     );
 
     @Query(value = "CALL unblock_account(:accountId)", nativeQuery = true)
-    boolean callUnblockAccount(
+    void callUnblockAccount(
             @Param("accountId") Long accountId
     );
     Optional<BlockedAccount> findByAccount_AccountId(Long accountId);
