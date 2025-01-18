@@ -6,7 +6,8 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class ReferralDiscountResponseDto {
+public class ReferralDiscountResponseDto
+{
     @NotNull(message = "Referral discount ID cannot be null")
     private Long referralDiscountId;
     @NotNull(message = "Link cannot be null")

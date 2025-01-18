@@ -1,8 +1,8 @@
 package com.example.nefix.subscription;
 
 import com.example.nefix.accountsubscription.AccountSubscription;
-import com.example.nefix.blockedaccount.BlockedAccount;
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -36,15 +36,19 @@ public class Subscription implements Serializable
     private Set<AccountSubscription> accounts = new HashSet<>();
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(Object o)
+    {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Subscription that = (Subscription) o;
         return Objects.equals(this.subscriptionId, that.subscriptionId);
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         return Objects.hash(this.subscriptionId);
     }
 }

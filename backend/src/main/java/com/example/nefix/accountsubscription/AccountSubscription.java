@@ -2,10 +2,10 @@ package com.example.nefix.accountsubscription;
 
 import com.example.nefix.account.Account;
 import com.example.nefix.subscription.Subscription;
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -57,15 +57,19 @@ public class AccountSubscription implements Serializable
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(Object o)
+    {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         AccountSubscription that = (AccountSubscription) o;
         return Objects.equals(this.id, that.id);
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         return Objects.hash(this.id);
     }
 }

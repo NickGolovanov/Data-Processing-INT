@@ -9,9 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PreferenceRepository extends JpaRepository<Preference, Long>
 {
-    @Query(value = "CALL add_preference_movie(:p_profile_id, :p_movie_id, null)", nativeQuery = true)
-    long callAddPreferenceMovie(@Param("p_profile_id") Long p_profile_id, @Param("p_movie_id") Long p_movie_id);
-
     @Modifying
     @Query(value = "CALL delete_preference_movie(:p_preference_id, :p_movie_id)", nativeQuery = true)
     void callDeletePreferenceMovie(@Param("p_preference_id") Long p_preference_id, @Param("p_movie_id") Long p_movie_id);

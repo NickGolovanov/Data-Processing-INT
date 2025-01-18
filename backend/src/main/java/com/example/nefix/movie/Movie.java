@@ -1,6 +1,5 @@
 package com.example.nefix.movie;
 
-import com.example.nefix.blockedaccount.BlockedAccount;
 import com.example.nefix.infomovie.InfoMovie;
 import com.example.nefix.subtitle.Subtitle;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -13,7 +12,6 @@ import org.hibernate.annotations.ColumnDefault;
 
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -61,15 +59,19 @@ public class Movie implements Serializable
 
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(Object o)
+    {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Movie that = (Movie) o;
         return Objects.equals(this.movieId, that.movieId);
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         return Objects.hash(this.movieId);
     }
 }

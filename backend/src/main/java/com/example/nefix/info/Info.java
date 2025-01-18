@@ -1,6 +1,5 @@
 package com.example.nefix.info;
 
-import com.example.nefix.blockedaccount.BlockedAccount;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -24,19 +23,23 @@ public class Info
 
     @Enumerated(EnumType.STRING)
     @JsonProperty("type")
-    @NotBlank(message = "Description must not be blank.")
+    @NotNull(message = "Description must not be blank.")
     private InfoType type;
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(Object o)
+    {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Info that = (Info) o;
         return Objects.equals(this.infoId, that.infoId);
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         return Objects.hash(this.infoId);
     }
 }

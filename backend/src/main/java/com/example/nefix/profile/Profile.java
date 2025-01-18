@@ -5,7 +5,8 @@ import com.example.nefix.account.AccountDeserializer;
 import com.example.nefix.liveinfo.LiveInfo;
 import com.example.nefix.preference.Preference;
 import com.example.nefix.watchlist.WatchList;
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
@@ -16,10 +17,8 @@ import org.hibernate.annotations.ColumnDefault;
 
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Data
 @Entity
@@ -86,28 +85,35 @@ public class Profile implements Serializable
     private Set<WatchList> watchList = new HashSet<>();
 
     @JsonProperty(value = "accountId", access = JsonProperty.Access.READ_ONLY)
-    public Long getAccountId() {
+    public Long getAccountId()
+    {
         return this.account.getAccountId();
     }
 
     @JsonProperty(value = "preferenceId", access = JsonProperty.Access.READ_ONLY)
-    public Long getPreferenceId() {
-        if (this.preference == null) {
+    public Long getPreferenceId()
+    {
+        if (this.preference == null)
+        {
             return null;
         }
         return this.preference.getPreferenceId();
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(Object o)
+    {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Profile that = (Profile) o;
         return Objects.equals(this.profileId, that.profileId);
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         return Objects.hash(this.profileId);
     }
 }

@@ -1,9 +1,9 @@
 package com.example.nefix.genrealization.response;
 
-import lombok.Data;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder

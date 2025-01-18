@@ -1,14 +1,10 @@
 package com.example.nefix.watchlist;
 
-import com.example.nefix.account.Account;
 import com.example.nefix.genrealization.service.BaseService;
 import com.example.nefix.movie.Movie;
-import com.example.nefix.profile.Profile;
 import com.example.nefix.profile.ProfileRepository;
-import com.example.nefix.referraldiscount.ReferralDiscount;
 import com.example.nefix.series.Series;
 import com.example.nefix.series.SeriesRepository;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +13,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class WatchListService extends BaseService<WatchList, Long> {
+public class WatchListService extends BaseService<WatchList, Long>
+{
 
     @Autowired
     private SeriesRepository seriesRepository;
@@ -28,31 +25,22 @@ public class WatchListService extends BaseService<WatchList, Long> {
     @Autowired
     private WatchListRepository watchListRepository;
 
-    public WatchListService(WatchListRepository repository) {
-        super(repository, List.of());
+    public WatchListService(WatchListRepository repository)
+    {
+        super(repository, List.of("watchListId"));
     }
 
-    @Override
-    public WatchList update(Long id, WatchList entity) throws RuntimeException {
-        WatchList existingEntity = this.repository.findById(id).orElseThrow(() ->
-                new RuntimeException("Entity not found with id: " + id)
-        );
+    public WatchList addSeriesToWatchList(Long profileId, Long seriesId)
+    {
+        Long watchlistId = watchListRepository.addSeriesToWatchList(profileId, seriesId);
 
-        existingEntity.setProfile(entity.getProfile());
-        existingEntity.setMovie(entity.getMovie());
-        existingEntity.setSeries(entity.getSeries());
-
-        return this.repository.save(existingEntity);
-    };
-
-    public WatchList addSeriesToWatchList(Long profileId, Long seriesId) {
-        Long watchlistId = watchListRepository.addSeriesToWatchList(profileId, seriesId, null);
         return watchListRepository.findById(watchlistId)
                 .orElseThrow(() -> new RuntimeException("Failed to add series to watchlist"));
     }
 
 
-    public List<Series> getSeriesFromWatchList(Long profileId) {
+    public List<Series> getSeriesFromWatchList(Long profileId)
+    {
         return watchListRepository.findAllByProfile_ProfileIdAndSeriesIsNotNull(profileId)
                 .stream()
                 .map(WatchList::getSeries)
@@ -60,7 +48,31 @@ public class WatchListService extends BaseService<WatchList, Long> {
     }
 
     @Transactional
-    public void removeSeriesFromWatchList(Long profileId, Long seriesId) {
+    public void removeSeriesFromWatchList(Long profileId, Long seriesId)
+    {
         watchListRepository.deleteByProfile_ProfileIdAndSeries_SeriesId(profileId, seriesId);
+    }
+
+    public WatchList addMovieToWatchList(Long profileId, Long movieId)
+    {
+        Long watchlistId = watchListRepository.addMovieToWatchList(profileId, movieId);
+
+        return watchListRepository.findById(watchlistId)
+                .orElseThrow(() -> new RuntimeException("Failed to add series to watchlist"));
+    }
+
+
+    public List<Movie> getMoviesFromWatchList(Long profileId)
+    {
+        return watchListRepository.findAllByProfile_ProfileIdAndMovieIsNotNull(profileId)
+                .stream()
+                .map(WatchList::getMovie)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void removeMovieFromWatchList(Long profileId, Long movieId)
+    {
+        watchListRepository.deleteByProfile_ProfileIdAndMovie_MovieId(profileId, movieId);
     }
 }

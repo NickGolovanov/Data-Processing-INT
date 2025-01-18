@@ -34,8 +34,7 @@ public abstract class BaseController<E, ID> implements ControllerBase<E, ID>
             return ResponseEntity.ok(
                     new ApiResponse<>(entities, null)
             );
-        }
-        catch (Exception e)
+        } catch (Exception e)
         {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ApiResponse<>(null, new ErrorResponse("Entity not found: " + e.getMessage())));
@@ -43,7 +42,8 @@ public abstract class BaseController<E, ID> implements ControllerBase<E, ID>
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<E>> getById(@PathVariable ID id) {
+    public ResponseEntity<ApiResponse<E>> getById(@PathVariable ID id)
+    {
         E entity = service.findById(id).orElse(null);
 
         if (entity == null)
@@ -56,33 +56,45 @@ public abstract class BaseController<E, ID> implements ControllerBase<E, ID>
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<E>> create(@Valid @RequestBody E entity) {
-        try {
+    public ResponseEntity<ApiResponse<E>> create(@Valid @RequestBody E entity)
+    {
+        try
+        {
             E savedEntity = service.save(entity);
+
             return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(savedEntity, null));
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ApiResponse<>(null, new ErrorResponse("Error creating entity: " + e.getMessage())));
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<E>> update(@PathVariable ID id, @Valid @RequestBody E entity) {
-        try {
+    public ResponseEntity<ApiResponse<E>> update(@PathVariable ID id, @Valid @RequestBody E entity)
+    {
+        try
+        {
             E updatedEntity = service.update(id, entity);
+
             return ResponseEntity.ok(new ApiResponse<>(updatedEntity, null));
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ApiResponse<>(null, new ErrorResponse("Entity not found or error updating entity: " + e.getMessage())));
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable ID id) {
-        try {
+    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable ID id)
+    {
+        try
+        {
             service.deleteById(id);
+
             return ResponseEntity.noContent().build();
-        } catch (RuntimeException e) {
+        } catch (RuntimeException e)
+        {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ApiResponse<>(null, new ErrorResponse("Entity not found or error deleting entity: " + e.getMessage())));
         }

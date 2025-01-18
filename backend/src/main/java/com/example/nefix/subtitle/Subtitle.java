@@ -1,19 +1,14 @@
 package com.example.nefix.subtitle;
 
-import com.example.nefix.blockedaccount.BlockedAccount;
 import com.example.nefix.episode.Episode;
 import com.example.nefix.episode.EpisodeDeserializer;
 import com.example.nefix.movie.Movie;
 import com.example.nefix.movie.MovieDeserializer;
-import com.example.nefix.series.SeriesDeserializer;
-import com.example.nefix.subscription.Subscription;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-import org.springframework.context.annotation.Lazy;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -70,15 +65,19 @@ public class Subtitle implements Serializable
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(Object o)
+    {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Subtitle that = (Subtitle) o;
         return Objects.equals(this.subtitleId, that.subtitleId);
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         return Objects.hash(this.subtitleId);
     }
 }

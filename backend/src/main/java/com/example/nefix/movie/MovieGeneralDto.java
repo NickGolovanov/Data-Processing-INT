@@ -9,12 +9,14 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class MovieGeneralDto {
-        private Long id;
-        private String title;
+public class MovieGeneralDto
+{
+    private Long id;
+    private String title;
 
-        public MovieGeneralDto(Movie movie) {
-                this.id = movie.getMovieId();
-                this.title = movie.getTitle();
-        }
+    public MovieGeneralDto(Movie movie)
+    {
+        this.id = movie.getMovieId();
+        this.title = movie.getTitle();
+    }
 }

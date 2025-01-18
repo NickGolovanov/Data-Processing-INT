@@ -1,4 +1,5 @@
 package com.example.nefix.backup;
+
 import lombok.Data;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,8 @@ public class DatabaseBackupService
         this.backupFileProperties = backupFileProperties;
     }
 
-    public void performBackup() {
+    public void performBackup()
+    {
         String backupDir = this.backupFileProperties.getBackupFilePath();
         String backupFileName = this.backupFileProperties.getBackupFileName();
         String dbHost = this.backupFileProperties.getDbHost();
@@ -44,7 +46,8 @@ public class DatabaseBackupService
 
         processBuilder.environment().put("PGPASSWORD", dbPassword);
 
-        try {
+        try
+        {
 
             Path backupFodlder = Paths.get(backupDir);
 
@@ -56,12 +59,15 @@ public class DatabaseBackupService
             Process process = processBuilder.start();
             int exitCode = process.waitFor();
 
-            if (exitCode == 0) {
+            if (exitCode == 0)
+            {
                 System.out.println("Backup successful! File: " + fullPath);
-            } else {
+            } else
+            {
                 System.err.println("Backup failed with exit code: " + exitCode);
             }
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException | InterruptedException e)
+        {
             System.err.println("Error during backup: " + e.getMessage());
         }
     }

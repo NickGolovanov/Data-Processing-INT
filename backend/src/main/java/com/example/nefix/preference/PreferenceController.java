@@ -1,7 +1,11 @@
 package com.example.nefix.preference;
 
 import com.example.nefix.genrealization.controller.BaseController;
+import com.example.nefix.genrealization.response.ApiResponse;
+import com.example.nefix.genrealization.response.ErrorResponse;
 import com.example.nefix.mediapreferences.MediaPreferences;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,63 +15,84 @@ import java.util.List;
 @RequestMapping("/api/v1/preference")
 public class PreferenceController extends BaseController<Preference, Long>
 {
+    @Autowired
+    private PreferenceService preferenceService;
+
     public PreferenceController(PreferenceService service)
     {
         super(service);
     }
 
     @PostMapping("/{preferenceId}/movie/{movieId}")
-    public ResponseEntity<?> addPreferenceMovie(@PathVariable Long preferenceId, @PathVariable Long movieId)
+    public ResponseEntity<ApiResponse<MediaPreferences>> addPreferenceMovie(@PathVariable Long preferenceId, @PathVariable Long movieId)
     {
-        try {
-            Preference preference = ((PreferenceService) service).addPreferenceMovie(preferenceId, movieId);
-            return ResponseEntity.ok(preference);
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body(e.getMessage());
+        try
+        {
+            MediaPreferences preference = this.preferenceService.addPreferenceMovie(preferenceId, movieId);
+
+            return ResponseEntity.ok(new ApiResponse<>(preference, null));
+        } catch (Exception e)
+        {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>(null, new ErrorResponse("Error creating entity: " + e.getMessage())));
         }
     }
 
     @PostMapping("/{preferenceId}/series/{seriesId}")
-    public ResponseEntity<?> addPreferenceSeries(@PathVariable Long preferenceId, @PathVariable Long seriesId)
+    public ResponseEntity<ApiResponse<MediaPreferences>> addPreferenceSeries(@PathVariable Long preferenceId, @PathVariable Long seriesId)
     {
-        try {
-            Preference preference = ((PreferenceService) service).addPreferenceSeries(preferenceId, seriesId);
-            return ResponseEntity.ok(preference);
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body(e.getMessage());
+        try
+        {
+            MediaPreferences preference = this.preferenceService.addPreferenceSeries(preferenceId, seriesId);
+
+            return ResponseEntity.ok(new ApiResponse<>(preference, null));
+        } catch (Exception e)
+        {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>(null, new ErrorResponse("Error creating entity: " + e.getMessage())));
         }
     }
 
     @DeleteMapping("/{preferenceId}/movie/{movieId}")
     public ResponseEntity<?> deletePreferenceMovie(@PathVariable Long preferenceId, @PathVariable Long movieId)
     {
-        try {
+        try
+        {
             ((PreferenceService) service).deletePreferenceMovie(preferenceId, movieId);
             return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body(e.getMessage());
+        } catch (Exception e)
+        {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>(null, new ErrorResponse("Error creating entity: " + e.getMessage())));
         }
     }
 
     @DeleteMapping("/{preferenceId}/series/{seriesId}")
     public ResponseEntity<?> deletePreferenceSeries(@PathVariable Long preferenceId, @PathVariable Long seriesId)
     {
-        try {
+        try
+        {
             ((PreferenceService) service).deletePreferenceSeries(preferenceId, seriesId);
             return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body(e.getMessage());
+        } catch (Exception e)
+        {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>(null, new ErrorResponse("Error creating entity: " + e.getMessage())));
         }
     }
 
     @GetMapping("/{preferenceId}/media")
-    public ResponseEntity<?> getMediaPreferences(@PathVariable Long preferenceId)
+    public ResponseEntity<ApiResponse<List<MediaPreferences>>> getMediaPreferences(@PathVariable Long preferenceId)
     {
-        try {
+        try
+        {
             List<MediaPreferences> mediaPreferences = ((PreferenceService) service).getMediaPreferences(preferenceId);
-            return ResponseEntity.ok(mediaPreferences);
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body(e.getMessage());
+
+            return ResponseEntity.ok(new ApiResponse<>(mediaPreferences, null));
+        } catch (Exception e)
+        {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>(null, new ErrorResponse("Error creating entity: " + e.getMessage())));
         }
     }
 }

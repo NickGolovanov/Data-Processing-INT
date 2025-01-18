@@ -1,6 +1,5 @@
 package com.example.nefix.series;
 
-import com.example.nefix.blockedaccount.BlockedAccount;
 import com.example.nefix.infoseries.InfoSeries;
 import com.example.nefix.season.Season;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -47,15 +46,19 @@ public class Series implements Serializable
     private Set<InfoSeries> infos = new HashSet<>();
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(Object o)
+    {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Series that = (Series) o;
         return Objects.equals(this.seriesId, that.seriesId);
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         return Objects.hash(this.seriesId);
     }
 }

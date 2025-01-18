@@ -1,6 +1,5 @@
 package com.example.nefix.authentification.auth;
 
-import com.example.nefix.account.PaymentMethod;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

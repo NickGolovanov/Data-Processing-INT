@@ -1,7 +1,6 @@
 package com.example.nefix.referraldiscount;
 
 import com.example.nefix.account.Account;
-import com.example.nefix.blockedaccount.BlockedAccount;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -29,8 +28,10 @@ public class ReferralDiscount implements Serializable
     private String link;
 
     @JsonProperty(value = "accountId", access = JsonProperty.Access.READ_ONLY)
-    private Long accountId(){
-        if (this.account == null) {
+    private Long accountId()
+    {
+        if (this.account == null)
+        {
             return null;
         }
 
@@ -38,15 +39,19 @@ public class ReferralDiscount implements Serializable
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(Object o)
+    {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         ReferralDiscount that = (ReferralDiscount) o;
         return Objects.equals(this.referralDiscountId, that.referralDiscountId);
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         return Objects.hash(this.referralDiscountId);
     }
 }

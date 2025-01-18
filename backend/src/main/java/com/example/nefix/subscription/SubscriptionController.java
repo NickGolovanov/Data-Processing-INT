@@ -6,8 +6,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/subscription")
-public class SubscriptionController extends BaseController<Subscription, Long>{
-    public SubscriptionController(SubscriptionService service) {
+public class SubscriptionController extends BaseController<Subscription, Long>
+{
+    public SubscriptionController(SubscriptionService service)
+    {
         super(service);
     }
 }

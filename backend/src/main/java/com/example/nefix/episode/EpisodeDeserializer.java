@@ -1,7 +1,5 @@
 package com.example.nefix.episode;
 
-import com.example.nefix.movie.Movie;
-import com.example.nefix.movie.MovieRepository;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;

@@ -1,7 +1,5 @@
 package com.example.nefix.season;
 
-import com.example.nefix.account.AccountDeserializer;
-import com.example.nefix.blockedaccount.BlockedAccount;
 import com.example.nefix.episode.Episode;
 import com.example.nefix.series.Series;
 import com.example.nefix.series.SeriesDeserializer;
@@ -50,15 +48,19 @@ public class Season implements Serializable
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(Object o)
+    {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Season that = (Season) o;
         return Objects.equals(this.seasonId, that.seasonId);
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         return Objects.hash(this.seasonId);
     }
 }

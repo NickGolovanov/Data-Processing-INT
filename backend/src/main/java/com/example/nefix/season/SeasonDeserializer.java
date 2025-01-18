@@ -1,7 +1,5 @@
 package com.example.nefix.season;
 
-import com.example.nefix.series.Series;
-import com.example.nefix.series.SeriesRepository;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;

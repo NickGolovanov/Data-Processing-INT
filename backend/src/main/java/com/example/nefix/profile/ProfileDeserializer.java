@@ -1,7 +1,5 @@
 package com.example.nefix.profile;
 
-import com.example.nefix.account.Account;
-import com.example.nefix.account.AccountRepository;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;

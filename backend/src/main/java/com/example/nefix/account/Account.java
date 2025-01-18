@@ -1,17 +1,14 @@
 package com.example.nefix.account;
 
 import com.example.nefix.accountsubscription.AccountSubscription;
-import com.example.nefix.accountsubscription.AccountSubscriptionId;
 import com.example.nefix.blockedaccount.BlockedAccount;
 import com.example.nefix.profile.Profile;
 import com.example.nefix.referraldiscount.ReferralDiscount;
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import org.hibernate.annotations.Check;
 import org.springframework.security.core.GrantedAuthority;
@@ -61,21 +58,26 @@ public class Account implements Serializable, UserDetails
     private ReferralDiscount referralDiscount;
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(Object o)
+    {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Account that = (Account) o;
         return Objects.equals(this.accountId, that.accountId);
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         return Objects.hash(this.accountId);
     }
 
     @Override
     @JsonIgnore
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public Collection<? extends GrantedAuthority> getAuthorities()
+    {
         return List.of(new SimpleGrantedAuthority("USER"));
     }
 

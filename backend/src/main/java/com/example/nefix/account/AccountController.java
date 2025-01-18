@@ -34,11 +34,14 @@ public class AccountController extends BaseController<Account, Long>
     public ResponseEntity<ApiResponse<AccountSubscription>> addSubscription(
             @PathVariable Long accountId,
             @PathVariable Long subscriptionId,
-            @Valid @RequestBody AccountSubscriptionRequestDto requestDto) {
-        try {
-            AccountSubscription accountSubscription = accountService.addSubscription(accountId, subscriptionId, requestDto);
+            @Valid @RequestBody AccountSubscriptionRequestDto requestDto)
+    {
+        try
+        {
+            AccountSubscription accountSubscription = this.accountService.addSubscription(accountId, subscriptionId, requestDto);
             return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(accountSubscription, null));
-        } catch (RuntimeException e) {
+        } catch (RuntimeException e)
+        {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse<>(null, new ErrorResponse(e.getMessage())));
         }
     }
@@ -47,11 +50,15 @@ public class AccountController extends BaseController<Account, Long>
     public ResponseEntity<ApiResponse<AccountSubscription>> updateSubscription(
             @PathVariable Long accountId,
             @PathVariable Long subscriptionId,
-            @Valid @RequestBody AccountSubscriptionRequestDto requestDto) {
-        try {
-            AccountSubscription updatedAccountSubscription = accountService.updateSubscription(accountId, subscriptionId, requestDto);
+            @Valid @RequestBody AccountSubscriptionRequestDto requestDto)
+    {
+        try
+        {
+            AccountSubscription updatedAccountSubscription = this.accountService.updateSubscription(accountId, subscriptionId, requestDto);
+
             return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(updatedAccountSubscription, null));
-        } catch (RuntimeException e) {
+        } catch (RuntimeException e)
+        {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse<>(null, new ErrorResponse(e.getMessage())));
         }
     }
@@ -59,21 +66,28 @@ public class AccountController extends BaseController<Account, Long>
     @DeleteMapping("/{accountId}/subscription/{subscriptionId}")
     public ResponseEntity<ApiResponse<Void>> deleteSubscription(
             @PathVariable Long accountId,
-            @PathVariable Long subscriptionId) {
-        try {
-            accountService.deleteSubscription(accountId, subscriptionId);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new ApiResponse<>(null, null));
-        } catch (RuntimeException e) {
+            @PathVariable Long subscriptionId)
+    {
+        try
+        {
+            this.accountService.deleteSubscription(accountId, subscriptionId);
+
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e)
+        {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiResponse<>(null, new ErrorResponse(e.getMessage())));
         }
     }
 
-    @GetMapping("/{accountId}/is-blocked")
-    public ResponseEntity<ApiResponse<Boolean>> isAccountBlocked(@PathVariable Long accountId) {
-        try {
+    @GetMapping("/{accountId}/block")
+    public ResponseEntity<ApiResponse<Boolean>> isAccountBlocked(@PathVariable Long accountId)
+    {
+        try
+        {
             Boolean isBlocked = accountService.isAccountBlocked(accountId);
             return ResponseEntity.ok(new ApiResponse<>(isBlocked, null));
-        } catch (RuntimeException e) {
+        } catch (RuntimeException e)
+        {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse<>(null, new ErrorResponse(e.getMessage())));
         }
     }
@@ -81,21 +95,29 @@ public class AccountController extends BaseController<Account, Long>
     @PostMapping("/{accountId}/block")
     public ResponseEntity<ApiResponse<BlockedAccount>> blockAccount(
             @PathVariable Long accountId,
-            @Valid @RequestBody BlockedAccountRequestDto requestDto) {
-        try {
+            @Valid @RequestBody BlockedAccountRequestDto requestDto)
+    {
+        try
+        {
             BlockedAccount blockedAccount = accountService.blockAccount(accountId, requestDto);
+
             return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(blockedAccount, null));
-        } catch (RuntimeException e) {
+        } catch (RuntimeException e)
+        {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse<>(null, new ErrorResponse(e.getMessage())));
         }
     }
 
     @DeleteMapping("/{accountId}/block")
-    public ResponseEntity<ApiResponse<Void>> unblockAccount(@PathVariable Long accountId) {
-        try {
+    public ResponseEntity<ApiResponse<Void>> unblockAccount(@PathVariable Long accountId)
+    {
+        try
+        {
             accountService.unblockAccount(accountId);
+
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new ApiResponse<>(null, null));
-        } catch (RuntimeException e) {
+        } catch (RuntimeException e)
+        {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse<>(null, new ErrorResponse(e.getMessage())));
         }
     }
@@ -103,22 +125,30 @@ public class AccountController extends BaseController<Account, Long>
     @PostMapping("/{accountId}/referral-discount")
     public ResponseEntity<ApiResponse<ReferralDiscount>> addReferralDiscount(
             @PathVariable Long accountId,
-            @Valid @RequestBody ReferralDiscountRequestDto requestDto) {
-        try {
+            @Valid @RequestBody ReferralDiscountRequestDto requestDto)
+    {
+        try
+        {
             ReferralDiscount referralDiscount = accountService.addReferralDiscount(accountId, requestDto);
+
             return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(referralDiscount, null));
-        } catch (RuntimeException e) {
+        } catch (RuntimeException e)
+        {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse<>(null, new ErrorResponse(e.getMessage())));
         }
     }
 
     @GetMapping("/{accountId}/referral-discount")
     public ResponseEntity<ApiResponse<List<ReferralDiscountResponseDto>>> getAllReferralDiscounts(
-            @PathVariable Long accountId) {
-        try {
+            @PathVariable Long accountId)
+    {
+        try
+        {
             List<ReferralDiscountResponseDto> referralDiscounts = accountService.getReferralDiscounts(accountId);
+
             return ResponseEntity.ok(new ApiResponse<>(referralDiscounts, null));
-        } catch (RuntimeException e) {
+        } catch (RuntimeException e)
+        {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse<>(null, new ErrorResponse(e.getMessage())));
         }
     }

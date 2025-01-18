@@ -21,7 +21,8 @@ public class AuthenticationService
 
     public AuthenticationResponse register(RegisterRequest request)
     {
-        if (repository.findByEmail(request.getEmail()).isPresent()) {
+        if (repository.findByEmail(request.getEmail()).isPresent())
+        {
             throw new IllegalArgumentException("Email already exists.");
         }
 
@@ -43,8 +44,10 @@ public class AuthenticationService
                 .build();
     }
 
-    public AuthenticationResponse login(LoginRequest request) {
-        try {
+    public AuthenticationResponse login(LoginRequest request)
+    {
+        try
+        {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
             );
@@ -58,9 +61,11 @@ public class AuthenticationService
                     .token(jwtToken)
                     .build();
 
-        } catch (BadCredentialsException ex) {
+        } catch (BadCredentialsException ex)
+        {
             throw new IllegalArgumentException("Invalid email or password.");
-        } catch (Exception ex) {
+        } catch (Exception ex)
+        {
             throw new RuntimeException("An unexpected error occurred.");
         }
     }

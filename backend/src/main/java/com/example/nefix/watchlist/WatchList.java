@@ -1,14 +1,11 @@
 package com.example.nefix.watchlist;
 
-import com.example.nefix.blockedaccount.BlockedAccount;
 import com.example.nefix.movie.Movie;
 import com.example.nefix.movie.MovieDeserializer;
 import com.example.nefix.profile.Profile;
 import com.example.nefix.profile.ProfileDeserializer;
 import com.example.nefix.series.Series;
 import com.example.nefix.series.SeriesDeserializer;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
@@ -74,15 +71,19 @@ public class WatchList implements Serializable
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(Object o)
+    {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         WatchList that = (WatchList) o;
         return Objects.equals(this.watchListId, that.watchListId);
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         return Objects.hash(this.watchListId);
     }
 }

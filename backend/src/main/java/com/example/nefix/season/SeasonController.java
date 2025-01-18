@@ -6,8 +6,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/season")
-public class SeasonController extends BaseController<Season, Long>{
-    public SeasonController(SeasonService service) {
+public class SeasonController extends BaseController<Season, Long>
+{
+    public SeasonController(SeasonService service)
+    {
         super(service);
     }
 }

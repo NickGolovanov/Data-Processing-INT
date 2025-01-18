@@ -1,4 +1,5 @@
 package com.example.nefix.blockedaccount;
+
 import com.example.nefix.genrealization.controller.BaseController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

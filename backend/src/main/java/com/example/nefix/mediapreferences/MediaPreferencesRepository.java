@@ -13,16 +13,5 @@ import java.util.List;
 @Repository
 public interface MediaPreferencesRepository extends JpaRepository<MediaPreferences, Long>
 {
-    @Modifying
-    @Transactional
-    @Query(value = "DELETE FROM mediapreferences WHERE movie_id = :movie_id AND preference_id = :preference_id", nativeQuery = true)
-    void deleteByMovieIdAndPreferenceId(Long movie_id, Long preference_id);
-
-    @Modifying
-    @Transactional
-    @Query(value = "DELETE FROM mediapreferences WHERE series_id = :series_id AND preference_id = :preference_id", nativeQuery = true)
-    void deleteBySeriesIdAndPreferenceId(@Param("series_id") Long seriesId, @Param("preference_id") Long preferenceId);
-
-    @Query(value = "SELECT m FROM MediaPreferences m WHERE m.preference = :preference")
-    List<MediaPreferences> findAllByPreference(@Param("preference") Preference preference);
+    List<MediaPreferences> findAllByPreference_PreferenceId(Long preferenceId);
 }

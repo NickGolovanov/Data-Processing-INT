@@ -15,7 +15,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class MovieService extends BaseService<Movie, Long> {
+public class MovieService extends BaseService<Movie, Long>
+{
     @Autowired
     private SubtitleRepository subtitleRepository;
     @Autowired
@@ -24,18 +25,21 @@ public class MovieService extends BaseService<Movie, Long> {
     private InfoRepository infoRepository;
 
 
-    public MovieService(MovieRepository repository) {
+    public MovieService(MovieRepository repository)
+    {
         super(repository, List.of("movieId"));
     }
 
-    public List<MovieGeneralDto> getMovieGeneralDto() {
+    public List<MovieGeneralDto> getMovieGeneralDto()
+    {
         return repository.findAll().stream()
                 .map(MovieGeneralDto::new)
                 .toList();
     }
 
-    public Subtitle addSubtitle(Long movieId, Subtitle subtitle) {
-        long subtitleId = subtitleRepository.callAddSubtitle(
+    public Subtitle addSubtitle(Long movieId, Subtitle subtitle)
+    {
+        long subtitleId = subtitleRepository.callAddSubtitleMovie(
                 movieId,
                 subtitle.getLanguage(),
                 subtitle.getSubtitleLocation()
@@ -43,19 +47,22 @@ public class MovieService extends BaseService<Movie, Long> {
         return subtitleRepository.findById(subtitleId).orElseThrow(() -> new RuntimeException("Subtitle not found"));
     }
 
-    public List<SubtitleResponseDTO> getSubtitles(Long movieId) {
+    public List<SubtitleResponseDTO> getSubtitles(Long movieId)
+    {
         return subtitleRepository.findAllByMovie_MovieId(movieId).stream()
                 .map(SubtitleResponseDTO::new)
                 .toList();
     }
 
-    public Subtitle getSubtitle(Long movieId, Long subtitleId) {
-        return subtitleRepository.findBySubtitleId_MovieId(movieId, subtitleId);
+    public Subtitle getSubtitle(Long movieId, Long subtitleId)
+    {
+        return subtitleRepository.findSubtitleBySubtitleIdAndMovie_MovieId(movieId, subtitleId);
     }
 
     @Transactional
-    public Subtitle updateSubtitle(Long movieId, Long subtitleId, Subtitle updatedSubtitle) {
-        subtitleRepository.callUpdateSubtitle(
+    public Subtitle updateSubtitle(Long movieId, Long subtitleId, Subtitle updatedSubtitle)
+    {
+        subtitleRepository.callUpdateSubtitleMovie(
                 subtitleId,
                 movieId,
                 updatedSubtitle.getLanguage(),
@@ -65,25 +72,20 @@ public class MovieService extends BaseService<Movie, Long> {
         return subtitleRepository.findById(subtitleId).orElseThrow(() -> new RuntimeException("Subtitle not found"));
     }
 
-    public void deleteSubtitle(Long movieId, Long subtitleId) {
+    public void deleteSubtitle(Long movieId, Long subtitleId)
+    {
         Subtitle subtitle = getSubtitle(movieId, subtitleId);
         subtitleRepository.delete(subtitle);
     }
 
-    public List<Subtitle> getMovieWithSubtitles(Long movieId) {
-        return subtitleRepository.findAllByMovie_MovieId(movieId);
-    }
-
-    public List<InfoMovie> getAllMovieInfo(Long movieId) {
-        return infoMovieRepository.findAll();
-    }
-
-    public List<InfoMovie> getMovieInfoByMovieId(Long movieId) {
+    public List<InfoMovie> getMovieInfoByMovieId(Long movieId)
+    {
         return infoMovieRepository.findAllByMovie_MovieId(movieId);
     }
 
     @Transactional
-    public Info addInfoMovie(Long movieId, Info info) {
+    public Info addInfoMovie(Long movieId, Info info)
+    {
         long infoId = infoMovieRepository.callAddInfoMovie(
                 movieId,
                 info.getDescription(),
@@ -92,17 +94,20 @@ public class MovieService extends BaseService<Movie, Long> {
         return infoRepository.findById(infoId).orElseThrow(() -> new RuntimeException("Info not found"));
     }
 
-    public void deleteInfoMovie(Long movieId, Long infoId) {
-//        InfoMovie infoMovie = infoMovieRepository.findByMovie_MovieIdAndInfo_InfoId(movieId, infoId)
-//                .orElseThrow(() -> new RuntimeException("InfoMovie not found"));
-//        infoMovieRepository.delete(infoMovie);
-//        Info info = infoRepository.findById(infoId).orElseThrow(() -> new RuntimeException("Info wast not found in database"));
-//        infoRepository.delete(info);
+    @Transactional
+    public void deleteInfoMovie(Long movieId, Long infoId)
+    {
+        //        InfoMovie infoMovie = infoMovieRepository.findByMovie_MovieIdAndInfo_InfoId(movieId, infoId)
+        //                .orElseThrow(() -> new RuntimeException("InfoMovie not found"));
+        //        infoMovieRepository.delete(infoMovie);
+        //        Info info = infoRepository.findById(infoId).orElseThrow(() -> new RuntimeException("Info wast not found in database"));
+        //        infoRepository.delete(info);
         infoMovieRepository.callDeleteInfoMovie(movieId, infoId);
     }
 
     @Transactional
-    public Info updateInfoMovie(Long movieId, Long infoId, Info updatedInfo) {
+    public Info updateInfoMovie(Long movieId, Long infoId, Info updatedInfo)
+    {
         infoMovieRepository.callUpdateInfoMovie(
                 infoId,
                 movieId,

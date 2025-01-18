@@ -1,10 +1,8 @@
 package com.example.nefix.liveinfo;
 
-import com.example.nefix.blockedaccount.BlockedAccount;
 import com.example.nefix.episode.Episode;
 import com.example.nefix.movie.Movie;
 import com.example.nefix.profile.Profile;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -50,7 +48,8 @@ public class LiveInfo implements Serializable
     @JsonProperty("episodeId")
     public Long getEpisodeId()
     {
-        if (this.episode == null) {
+        if (this.episode == null)
+        {
             return null;
         }
 
@@ -60,7 +59,8 @@ public class LiveInfo implements Serializable
     @JsonProperty("movieId")
     public Long getMovieId()
     {
-        if (this.movie == null) {
+        if (this.movie == null)
+        {
             return null;
         }
 
@@ -68,15 +68,19 @@ public class LiveInfo implements Serializable
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(Object o)
+    {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         LiveInfo that = (LiveInfo) o;
         return Objects.equals(this.liveInfoId, that.liveInfoId);
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         return Objects.hash(this.liveInfoId);
     }
 }

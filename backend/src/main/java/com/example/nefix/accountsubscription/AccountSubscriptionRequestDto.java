@@ -10,7 +10,8 @@ import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
-public class AccountSubscriptionRequestDto {
+public class AccountSubscriptionRequestDto
+{
     @NotNull(message = "Date of purchase cannot be null")
     @PastOrPresent(message = "Date of purchase must be in the past or today")
     private LocalDate dateOfPurchase;

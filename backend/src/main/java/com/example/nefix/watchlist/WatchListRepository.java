@@ -17,21 +17,21 @@ public interface WatchListRepository extends JpaRepository<WatchList, Long>
 
     List<WatchList> findAllByProfile_ProfileIdAndSeriesIsNotNull(Long profileId);
 
-    Optional<WatchList> findByProfile_ProfileIdAndMovie_MovieId(Long profileId, Long movieId);
-
-    Optional<WatchList> findByProfile_ProfileIdAndSeries_SeriesId(Long profileId, Long seriesId);
-
     @Modifying
     void deleteByProfile_ProfileIdAndMovie_MovieId(Long profileId, Long movieId);
 
     @Modifying
     void deleteByProfile_ProfileIdAndSeries_SeriesId(Long profileId, Long seriesId);
 
-    @Query(value = "CALL add_series_to_watchlist(:profileId, :seriesId, :watchlistId)", nativeQuery = true)
-    long addSeriesToWatchList(
+    @Query(value = "CALL add_series_to_watchlist(:profileId, :seriesId, null)", nativeQuery = true)
+    Long addSeriesToWatchList(
             @Param("profileId") Long profileId,
-            @Param("seriesId") Long seriesId,
-            @Param("watchlistId") Long watchlistId
+            @Param("seriesId") Long seriesId
     );
 
+    @Query(value = "CALL add_movie_to_watchlist(:profileId, :movieId, null)", nativeQuery = true)
+    Long addMovieToWatchList(
+            @Param("profileId") Long profileId,
+            @Param("movieId") Long movieId
+    );
 }

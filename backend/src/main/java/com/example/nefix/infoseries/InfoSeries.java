@@ -1,10 +1,12 @@
 package com.example.nefix.infoseries;
 
-import com.example.nefix.blockedaccount.BlockedAccount;
 import com.example.nefix.info.Info;
 import com.example.nefix.series.Series;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.*;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -41,15 +43,19 @@ public class InfoSeries implements Serializable
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(Object o)
+    {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         InfoSeries that = (InfoSeries) o;
         return Objects.equals(this.id, that.id);
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         return Objects.hash(this.id);
     }
 }

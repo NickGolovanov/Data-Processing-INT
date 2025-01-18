@@ -12,7 +12,8 @@ import java.util.List;
 public class OpenApiConfig
 {
     @Bean
-    public OpenAPI customOpenApi() {
+    public OpenAPI customOpenApi()
+    {
         return new OpenAPI()
                 .servers(List.of(
                         new Server().url("http://localhost:8080/v3/api-docs").description("Local Server")

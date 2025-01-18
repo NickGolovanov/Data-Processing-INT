@@ -9,7 +9,8 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 
 @Repository
-public interface AccountSubscriptionRepository extends JpaRepository<AccountSubscription, AccountSubscriptionId> {
+public interface AccountSubscriptionRepository extends JpaRepository<AccountSubscription, AccountSubscriptionId>
+{
     AccountSubscription getByAccount_AccountIdAndSubscription_SubscriptionId(Long accountAccountId, Long subscriptionSubscriptionId);
 
     @Query(value = "CALL add_subscription(:p_account_id, :p_subscription_id, :p_date_of_purchase, :p_date_of_expire, null)", nativeQuery = true)
@@ -30,6 +31,6 @@ public interface AccountSubscriptionRepository extends JpaRepository<AccountSubs
             @Param("p_account") Long p_account,
             @Param("p_subscription_id") Long p_subscription_id,
             @Param("p_date_of_purchase") LocalDate p_date_of_purchase,
-            @Param("p_date_of_expire")  LocalDate op_date_of_expire);
+            @Param("p_date_of_expire") LocalDate op_date_of_expire);
 
 }
