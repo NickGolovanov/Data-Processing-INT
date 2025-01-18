@@ -87,11 +87,41 @@ In case something doesn't work:
 ### Java & Spring Boot
 - **Why Java?** We chose Java for its robust ecosystem and reliability, with **Spring Boot** simplifying backend development and offering a flexible framework.
 
-### Database
-- **Why PostgreSQL?** The team wanted to learn and gain experience with PostgreSQL due to its performance and scalability.
-- **Why pgAdmin?** pgAdmin is used to simplify interaction with PostgreSQL by providing a graphical user interface for managing the database.
-- **Why Flyway?** Flyway is necessary because Spring Boot does not automatically handle SQL queries for creating views, stored procedures, or triggers, and Flyway helps manage migrations effectively.
-- **Why not use views in APIs?** Spring Boot doesn't offer built-in support for working with views, which is why views are not directly called within the API.
+# **Database**
+
+Our database strategy leverages PostgreSQL, supported by tools and practices designed for performance, ease of management, and scalability.
+
+## **Why PostgreSQL?**
+PostgreSQL was chosen for its:
+- **Robust performance**
+- **High scalability**
+- **Learning opportunity**: The team wanted to gain hands-on experience with this powerful and widely-used database management system.
+
+## **Why pgAdmin?**
+pgAdmin simplifies the management of PostgreSQL by providing:
+- **Graphical User Interface (GUI):** Makes interaction easier and more intuitive.
+- **Monitoring and management tools:** Ensures efficient operation and oversight of the database.
+
+## **Why Flyway?**
+Flyway is essential for managing database migrations because:
+- **Spring Boot limitations:** It does not automatically handle SQL for creating views, stored procedures, or triggers.
+- **Migration management:** Flyway offers a reliable and streamlined way to handle these tasks effectively.
+
+## **Why not use views directly in APIs?**
+Views are not used directly in APIs because:
+- **Lack of support in Spring Boot:** It does not natively support interaction with database views.
+- **Separation of concerns:** Managing views outside the API maintains clean and modular design principles.
+
+## **Database Users Setup**
+To maintain role-based access and security, the following database users were created:
+
+```sql
+CREATE USER senior_user WITH PASSWORD 'securepassword';  
+CREATE USER medior_user WITH PASSWORD 'securepassword';  
+CREATE USER junior_user WITH PASSWORD 'securepassword';  
+```
+
+These users were created solely for testing purposes and are not intended to be used in real-life scenarios.
 
 ### Docker
 - **Why Docker?** Docker provides a portable setup for both development and production, ensuring consistent environments and simplifying deployment.
@@ -116,8 +146,6 @@ The project utilizes Postman for testing, which includes the following:
 
 - **Scenario Testing:** Ensures the system works as expected in various use cases.
 - **Contract Testing:** Verifies that the APIs meet the agreed-upon contract between the backend and frontend teams.
-
-You can access the Postman collection through the following link:
 
 ### Documentation
 
