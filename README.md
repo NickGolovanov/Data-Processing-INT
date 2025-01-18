@@ -131,4 +131,4 @@ These documents will be available in the project’s **documentation folder**, w
 
 ## License
 
-This project is open-source. Contributions and suggestions for improvements are welcome!
+GNU General Public License v3.0.0
