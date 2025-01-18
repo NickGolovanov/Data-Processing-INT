@@ -1,0 +1,2033 @@
+{
+	"info": {
+		"_postman_id": "9675895e-0453-4de6-a879-419731ac0101",
+		"name": "API scenario testing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40285391",
+		"_collection_link": "https://data-processing-5663.postman.co/workspace/Data-Processing-Workspace~9f5f5552-adbe-4095-81b4-b603f2e16217/collection/40286380-9675895e-0453-4de6-a879-419731ac0101?action=share&source=collection_link&creator=40285391"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "General Wrong requests",
+					"item": [
+						{
+							"name": "Test register no password",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var token;\r",
+											"\r",
+											"pm.test(\"User registered successfully\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors.password).to.eql(\"must not be null\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"{{$randomEmail}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/auth/register",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test register no email",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var token;\r",
+											"\r",
+											"pm.test(\"User registered successfully\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors.email).to.eql(\"must not be null\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"password\": \"{{$randomPassword}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/auth/register",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test register no credentials",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var token;\r",
+											"\r",
+											"pm.test(\"User registered successfully\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors.password).to.eql(\"must not be null\");\r",
+											"    pm.expect(jsonData.errors.email).to.eql(\"must not be null\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/auth/register",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test login no password",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var token;\r",
+											"\r",
+											"pm.test(\"User registered successfully\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors.password).to.eql(\"must not be null\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"{{$randomEmail}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/auth/login",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test login no email",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var token;\r",
+											"\r",
+											"pm.test(\"User registered successfully\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors.email).to.eql(\"must not be null\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"password\": \"{{$randomPassword}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/auth/login",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test login no credentials",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var token;\r",
+											"\r",
+											"pm.test(\"User registered successfully\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.errors.password).to.eql(\"must not be null\");\r",
+											"    pm.expect(jsonData.errors.email).to.eql(\"must not be null\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/auth/login",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Test create user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var token;\r",
+									"\r",
+									"pm.test(\"User registered successfully\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    var jsonData = pm.response.json();\r",
+									"    token = jsonData.token\r",
+									"});\r",
+									"\r",
+									"\r",
+									"const requestBody = JSON.parse(pm.request.body.raw);\r",
+									"pm.collectionVariables.set(\"registeredToken\", token)\r",
+									"pm.collectionVariables.set(\"registeredEmail\", requestBody.email);\r",
+									"pm.collectionVariables.set(\"registeredPassword\", requestBody.password);\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.execution.setNextRequest(\"Test Duplicate Email\");\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"password\": \"{{$randomPassword}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/auth/register",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test Duplicate Email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"User used wrong email\", function () {\r",
+									"    pm.response.to.have.status(409);\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.error.message).to.eql(\"Email already exists.\");\r",
+									"});\r",
+									"\r",
+									"pm.execution.setNextRequest(\"Test Login new account good credentials\");\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{registeredEmail}}\",\r\n    \"password\": \"{{registeredPassword}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/auth/register",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test Login new account good credentials",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"User Login successfully\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.data).to.have.property('token');\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{registeredEmail}}\",\r\n    \"password\": \"{{registeredPassword}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/auth/login",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test Login account wrong credentials",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"User use not Login successfully\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(\"Invalid email or password.\").to.eql(jsonData.error.message);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"IamAbadcredantial@wrongCredential.com\",\r\n    \"password\": \"ItWouldBeVeryFunnyIfRandomPasswordGeneratesThis\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/auth/login",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Account",
+			"item": [
+				{
+					"name": "General",
+					"item": [
+						{
+							"name": "Test Create New account",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var accountId;\r",
+											"\r",
+											"pm.test(\"Acciunt created successfully\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"    var jsonData = pm.response.json();\r",
+											"    accountId = jsonData.data.accountId;\r",
+											"});\r",
+											"\r",
+											"pm.collectionVariables.set(\"createdAccount\", accountId);\r",
+											"pm.execution.setNextRequest(\"Test get all accounts\");\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"paymentMethod\": \"VISA\",\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"{{$randomPassword}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/account",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"account"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test get all accounts",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Accounts recieved successfully\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    var jsonData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(jsonData).to.have.property('data');\r",
+											"    pm.expect(jsonData.data).to.be.an('array');\r",
+											"    \r",
+											"    pm.expect(jsonData.data.length).to.be.at.least(1);\r",
+											"});\r",
+											"pm.execution.setNextRequest(\"Test delete new account\");\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/account",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"account"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test delete new account",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var accountId\r",
+											"\r",
+											"pm.test(\"Account deleted successfully\", function () {\r",
+											"    pm.response.to.have.status(204);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/account/{{createdAccount}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"account",
+										"{{createdAccount}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test delete account wrong id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Error response validation\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"    \r",
+											"    var jsonData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(jsonData).to.have.property('data');\r",
+											"    pm.expect(jsonData.data).to.be.null;\r",
+											"    \r",
+											"    pm.expect(jsonData).to.have.property('error');\r",
+											"    pm.expect(jsonData.error).to.be.an('object');\r",
+											"    pm.expect(jsonData.error).to.have.property('message');\r",
+											"    pm.expect(jsonData.error.message).to.be.a('string');\r",
+											"    \r",
+											"    pm.expect(jsonData.error.message).to.equal(\"Entity not found or error deleting entity: Entity not found with id: 123123122312\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/account/123123122312",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"account",
+										"123123122312"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Block Account tests",
+					"item": [
+						{
+							"name": "Not exist test",
+							"item": [
+								{
+									"name": "Test unblock account not exist",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Success response validation\", function () {\r",
+													"    pm.response.to.have.status(500); \r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{URL}}/account/12312312312312/unblock",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"account",
+												"12312312312312",
+												"unblock"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Test block account not permanent",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Success response validation\", function () {\r",
+													"    pm.response.to.have.status(201); \r",
+													"    \r",
+													"    var jsonData = pm.response.json(); \r",
+													"    \r",
+													"    pm.expect(jsonData).to.have.property('data');\r",
+													"    pm.expect(jsonData).to.have.property('error');\r",
+													"    pm.expect(jsonData.error).to.be.null;\r",
+													"    \r",
+													"    pm.expect(jsonData.data).to.be.an('object');\r",
+													"    pm.expect(jsonData.data).to.have.property('blockedAccountId');\r",
+													"    pm.expect(jsonData.data).to.have.property('accountId');\r",
+													"    pm.expect(jsonData.data).to.have.property('dateOfExpire');\r",
+													"    pm.expect(jsonData.data).to.have.property('isPermanent');\r",
+													"    \r",
+													"\r",
+													"    pm.expect(jsonData.data.accountId).to.equal(pm.collectionVariables.get(\"createdAccountToBlock\"));\r",
+													"    pm.expect(jsonData.data.isPermanent).to.be.false; \r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"isPermanent\": false,\n  \"dateOfExpire\": \"2025-12-31\"\n}\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{URL}}/account/{{createdAccountToBlock}}/block",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"account",
+												"{{createdAccountToBlock}}",
+												"block"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Pretest Create New account",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var accountId;\r",
+											"\r",
+											"pm.test(\"Acciunt created successfully\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"    var jsonData = pm.response.json();\r",
+											"    accountId = jsonData.data.accountId;\r",
+											"});\r",
+											"\r",
+											"pm.collectionVariables.set(\"createdAccountToBlock\", accountId);\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"paymentMethod\": \"VISA\",\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"{{$randomPassword}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/account",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"account"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test block account permanent",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Success response validation\", function () {\r",
+											"    pm.response.to.have.status(201); \r",
+											"    \r",
+											"    var jsonData = pm.response.json(); \r",
+											"    \r",
+											"    pm.expect(jsonData).to.have.property('data');\r",
+											"    pm.expect(jsonData).to.have.property('error');\r",
+											"    pm.expect(jsonData.error).to.be.null;\r",
+											"    \r",
+											"    pm.expect(jsonData.data).to.be.an('object');\r",
+											"    pm.expect(jsonData.data).to.have.property('blockedAccountId');\r",
+											"    pm.expect(jsonData.data).to.have.property('accountId');\r",
+											"    pm.expect(jsonData.data).to.have.property('dateOfExpire');\r",
+											"    pm.expect(jsonData.data).to.have.property('isPermanent');\r",
+											"    \r",
+											"\r",
+											"    pm.expect(jsonData.data.accountId).to.equal(pm.collectionVariables.get(\"createdAccountToBlock\"));\r",
+											"    pm.expect(jsonData.data.isPermanent).to.be.true; \r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"isPermanent\": true,\n  \"dateOfExpire\": \"2025-12-31\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/account/{{createdAccountToBlock}}/block",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"account",
+										"{{createdAccountToBlock}}",
+										"block"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Pretest Create New account",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var accountId;\r",
+											"\r",
+											"pm.test(\"Acciunt created successfully\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"    var jsonData = pm.response.json();\r",
+											"    accountId = jsonData.data.accountId;\r",
+											"});\r",
+											"\r",
+											"pm.collectionVariables.set(\"createdAccountToBlock\", accountId);\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"paymentMethod\": \"VISA\",\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"{{$randomPassword}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/account",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"account"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test block account not exist",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Success response validation\", function () {\r",
+											"    pm.response.to.have.status(404); \r",
+											"    \r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"isPermanent\": true,\n  \"dateOfExpire\": \"2025-12-31\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/account/1231231231231/block",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"account",
+										"1231231231231",
+										"block"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test unblock account Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Success response validation\", function () {\r",
+											"    pm.response.to.have.status(200); \r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/account/{{createdAccountToBlock}}/unblock",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"account",
+										"{{createdAccountToBlock}}",
+										"unblock"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Add subscription test",
+					"item": [
+						{
+							"name": "Pretest create subscription",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var subscriptionId;\r",
+											"\r",
+											"pm.test(\"Subscription created successfully\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"    var jsonData = pm.response.json();\r",
+											"    subscriptionId = jsonData.data.subscriptionId;\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.collectionVariables.set(\"createdSubscription\", subscriptionId);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"description\": \"yiugy\",\n  \"subscriptionPrice\": 13\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/subscription",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"subscription"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Pretest create new account",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var accountId;\r",
+											"\r",
+											"pm.test(\"Account created successfully\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"    var jsonData = pm.response.json();\r",
+											"    accountId = jsonData.data.accountId;\r",
+											"});\r",
+											"\r",
+											"pm.collectionVariables.set(\"createdAccount\", accountId);\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"paymentMethod\": \"VISA\",\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"{{$randomPassword}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/account",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"account"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test add Subscription account",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Subscription added successfully\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"dateOfPurchase\": \"2025-01-01\",\n  \"dateOfExpire\": \"2026-01-01\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/account/{{createdAccount}}/subscription/{{createdSubscription}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"account",
+										"{{createdAccount}}",
+										"subscription",
+										"{{createdSubscription}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test add subscription account already exist",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Subscription not added successfully\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"dateOfPurchase\": \"2025-01-01\",\n  \"dateOfExpire\": \"2026-01-01\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/account/{{createdAccount}}/subscription/{{createdSubscription}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"account",
+										"{{createdAccount}}",
+										"subscription",
+										"{{createdSubscription}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test delete subscription from account",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Subscription deleted successfully\", function () {\r",
+											"    pm.response.to.have.status(204);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/account/{{createdAccount}}/subscription/{{createdSubscription}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"account",
+										"{{createdAccount}}",
+										"subscription",
+										"{{createdSubscription}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test delete subscription account already deleted",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Subscription confiliced successfully\", function () {\r",
+											"    pm.response.to.have.status(409);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/account/{{createdAccount}}/subscription/{{createdSubscription}}",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"account",
+										"{{createdAccount}}",
+										"subscription",
+										"{{createdSubscription}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Referral Discount test",
+					"item": [
+						{
+							"name": "Pretest create new account",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var accountId;\r",
+											"\r",
+											"pm.test(\"Account created successfully\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"    var jsonData = pm.response.json();\r",
+											"    accountId = jsonData.data.accountId;\r",
+											"});\r",
+											"\r",
+											"pm.collectionVariables.set(\"createdAccountToBlock\", accountId);\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"paymentMethod\": \"VISA\",\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"{{$randomPassword}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/account",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"account"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test add referral discount",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"pm.test(\"Referenetialdiscount created successfully\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"link\": \"REFERRAL_CODE_12345\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/account/{{createdAccountToBlock}}/referral-discount",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"account",
+										"{{createdAccountToBlock}}",
+										"referral-discount"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test get all referral discounts",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"pm.test(\"All discounts recieved\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/account/{{createdAccountToBlock}}/referral-discount",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"account",
+										"{{createdAccountToBlock}}",
+										"referral-discount"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test add referral discount account not exists",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"pm.test(\"Referenetialdiscount not created successfully\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"link\": \"REFERRAL_CODE_12345\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/account/123123131231/referral-discount",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"account",
+										"123123131231",
+										"referral-discount"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test get all referral discounts account not exits",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"pm.test(\"Account not exist\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/account/1123213123/referral-discount",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"account",
+										"1123213123",
+										"referral-discount"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Profile",
+			"item": [
+				{
+					"name": "Create Account",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"paymentMethod\": \"VISA\",\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"{{$randomPassword}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/account",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    const jsonData = pm.response.json()",
+									"",
+									"    if (jsonData.data.profileId) {",
+									"        pm.collectionVariables.set(\"profileId\", jsonData.data.profileId);",
+									"    }",
+									"",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"accountId\": 1,\n    \"link\": \"yiugy\",\n    \"language\": \"sfa\",\n    \"series\": true,\n    \"film\": false,\n    \"minimumAge\": 12,\n    \"profileImage\": \"\",\n    \"profileChild\": false,\n    \"profileName\": \"name\",\n    \"age\": 10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/profile",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test Get Watchlist by profileId correct id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Wathclist from profile returned successfully\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"  ",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/profile/{{profileId}}/watch-list",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"profile",
+								"{{profileId}}",
+								"watch-list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test Get Watchlist by profileId wrong id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Wathclist from profile returned successfully\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"  ",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/profile/{{profileId}}/watch-list",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"profile",
+								"{{profileId}}",
+								"watch-list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getWatchListProfileMovies Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/profile/{{profileId}}/watch-list/movies",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"profile",
+								"{{profileId}}",
+								"watch-list",
+								"movies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addToWatchList",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    const jsonData = pm.response.json()",
+									"",
+									"    if (jsonData.movieId) {",
+									"        pm.collectionVariables.set(\"movieId\", jsonData.movieId);",
+									"    }",
+									"",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"profileId\": 1,\n    \"seriesId\": 1,\n    \"movieId\": 1\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/profile/{{profileId}}/watch-list",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"profile",
+								"{{profileId}}",
+								"watch-list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"accountId\": 1,\n    \"link\": \"yiugy\",\n    \"language\": \"sfa\",\n    \"series\": true,\n    \"film\": true,\n    \"minimumAge\": 12,\n    \"profileImage\": \"https://example.com/subtitles/img.png\",\n    \"profileChild\": false,\n    \"profileName\": \"name\",\n    \"age\": 10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/profile/{{profileId}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"profile",
+								"{{profileId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteFromWatchList",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/profile/{{profileId}}/watch-list/movie/{{movieId}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"profile",
+								"{{profileId}}",
+								"watch-list",
+								"movie",
+								"{{movieId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaXNpc2lzaXMuZG90ZUBtYWlsLmNvbSIsImlhdCI6MTczNzExMDk3OSwiZXhwIjoxNzM3MTIxMDU5fQ.y0qCboWvMGVu-JjWxSvwgA5WlkRjvuW4_7vDpYZ-4ZU",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2huLmRvZTExQG1haWwuY29tIiwiaWF0IjoxNzM3MjM0NTQ4LCJleHAiOjE3MzcyNDQ2Mjh9.LHbg6PfICeOBSyAfQDJ7slm_kuJ_ribbLzBDaBShS_U",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "registeredEmail",
+			"value": ""
+		},
+		{
+			"key": "registeredPassword",
+			"value": ""
+		},
+		{
+			"key": "profileId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "movieId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "URL",
+			"value": "http://localhost:8080/api/v1",
+			"type": "string"
+		},
+		{
+			"key": "registeredToken",
+			"value": ""
+		},
+		{
+			"key": "createdAccount",
+			"value": ""
+		},
+		{
+			"key": "createdAccountToBlock",
+			"value": ""
+		},
+		{
+			"key": "createdSubscription",
+			"value": ""
+		}
+	]
+}
