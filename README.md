@@ -81,9 +81,9 @@ In case something doesn't work:
 
 ## API Documentation
 
-Once the application is running, you can access the API documentation through Swagger UI. Swagger is an interactive API documentation tool that allows you to explore and test the API endpoints provided by the application. The documentation is available at the following URL:
+Once the application is running, you can access the API documentation through Swagger UI. Swagger is an interactive API documentation tool that allows you to explore and test the API endpoints provided by the application. 
 
-[http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+The documentation is available at the following URL: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 
 Visit this page to view the list of available API endpoints, their request/response formats.
 
