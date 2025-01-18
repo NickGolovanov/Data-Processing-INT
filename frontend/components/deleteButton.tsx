@@ -30,7 +30,7 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({id, type, onDelete}) => {
                 throw new Error(`Failed to delete ${type}: ${response.status}`);
             }
 
-            alert(`${type.charAt(0).toUpperCase() + type.slice(1)} deleted successfully!`);
+            // alert(`${type.charAt(0).toUpperCase() + type.slice(1)} deleted successfully!`);
 
             if (onDelete) {
                 onDelete(id);

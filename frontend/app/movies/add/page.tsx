@@ -133,6 +133,7 @@ const MovieAddPage: React.FC = () => {
                         <input
                             type="number"
                             name="duration"
+                            max={100000}
                             value={formState.duration || ""}
                             onChange={handleInputChange}
                             style={{ width: "100%", padding: "5px", marginBottom: "10px", color: "#000" }}
@@ -170,6 +171,7 @@ const MovieAddPage: React.FC = () => {
                         <input
                             type="number"
                             name="views"
+                            max={100000}
                             value={formState.views || ""}
                             onChange={handleInputChange}
                             style={{ width: "100%", padding: "5px", marginBottom: "10px", color: "#000" }}
