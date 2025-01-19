@@ -28,6 +28,8 @@ This project demonstrates the development of an **API** using **Java**, **Spring
 
 You can run the application using one of the provided scripts based on your operating system:
 
+- **Environment Variables**: Copy file `.env.example` copy it into the same directory and rename the copy to `.env`
+
 - **For Windows**: Use the `start_project.ps1` script. Run it in PowerShell with:
   ```powershell
   ./start_project.ps1
