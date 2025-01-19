@@ -42,6 +42,22 @@ There are two Postman files included for API testing:
 
 ---
 
+### 4. **Swagger Documentation**
+We also provide **Swagger Documentation** for detailed API specifications. Swagger serves as an interactive tool for exploring and testing the API endpoints. It provides:
+- A list of all available endpoints.
+- Details about request parameters and response schemas.
+- Real-time testing functionality.
+
+#### **How to Access Swagger Documentation:**
+1. Ensure the application is running.
+2. Open your web browser and navigate to:  
+   **`http://localhost:8080/swagger-ui/index.html`**.
+3. Use the interactive interface to explore endpoints and test API functionality.
+
+Swagger documentation simplifies the process of understanding and using the API, making it easier to test and integrate.
+
+---
+
 ## **How to Import Postman Collections and Run Tests**
 
 1. Open **Postman**.
@@ -56,4 +72,4 @@ There are two Postman files included for API testing:
 
 ---
 
-This documentation serves as a comprehensive guide to help you understand the project's structure, database, and how to perform API tests efficiently.
+This documentation serves as a comprehensive guide to help you understand the project's structure, database, and how to perform API tests efficiently, with the additional benefit of Swagger for detailed API exploration. a comprehensive guide to help you understand the project's structure, database, and how to perform API tests efficiently, with the additional benefit of Swagger for detailed API exploration.
